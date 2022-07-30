@@ -1,6 +1,8 @@
 {
   "name": "degen-charts",
   "version": "1.0.1",
+  "main": "index.js",
+  "module": "index.js",
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^6.1.1",
     "@fortawesome/free-solid-svg-icons": "^6.1.1",
