@@ -1,0 +1,40 @@
+.chartstat__container{
+    display: flex;
+    align-items: center;
+    color: white;
+    height: 57px;
+    padding-left: 10px;
+    padding-right: 10px;
+    border-right: 1px solid rgba(255,255,255,0.1);
+}
+.chartstat__container:last-child{
+    border: 0;
+}
+
+.chartstat__icon{
+    margin-right: 5px;
+    color: #09eeb7;
+}
+
+.chartstat__value{
+    text-align: left;
+}
+
+.chartstat__name{
+    display: flex;
+    color: #b0b0b0;
+}
+
+.chartstat__percentage{
+    color: #41AA00;
+    border-radius: 20px;
+    padding-left: 4px;
+    padding-right: 4px;
+    font-weight: 700;
+    font-size: 14px;
+    display: inline-block;
+}
+
+.chartstat__percentage_negative{
+    background-color: #D5391D;
+}

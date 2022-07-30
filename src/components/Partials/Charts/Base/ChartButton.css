@@ -1,0 +1,17 @@
+.chart__button{
+    height: 24px;
+    border-radius: 8px;
+    background-color: #322f36;
+    color: white;
+    border: none;
+    font: inherit;
+    font-size: 16px;
+    font-weight: 400;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+}
+
+.chart__button__active{
+    background-color: #8675f0;
+}

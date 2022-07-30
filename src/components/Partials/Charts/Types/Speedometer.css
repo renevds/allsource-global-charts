@@ -1,0 +1,30 @@
+.speedometer__container {
+    position: relative;
+    width: 100px;
+    margin: auto;
+    height: 58px;
+    zoom: 1.2
+}
+
+.speedometer__dot {
+    position: absolute;
+    left: 42px;
+    bottom: 2px
+}
+
+.speedometer__inner {
+    position: absolute;
+    left: 11px;
+    bottom: 7px
+}
+
+.speedometer__outer {
+    position: absolute;
+    left: 3px;
+    bottom: 7px
+}
+.speedometer__pointer {
+    position: absolute;
+    left: 45px;
+    transform-origin: center 48px
+}

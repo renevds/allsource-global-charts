@@ -1,0 +1,58 @@
+.charttoggle_container{
+    display: flex;
+    align-items: center;
+    color: #b0b0b0;
+    padding-right: 20px;
+}
+
+.charttoggle__switch {
+    position: relative;
+    display: inline-block;
+    width: 30px;
+    height: 20px;
+    margin-left: 5px;
+}
+
+.charttoggle__switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.charttoggle__slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #322f36;
+    -webkit-transition: .4s;
+    transition: .4s;
+    border-radius: 8px;
+}
+
+.charttoggle__slider:before {
+    position: absolute;
+    content: "";
+    height: 12px;
+    width: 12px;
+    left: 4px;
+    bottom: 4px;
+    background-color: white;
+    -webkit-transition: .4s;
+    transition: .4s;
+    border-radius: 8px;
+}
+
+input:checked + .charttoggle__slider {
+    background-color: #8675f0;
+}
+
+input:focus + .charttoggle__slider {
+    box-shadow: 0 0 1px #8675f0;
+}
+
+input:checked + .charttoggle__slider:before {
+    transform: translateX(11px);
+}

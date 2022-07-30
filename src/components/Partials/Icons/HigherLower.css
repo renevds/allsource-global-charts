@@ -1,0 +1,7 @@
+.higherlower__arrow{
+    filter: brightness(0) saturate(100%) invert(62%) sepia(42%) saturate(7343%) hue-rotate(64deg) brightness(98%) contrast(101%);
+}
+
+.higherlower__arrow__higher{
+    filter: brightness(0) saturate(100%) invert(27%) sepia(41%) saturate(3422%) hue-rotate(348deg) brightness(98%) contrast(96%);
+}
