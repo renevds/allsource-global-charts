@@ -1,8 +1,8 @@
 //Queries
-import {marginPerSale} from "../../queries/charthQueries";
+import {marginPerSale} from "../../../../queries/charthQueries";
 
 //Components
-import PosNegScatterLineChart from "../Partials/Charts/Types/PosNegScatterLineChart";
+import PosNegScatterLineChart from "../Types/PosNegScatterLineChart";
 
 const ProfitPerSaleChart = ({address}) => {
   return (<PosNegScatterLineChart defaultEndpoint="31D"

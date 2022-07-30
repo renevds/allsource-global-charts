@@ -1,8 +1,8 @@
 //Queries
-import {averagePerDaySaleForPeriod} from "../../queries/charthQueries";
+import {averagePerDaySaleForPeriod} from "../../../../queries/charthQueries";
 
 //Components
-import ScatterTrendChart from "../Partials/Charts/Types/ScatterTrendChart";
+import ScatterTrendChart from "../Types/ScatterTrendChart";
 
 const FloorPriceChart = ({address}) => {
   return (<ScatterTrendChart defaultEndpoint="31D"

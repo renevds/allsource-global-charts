@@ -1,10 +1,10 @@
 import moment from "moment";
 
 //Components
-import BarLineChart from "../Partials/Charts/Types/BarLineChart";
+import BarLineChart from "../Types/BarLineChart";
 
 //Queries
-import {averagePerDaySaleForPeriod} from "../../queries/charthQueries";
+import {averagePerDaySaleForPeriod} from "../../../../queries/charthQueries";
 
 const VolumeChart = ({address}) => {
   return (<BarLineChart defaultEndpoint="31D"

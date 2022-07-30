@@ -1,5 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
+
+//Style
 import "./Loader.css";
 
 const Loader = ({ fullScreen = false }) => {

@@ -1,8 +1,8 @@
 //Queries
-import {holdersInProfit, uniqueHoldersOverTimeNZT} from "../../queries/charthQueries";
+import {holdersInProfit, uniqueHoldersOverTimeNZT} from "../../../../queries/charthQueries";
 
 //Components
-import BasicLineChart from "../Partials/Charts/Types/BasicLineChart";
+import BasicLineChart from "../Types/BasicLineChart";
 
 const HoldersChart = ({address}) => {
   return (<BasicLineChart defaultEndpoint="31D"

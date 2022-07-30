@@ -18,7 +18,8 @@ import {
   PointElement,
   TimeScale,
   Title,
-  Tooltip
+  Tooltip,
+  BarController
 } from 'chart.js';
 import 'chartjs-adapter-moment';
 
@@ -52,7 +53,8 @@ ChartJS.register(
   CategoryScale,
   BarElement,
   Log2ScalePlugin,
-  annotationPlugin
+  annotationPlugin,
+  BarController
 );
 
 const BaseLineChart = ({chartData, buttons, controls, plugins, stats, chartOptions, chartRef, isLoading}) => {

@@ -1,8 +1,8 @@
 //Queries
-import {holdersPeriodDistribution, holdingAmountDistribution} from "../../queries/charthQueries";
+import {holdersPeriodDistribution, holdingAmountDistribution} from "../../../../queries/charthQueries";
 
 //Components
-import DonutChartWithLegend from "../Partials/Charts/Types/DonutChartWithLegend";
+import DonutChartWithLegend from "../Types/DonutChartWithLegend";
 
 const HoldingPeriodDistributionChart = ({address}) => {
   return (<DonutChartWithLegend defaultEndpoint="31D"

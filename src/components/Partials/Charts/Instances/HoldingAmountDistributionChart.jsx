@@ -1,8 +1,8 @@
 //Queries
-import {holdingAmountDistribution} from "../../queries/charthQueries";
+import {holdingAmountDistribution} from "../../../../queries/charthQueries";
 
 //Components
-import DonutChartWithLegend from "../Partials/Charts/Types/DonutChartWithLegend";
+import DonutChartWithLegend from "../Types/DonutChartWithLegend";
 
 const HoldingAmountDistributionChart = ({address}) => {
   return (<DonutChartWithLegend dataEndpoint={async () => holdingAmountDistribution(address)}

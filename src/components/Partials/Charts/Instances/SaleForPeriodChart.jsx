@@ -4,10 +4,10 @@ import {
   averagePerDaySaleForPeriod,
   minMaxPerDaySaleForPeriod,
   momentumPerDayForPeriod
-} from "../../queries/charthQueries";
+} from "../../../../queries/charthQueries";
 
 //Components
-import MinMaxScatterChart from "../Partials/Charts/Types/MinMaxScatterChart";
+import MinMaxScatterChart from "../Types/MinMaxScatterChart";
 
 const SaleForPeriodChart = ({address}) => {
   return (

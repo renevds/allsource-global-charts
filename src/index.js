@@ -1,12 +1,13 @@
-import SaleForPeriodChart from "./components/ProjectPage/SaleForPeriodChart";
-import VolumeChart from "./components/ProjectPage/VolumeChart";
-import FloorPriceChart from "./components/ProjectPage/FloorPriceChart";
-import ProfitPerSaleChart from "./components/ProjectPage/ProfitPerSaleChart";
-import HoldingAmountDistributionChart from "./components/ProjectPage/HoldingAmountDistributionChart";
-import HoldingPeriodDistributionChart from "./components/ProjectPage/HoldingPeriodDistributionChart";
-import HoldersChart from "./components/ProjectPage/HoldersChart";
-import VolatilitySpeedometer from "./components/Partials/Charts/instances/VolatilitySpeedometer";
-import CompactFloorPriceChart from "./components/Partials/Charts/instances/CompactFloorPriceChart";
+import React from "react";
+import SaleForPeriodChart from "./components/Partials/Charts/Instances/SaleForPeriodChart";
+import VolumeChart from "./components/Partials/Charts/Instances/VolumeChart";
+import FloorPriceChart from "./components/Partials/Charts/Instances/FloorPriceChart";
+import ProfitPerSaleChart from "./components/Partials/Charts/Instances/ProfitPerSaleChart";
+import HoldingAmountDistributionChart from "./components/Partials/Charts/Instances/HoldingAmountDistributionChart";
+import HoldingPeriodDistributionChart from "./components/Partials/Charts/Instances/HoldingPeriodDistributionChart";
+import HoldersChart from "./components/Partials/Charts/Instances/HoldersChart";
+import VolatilitySpeedometer from "./components/Partials/Charts/Instances/VolatilitySpeedometer";
+import CompactFloorPriceChart from "./components/Partials/Charts/Instances/CompactFloorPriceChart";
 
 
 export {
