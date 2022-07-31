@@ -1,0 +1,3 @@
+speedometer local store image option
+simple line chart store image option
+chart data caching with local storage

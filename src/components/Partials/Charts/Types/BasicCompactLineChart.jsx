@@ -14,6 +14,7 @@ const BasicLineChart = ({
                           xKey,
                           yKey,
                           dataEndpoint,
+                          saveToSessionName
                         }) => {
   const [init, setInit] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
@@ -89,6 +90,10 @@ const BasicLineChart = ({
   }
 
   const chartRef = useRef(null);
+
+  if(chartRef.current && saveToSessionName){
+    sessionStorage.setItem(saveToSessionName, chartRef.current.canvas.toDataURL('image/png'))
+  }
 
   return (
     <CompactLineChart chartData={chartData}

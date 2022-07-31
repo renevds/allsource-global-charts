@@ -4,9 +4,10 @@ import {floorAndMarketCap, volatilityScore} from "../../../../queries/charthQuer
 //Components
 import BasicCompactLineChart from "../Types/BasicCompactLineChart";
 
-const CompactFloorPriceChart= ({contractAddress, historicalData  }) => {
-  const callback = historicalData  ? async () => historicalData  : async () => floorAndMarketCap(contractAddress);
-  return (<BasicCompactLineChart dataEndpoint={callback} xKey="timestamp" yKey="floorPrice"/>)
+const CompactFloorPriceChart = ({contractAddress, historicalData, saveToSession}) => {
+  const callback = historicalData ? async () => historicalData : async () => floorAndMarketCap(contractAddress);
+  return (<BasicCompactLineChart dataEndpoint={callback} xKey="timestamp" yKey="floorPrice"
+                                 saveToSessionName={saveToSession && `CompactFloorPriceChart-${contractAddress}`}/>)
 }
 
 export default CompactFloorPriceChart;

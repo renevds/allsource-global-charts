@@ -2,3 +2,6 @@ rollup.config.js
 src
 public
 .idea
+*.tgz
+todo.txt
+README.md
