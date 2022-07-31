@@ -9,6 +9,8 @@ import {
 //Components
 import MinMaxScatterChart from "../Types/MinMaxScatterChart";
 
+//TODO this chart infinite loops
+
 const SaleForPeriodChart = ({address}) => {
   return (
     <MinMaxScatterChart defaultEndpoint="3M"
