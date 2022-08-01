@@ -8,7 +8,6 @@ export class cachedAxiosInstance {
     const cacheKey = url + '-' + Object.values(params).map(a => JSON.stringify(a)).sort().toString();
     const cached = sessionStorage.getItem(cacheKey);
     if (cached) {
-      console.log(cacheKey)
       return {data: JSON.parse(cached)};
     }
     const res = await this.axiosInstance.get(url, options);

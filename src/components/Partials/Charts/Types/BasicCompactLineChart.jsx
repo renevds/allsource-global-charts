@@ -9,6 +9,7 @@ import {getMax, getMin} from "../../../../ChartUtils/Utils/chartDataUtils";
 
 //Components
 import CompactLineChart from "../Base/CompactLineChart";
+import {saveImageToStorage} from "../../../../ChartUtils/Plugins/saveImageToStoragePlugin";
 
 const BasicLineChart = ({
                           xKey,
@@ -69,6 +70,10 @@ const BasicLineChart = ({
     plugins: {
       tooltip: {
         enabled: false
+      },
+      saveImageToStorage: {
+        enabled: saveToSessionName,
+        name: saveToSessionName
       }
     }
   }
@@ -91,16 +96,12 @@ const BasicLineChart = ({
 
   const chartRef = useRef(null);
 
-  if(chartRef.current && saveToSessionName){
-    sessionStorage.setItem(saveToSessionName, chartRef.current.canvas.toDataURL('image/png'))
-  }
-
   return (
     <CompactLineChart chartData={chartData}
                       chartRef={chartRef}
                       chartOptions={chartOptions}
                       isLoading={isLoading}
-                      plugins={[]}/>
+                      plugins={[saveImageToStorage]}/>
   );
 }
 

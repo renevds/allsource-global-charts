@@ -88,14 +88,21 @@ const MinMaxScatterChart = ({
       }
     }, [active, init])
 
-    if (!init) {
-      Promise.all([
-        scatterEndpoint().then(setScatterData),
-        averageEndpoint().then(setAverageData),
-        minMaxEndpoint().then(setMinMaxData),
-        momentumEndpoint().then(setMomentum)
-      ]).then(() => setInit(true));
-    }
+    useEffect( () => {
+      async function loadData() {
+        const newScatterData = await scatterEndpoint()
+        const newAverageData = await averageEndpoint()
+        const newMinMaxData = await minMaxEndpoint()
+        const newMomentumData = await momentumEndpoint()
+        setScatterData(newScatterData);
+        setAverageData(newAverageData);
+        setMinMaxData(newMinMaxData);
+        setMomentum(newMomentumData);
+        setActive(active);
+        setInit(true);
+      }
+      loadData();
+    }, [])
 
     const chartRef = useRef(null);
     const toolTipMode = isScatter ? "point" : "index";
