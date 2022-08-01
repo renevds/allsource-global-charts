@@ -6,7 +6,10 @@ function App() {
   return (
     <div className="charts__container">
       <SaleForPeriodChart address={address}/>
-      <CompactFloorPriceChart contractAddress={address} saveToSession={true}/>
+      <div style={{width: "50%"}}>
+        <CompactFloorPriceChart contractAddress={address} saveToSession={true}/>
+      </div>
+      
     </div>
   );
 }
