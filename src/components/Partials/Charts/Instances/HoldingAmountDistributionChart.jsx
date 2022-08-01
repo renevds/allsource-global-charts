@@ -5,11 +5,12 @@ import {holdingAmountDistribution} from "../../../../queries/charthQueries";
 import DonutChartWithLegend from "../Types/DonutChartWithLegend";
 
 const HoldingAmountDistributionChart = ({address}) => {
-  return (<DonutChartWithLegend dataEndpoint={async () => holdingAmountDistribution(address)}
+  return (<DonutChartWithLegend key={address}
+                                dataEndpoint={async () => holdingAmountDistribution(address)}
                                 valueKey="percentualHolders"
                                 formatter={toolTipItem => {
-                        return `${(Math.round(100 * toolTipItem.raw) / 100).toLocaleString() + "% " + toolTipItem.label}`
-                      }}
+                                  return `${(Math.round(100 * toolTipItem.raw) / 100).toLocaleString() + "% " + toolTipItem.label}`
+                                }}
                                 labelKey="rangeName"/>)
 }
 

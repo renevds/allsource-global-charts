@@ -21,6 +21,7 @@ import {dayTimestampDuration} from "../../../../utils/timeUtils";
 import {toolTipLinePlugin} from "../../../../ChartUtils/Plugins/toolTipLinePlugin";
 import {initialZoom} from "../../../../ChartUtils/Plugins/initialZoomPlugin";
 import {showZoomPlugin} from "../../../../ChartUtils/Plugins/showZoomPlugin";
+import {calcTotalMomentumFromArray} from "../../../../utils/statsUtils";
 
 const MinMaxScatterChart = ({
                               scatterEndpoint,
@@ -63,6 +64,7 @@ const MinMaxScatterChart = ({
     const [momentum, setMomentum] = useState([]);
     const [init, setInit] = useState(false);
     const [dataMin, setDataMin] = useState(0);
+    const [pricePercentage, setPricePercentage] = useState(0);
 
     const isScatter = Boolean(scatterMap[active]);
 
@@ -74,6 +76,8 @@ const MinMaxScatterChart = ({
           const newAvg = getAvg(getDataBetween(averageData, averageXAxisKey, newInitialMin, newInitialMax, averageXAxisKey), averageYAxisKey);
           const newInitialPannedScatterData = getDataBetween(scatterData, scatterXAxisKey, newInitialMin, newInitialMax);
           const newDataMin = getMin(averageData, averageXAxisKey);
+          const newMomentum = getDataBetween(momentum, momentumXKey, newInitialMin, newInitialMax).map(a => a[priceMomentumYKey]);
+          setPricePercentage(Math.round(calcTotalMomentumFromArray(newMomentum)));
           setInitialXMax(newInitialMax);
           setInitialXMin(newInitialMin);
           setAvg(newAvg);
@@ -88,7 +92,7 @@ const MinMaxScatterChart = ({
       }
     }, [active, init])
 
-    useEffect( () => {
+    useEffect(() => {
       async function loadData() {
         const newScatterData = await scatterEndpoint()
         const newAverageData = await averageEndpoint()
@@ -101,6 +105,7 @@ const MinMaxScatterChart = ({
         setActive(active);
         setInit(true);
       }
+
       loadData();
     }, [])
 
@@ -146,9 +151,12 @@ const MinMaxScatterChart = ({
                 chart.config.data.datasets[0].data = newScatter.filter(a => a.type === "Sale");
                 chart.config.data.datasets[4].data = loans ? newScatter.filter(a => a.type !== "Sale") : [];
                 setTx(newScatter.length);
-                setAvg(getAvg(getDataBetween(averageData, averageXAxisKey, chart.scales.xAxes.min, chart.scales.xAxes.max), averageYAxisKey));
               }
+              setAvg(getAvg(getDataBetween(averageData, averageXAxisKey, chart.scales.xAxes.min, chart.scales.xAxes.max), averageYAxisKey));
+              const newMomentum = getDataBetween(momentum, momentumXKey, chart.scales.xAxes.min, chart.scales.xAxes.max).map(a => a[priceMomentumYKey]);
+              setPricePercentage(Math.round(calcTotalMomentumFromArray(newMomentum)));
             }
+
           },
           limits: {
             xAxes: {
@@ -273,9 +281,6 @@ const MinMaxScatterChart = ({
       ]
     }
 
-    const currentMomentum = getDataBetween(momentum, momentumXKey, initialXMin, initialXMax);
-
-
     return (
       <BaseLineChart chartData={chartData}
                      chartRef={chartRef}
@@ -308,7 +313,8 @@ const MinMaxScatterChart = ({
                        <ChartStat key={1} name="Floor" value="Ξ 11.39"
                                   icon={<FontAwesomeIcon icon={faArrowDownWideShort}/>}/>,
                        <ChartStat key={2} name="Average" value={`Ξ ${avg.toLocaleString()}`}
-                                  icon={<FontAwesomeIcon icon={faChartLine}/>}/>,
+                                  icon={<FontAwesomeIcon icon={faChartLine}/>}
+                                  percentage={pricePercentage}/>,
                        isScatter ?
                          <ChartStat key={3} name="Sales" value={tx}
                                     icon={<FontAwesomeIcon icon={faShoppingBasket}/>}/> : null,

@@ -18,7 +18,7 @@ const ChartStat = ({name, value, icon, percentage}) => {
           {value}
         </div>
         {percentage !== undefined &&
-        <div className={"chartstat__percentage" + (percentage > 0 ? "" : "chartstat__percentage_negative")}>
+        <div className={"chartstat__percentage" + (percentage > 0 ? "" : " chartstat__percentage_negative")}>
           <HigherLower value={percentage.toLocaleString()}/> {percentage}%
         </div>}
 

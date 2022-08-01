@@ -1,5 +1,6 @@
 High:
 - change stats on price chart
+- figure out cause of style difference between test page and project node
 - test and fix zoom
 - momentum
 - profit of holders graph

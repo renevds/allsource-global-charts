@@ -5,7 +5,8 @@ import {marginPerSale} from "../../../../queries/charthQueries";
 import PosNegScatterLineChart from "../Types/PosNegScatterLineChart";
 
 const ProfitPerSaleChart = ({address}) => {
-  return (<PosNegScatterLineChart defaultEndpoint="31D"
+  return (<PosNegScatterLineChart key={address}
+                                  defaultEndpoint="31D"
                                   durationMap={{
                                     "7D": 7,
                                     "14D": 14,

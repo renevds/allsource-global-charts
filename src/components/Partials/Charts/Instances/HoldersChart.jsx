@@ -5,7 +5,8 @@ import {holdersInProfit, uniqueHoldersOverTimeNZT} from "../../../../queries/cha
 import BasicLineChart from "../Types/BasicLineChart";
 
 const HoldersChart = ({address}) => {
-  return (<BasicLineChart defaultEndpoint="31D"
+  return (<BasicLineChart key={address}
+                          defaultEndpoint="31D"
                           durationMap={{
                             "7D": 7,
                             "14D": 14,

@@ -5,19 +5,20 @@ import {holdersPeriodDistribution, holdingAmountDistribution} from "../../../../
 import DonutChartWithLegend from "../Types/DonutChartWithLegend";
 
 const HoldingPeriodDistributionChart = ({address}) => {
-  return (<DonutChartWithLegend defaultEndpoint="31D"
+  return (<DonutChartWithLegend key={address}
+                                defaultEndpoint="31D"
                                 durationMap={{
-                        "7D": 7,
-                        "14D": 14,
-                        "31D": 31,
-                        "3M": 90,
-                        "1Y": 365,
-                      }}
+                                  "7D": 7,
+                                  "14D": 14,
+                                  "31D": 31,
+                                  "3M": 90,
+                                  "1Y": 365,
+                                }}
                                 dataEndpoint={async () => holdersPeriodDistribution(address).then(a => a.reverse())}
                                 valueKey="percentualHolders"
                                 formatter={toolTipItem => {
-                        return `${(Math.round(100 * toolTipItem.raw) / 100).toLocaleString() + "% " + toolTipItem.label}`
-                      }}
+                                  return `${(Math.round(100 * toolTipItem.raw) / 100).toLocaleString() + "% " + toolTipItem.label}`
+                                }}
                                 labelKey="rangeName"/>)
 }
 

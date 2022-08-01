@@ -36,5 +36,5 @@
 }
 
 .chartstat__percentage_negative{
-    background-color: #D5391D;
+    color: #D5391D !important;
 }

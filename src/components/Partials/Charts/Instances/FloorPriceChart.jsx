@@ -5,7 +5,8 @@ import {averagePerDaySaleForPeriod} from "../../../../queries/charthQueries";
 import ScatterTrendChart from "../Types/ScatterTrendChart";
 
 const FloorPriceChart = ({address}) => {
-  return (<ScatterTrendChart defaultEndpoint="31D"
+  return (<ScatterTrendChart key={address}
+                             defaultEndpoint="31D"
                              durationMap={{
                                "7D": 7,
                                "14D": 14,

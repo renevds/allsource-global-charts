@@ -13,7 +13,8 @@ import MinMaxScatterChart from "../Types/MinMaxScatterChart";
 
 const SaleForPeriodChart = ({address}) => {
   return (
-    <MinMaxScatterChart defaultEndpoint="3M"
+    <MinMaxScatterChart key={address}
+                        defaultEndpoint="3M"
                         durationMap={{
                           "7D": 7,
                           "14D": 14,
@@ -52,7 +53,7 @@ const SaleForPeriodChart = ({address}) => {
                         }}
                         momentumEndpoint={() => momentumPerDayForPeriod(address, 365)}
                         momentumXKey="timestamp"
-                        priceMomentumKey="priceMomentum"
+                        priceMomentumYKey="priceMomentum"
     />
   )
 }
