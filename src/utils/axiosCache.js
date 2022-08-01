@@ -3,14 +3,16 @@ export class cachedAxiosInstance {
     this.axiosInstance = axiosInstance;
   }
 
-  async get(url, ...props) {
-    console.log(url)
-    const cached = sessionStorage.getItem(url);
+  async get(url, options) {
+    const {params} = options;
+    const cacheKey = url + '-' + Object.values(params).map(a => JSON.stringify(a)).sort().toString();
+    const cached = sessionStorage.getItem(cacheKey);
     if (cached) {
+      console.log(cacheKey)
       return {data: JSON.parse(cached)};
     }
-    const res = await this.axiosInstance.get(url, ...props);
-    sessionStorage.setItem(url, JSON.stringify(res.data));
+    const res = await this.axiosInstance.get(url, options);
+    sessionStorage.setItem(cacheKey, JSON.stringify(res.data));
     return res;
   }
 }

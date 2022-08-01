@@ -9,7 +9,7 @@ import json from '@rollup/plugin-json';
 
 export default [
   {
-    input: './src/index.js',
+    input: './src/export.js',
     output: [
       {
         file: 'dist/index.js',
