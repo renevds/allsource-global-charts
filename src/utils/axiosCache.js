@@ -11,7 +11,12 @@ export class cachedAxiosInstance {
       return {data: JSON.parse(cached)};
     }
     const res = await this.axiosInstance.get(url, options);
-    sessionStorage.setItem(cacheKey, JSON.stringify(res.data));
+    try{
+      sessionStorage.setItem(cacheKey, JSON.stringify(res.data));
+    }catch (e){
+      console.log(`Failed to cache ${url} probably to big.`)
+    }
+
     return res;
   }
 }

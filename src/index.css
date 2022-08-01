@@ -21,3 +21,8 @@ code {
   width: 90%;
   margin: auto;
 }
+
+.test__row{
+  height: 500px;
+  width: 90%;
+}

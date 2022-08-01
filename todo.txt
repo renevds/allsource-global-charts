@@ -1,3 +1,11 @@
-speedometer local store image option
-simple line chart store image option
-chart data caching with local storage
+High:
+- change stats on price chart
+- test and fix zoom
+- momentum
+- profit of holders graph
+- add non-NZT to holders
+- julie style tips
+- profit graph tooltip
+
+Low:
+- More than per day stats (ex per 2h)
