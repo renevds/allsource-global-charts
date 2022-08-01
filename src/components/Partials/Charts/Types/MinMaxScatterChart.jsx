@@ -40,9 +40,6 @@ const MinMaxScatterChart = ({
                               maxYAxisKey,
                               minMaxXAxisKey,
                               durationMap,
-                              momentumEndpoint, //TODO momentum
-                              momentumXKey,
-                              priceMomentumYKey,
                               scatterMap
                             }) => {
 
@@ -61,7 +58,6 @@ const MinMaxScatterChart = ({
     const [initialXMax, setInitialXMax] = useState(0);
     const [initialPannedScatterData, setInitialPannedScatterData] = useState([]);
     const [tx, setTx] = useState(0);
-    const [momentum, setMomentum] = useState([]);
     const [init, setInit] = useState(false);
     const [dataMin, setDataMin] = useState(0);
     const [pricePercentage, setPricePercentage] = useState(0);
@@ -73,11 +69,14 @@ const MinMaxScatterChart = ({
         try {
           const newInitialMax = getMax(averageData, averageXAxisKey);
           const newInitialMin = newInitialMax - dayTimestampDuration * (durationMap[active] - 1);
-          const newAvg = getAvg(getDataBetween(averageData, averageXAxisKey, newInitialMin, newInitialMax, averageXAxisKey), averageYAxisKey);
+          const avgInView = getDataBetween(averageData, averageXAxisKey, newInitialMin, newInitialMax, averageXAxisKey);
+          const newAvg = getAvg(avgInView, averageYAxisKey);
           const newInitialPannedScatterData = getDataBetween(scatterData, scatterXAxisKey, newInitialMin, newInitialMax);
           const newDataMin = getMin(averageData, averageXAxisKey);
-          const newMomentum = getDataBetween(momentum, momentumXKey, newInitialMin, newInitialMax).map(a => a[priceMomentumYKey]);
-          setPricePercentage(Math.round(calcTotalMomentumFromArray(newMomentum)));
+          const avgInViewMin = getMin(avgInView, averageXAxisKey);
+          const firstAvg = averageData.filter(a => a[averageXAxisKey] === avgInViewMin)[0][averageYAxisKey];
+          const lastAvg = averageData.filter(a => a[averageXAxisKey] === newInitialMax)[0][averageYAxisKey];
+          setPricePercentage(Math.round((lastAvg - firstAvg)*100/firstAvg))
           setInitialXMax(newInitialMax);
           setInitialXMin(newInitialMin);
           setAvg(newAvg);
@@ -97,11 +96,9 @@ const MinMaxScatterChart = ({
         const newScatterData = await scatterEndpoint()
         const newAverageData = await averageEndpoint()
         const newMinMaxData = await minMaxEndpoint()
-        const newMomentumData = await momentumEndpoint()
         setScatterData(newScatterData);
         setAverageData(newAverageData);
         setMinMaxData(newMinMaxData);
-        setMomentum(newMomentumData);
         setActive(active);
         setInit(true);
       }
@@ -140,7 +137,6 @@ const MinMaxScatterChart = ({
             enabled: true,
             mode: "x",
             onPanComplete: ({chart}) => {
-              chart.config.options.scales.yAxes._modifiedLinearMax = scatterMax;
             },
             onPan: ({chart}) => {
               if (isScatter) {
@@ -152,9 +148,13 @@ const MinMaxScatterChart = ({
                 chart.config.data.datasets[4].data = loans ? newScatter.filter(a => a.type !== "Sale") : [];
                 setTx(newScatter.length);
               }
-              setAvg(getAvg(getDataBetween(averageData, averageXAxisKey, chart.scales.xAxes.min, chart.scales.xAxes.max), averageYAxisKey));
-              const newMomentum = getDataBetween(momentum, momentumXKey, chart.scales.xAxes.min, chart.scales.xAxes.max).map(a => a[priceMomentumYKey]);
-              setPricePercentage(Math.round(calcTotalMomentumFromArray(newMomentum)));
+              const avgInView = getDataBetween(averageData, averageXAxisKey, chart.scales.xAxes.min, chart.scales.xAxes.max, averageXAxisKey);
+              setAvg(getAvg(avgInView, averageYAxisKey));
+              const avgInViewMin = getMin(avgInView, averageXAxisKey);
+              const avgInViewMax = getMax(avgInView, averageXAxisKey);
+              const firstAvg = averageData.filter(a => a[averageXAxisKey] === avgInViewMin)[0][averageYAxisKey];
+              const lastAvg = averageData.filter(a => a[averageXAxisKey] === avgInViewMax)[0][averageYAxisKey];
+              setPricePercentage(Math.round((lastAvg - firstAvg)*100/firstAvg))
             }
 
           },
@@ -168,13 +168,16 @@ const MinMaxScatterChart = ({
       },
       scales: {
         yAxes: {
+          zoomMax: scatterMax,
           ticks: {
             callback: value => {
               return "Ξ " + value.toLocaleString();
             }
           },
           type: logarithmic ? "OffsetLogScale" : "modifiedLinear",
-          modifiedLinearCenter: avg
+          modifiedLinearCenter: avg,
+          max: scatterMax,
+          min: getMin(scatterData, scatterYAxisKey)
         },
         xAxes: {
           type: 'time',

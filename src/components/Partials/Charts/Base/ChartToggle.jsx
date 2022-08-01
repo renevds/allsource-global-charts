@@ -1,8 +1,8 @@
 import './ChartToggle.css'
 import {useState} from "react";
 
-const ChartToggle = ({name, onToggle}) => {
-  const [checked, setChecked] = useState(true);
+const ChartToggle = ({name, onToggle, initChecked}) => {
+  const [checked, setChecked] = useState(initChecked);
 
   return (
     <div className="charttoggle_container">

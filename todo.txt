@@ -1,12 +1,12 @@
 High:
-- change stats on price chart
-- figure out cause of style difference between test page and project node
 - test and fix zoom
-- momentum
 - profit of holders graph
 - add non-NZT to holders
 - julie style tips
 - profit graph tooltip
+- avg not between max/min
+- floor price stat on chart
+- fix overlapping ticks
 
 Low:
 - More than per day stats (ex per 2h)

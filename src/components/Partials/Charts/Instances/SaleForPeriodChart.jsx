@@ -51,9 +51,6 @@ const SaleForPeriodChart = ({address}) => {
                         minFormatter={toolTipItem => {
                           return `Min Ξ ${toolTipItem.parsed.y.toLocaleString()}`
                         }}
-                        momentumEndpoint={() => momentumPerDayForPeriod(address, 365)}
-                        momentumXKey="timestamp"
-                        priceMomentumYKey="priceMomentum"
     />
   )
 }
