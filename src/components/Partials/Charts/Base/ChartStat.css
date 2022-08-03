@@ -2,13 +2,19 @@
     display: flex;
     align-items: center;
     color: white;
-    height: 57px;
+    height: 58px;
     padding-left: 10px;
     padding-right: 10px;
     border-right: 1px solid rgba(255,255,255,0.1);
 }
 .chartstat__container:last-child{
     border: 0;
+}
+
+.chartstat__data{
+    height: 58px;
+    display: flex;
+    flex-direction: column;
 }
 
 .chartstat__icon{
@@ -18,15 +24,18 @@
 
 .chartstat__value{
     text-align: left;
+    line-height: 20px;
 }
 
 .chartstat__name{
     display: flex;
     color: #b0b0b0;
-    margin-bottom: 5px;
+    margin-bottom: 3px;
+    line-height: 19px;
 }
 
 .chartstat__percentage{
+    line-height: 16px;
     color: #41AA00;
     border-radius: 20px;
     padding-left: 4px;
