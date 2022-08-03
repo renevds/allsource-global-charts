@@ -48,10 +48,10 @@ function App() {
       <div className="test__row">
         <ProfitPerSaleChart address={address}/>
       </div>
-      <div className="test__row">
+      <div style={{width: "500px", height: "300px"}}>
         <HoldingAmountDistributionChart address={address}/>
       </div>
-      <div className="test__row">
+      <div style={{width: "500px", height: "300px"}}>
         <HoldingPeriodDistributionChart address={address}/>
       </div>
       <div className="test__row">

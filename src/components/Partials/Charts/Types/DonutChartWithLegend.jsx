@@ -38,7 +38,7 @@ const DonutChartWithLegend = ({
 
   if (!init) {
     dataEndpoint().then(a => {
-      setData(a);
+      setData(a.filter(b => b[valueKey] !== 0));
       setInit(true);
     })
   }
@@ -48,7 +48,7 @@ const DonutChartWithLegend = ({
   const chartData = {
     datasets: [
       {
-        radius: "100%",
+        radius: "90%",
         cutout: "0%",
         data: data.map(a => a[valueKey]),
         tooltip: {
@@ -57,18 +57,24 @@ const DonutChartWithLegend = ({
           }
         },
         backgroundColor: interpolateColors('rgb(114,48,220)', 'rgb(87,243,183)', data.length),
-        radiusChange: data.map((_, index) => (data.length - index)/data.length),
+        radiusChange: data.map((_, index) => Math.pow(1.5, -index)),
+        borderRadius: (context) => {
+          return {
+            outerEnd: 10,
+            outerStart: (context.dataIndex === 0) ? 10 : 0
+          }
+        }
       },
       {
         radius: "70%",
-        cutout: "50%",
+        cutout: "43%",
         data: data.map(a => a[valueKey]),
         tooltip: {
           callbacks: {
             label: () => '',
           }
         },
-        backgroundColor: interpolateColors('rgb(54,23,114)', 'rgb(87,243,183)', data.length),
+        backgroundColor: interpolateColors('rgb(80,33,161)', 'rgb(51,147,117)', data.length),
         radiusChange: data.map(() => 1)
       }
     ],

@@ -61,7 +61,8 @@ const BasicTwoLineChart = ({
 
   const chartOptions = {
     interaction: {
-      mode: "x",
+      mode: "nearest",
+      axis: 'x',
       intersect: false
     },
     scales: {
@@ -80,7 +81,8 @@ const BasicTwoLineChart = ({
     plugins: {
       zoom: {
         pan: {
-          mode: "x",
+          mode: "nearest",
+          axis: 'x',
           enabled: true
         },
         limits: {
@@ -108,7 +110,7 @@ const BasicTwoLineChart = ({
     datasets: [
       {
         pointRadius: 0,
-        pointHitRadius: 10,
+        pointHitRadius: 5,
         type: 'line',
         data: data,
         parsing: {
@@ -125,7 +127,7 @@ const BasicTwoLineChart = ({
       },
       {
         pointRadius: 0,
-        pointHitRadius: 10,
+        pointHitRadius: 5,
         type: 'line',
         data: secondData,
         parsing: {

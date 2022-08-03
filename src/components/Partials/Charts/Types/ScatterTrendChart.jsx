@@ -7,7 +7,6 @@ import {toolTipLinePlugin} from "../../../../ChartUtils/Plugins/toolTipLinePlugi
 import {pluginTrendLineLinear} from "../../../../ChartUtils/Plugins/trendLinePlugin";
 import {getMax, getMin} from "../../../../ChartUtils/Utils/chartDataUtils";
 import {dayTimestampDuration} from "../../../../utils/timeUtils";
-import moment from "moment";
 
 const ScatterTrendChart = ({
                              defaultEndpoint,
@@ -71,7 +70,14 @@ const ScatterTrendChart = ({
       zoom: {
         pan: {
           mode: "x",
-          enabled: true
+          enabled: true,
+          onPan: ({chart}) => {
+            if(chart.scales.xAxes.max > initialXMax){ //TODO this is a bad fix for the panning that is bugged
+              chart.config.options.scales.xAxes.max = initialXMax;
+              chart.config.options.scales.xAxes.min = initialXMin;
+              chart.update();
+            }
+          }
         },
         limits: {
           xAxes: {

@@ -23,6 +23,7 @@
 .chartstat__name{
     display: flex;
     color: #b0b0b0;
+    margin-bottom: 5px;
 }
 
 .chartstat__percentage{

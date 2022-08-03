@@ -109,6 +109,7 @@ const BarLineChart = ({
     version,
     datasets: [
       {
+        pointRadius: 0,
         type: 'line',
         tension: 0,
         data: data.map(a => a[lineYKey]),

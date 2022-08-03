@@ -300,10 +300,10 @@ const MinMaxScatterChart = ({
                                                                                       }
                                                                                     }}/>
                      )}
-                     controls={[isScatter && <ChartToggle key={1} name="Outliers" onToggle={a => {
+                     controls={[/*isScatter && <ChartToggle key={1} name="Outliers" onToggle={a => {
                        setOutliers(a);
                        setVersion(version + 1);
-                     }} initChecked={outliers}/>,
+                     }} initChecked={outliers}/>*/,
                        isScatter &&
                        <ChartToggle key={2} name={<FontAwesomeIcon style={{color: "rgba(255,0,0,0.5)"}} icon={faTrash}/>}
                                     onToggle={a => {
@@ -318,7 +318,7 @@ const MinMaxScatterChart = ({
                      stats={[
                        /*       <ChartStat key={1} name="Floor" value="Ξ 11.39"
                                          icon={<FontAwesomeIcon icon={faArrowDownWideShort}/>}/>,*/
-                       <ChartStat key={2} name="Average" value={`Ξ ${avg.toLocaleString()}`}
+                       <ChartStat key={2} name="Average" value={`Ξ ${(Math.round(avg*100)/100).toLocaleString()}`}
                                   icon={<FontAwesomeIcon icon={faChartLine}/>}
                                   percentage={pricePercentage}/>,
 

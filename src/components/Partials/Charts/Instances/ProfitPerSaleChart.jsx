@@ -22,7 +22,6 @@ const ProfitPerSaleChart = ({address}) => {
                                     return ``
                                   }}
                                   scatterFormatter={toolTipItem => {
-                                    console.log(toolTipItem)
                                     return `Held for ${Math.floor(toolTipItem.raw.holdingTime)} days  |  Gain ${toolTipItem.raw.percentageGain.toLocaleString()}%`
                                   }}
                                   scatterAxesLabel="Gain %"

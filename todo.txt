@@ -1,9 +1,7 @@
 High:
-- floor price stat on chart
-- fix overlapping ticks
 - fix broken arrows
 - julie style tips
-- floor price pan limits
+- base zoom centering off of points in view and not total
 
 Low:
 - More than per day stats (ex per 2h)

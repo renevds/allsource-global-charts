@@ -13,7 +13,6 @@ export const initialZoom = {
       if (!chart.config.options.plugins.initialZoom._done) {
         let newZoom = scale.options.zoomMax / (2 * INIT_ZOOM_SCALE_FACTOR * scale.options.modifiedLinearCenter);
         newZoom = Math.round(newZoom / MODIFIED_LINEAR_ZOOM_STEP) * MODIFIED_LINEAR_ZOOM_STEP;
-        console.log(newZoom)
         scale.zoom = newZoom;
         scale.handleZoom();
         chart.config.options.plugins.initialZoom._done = true;
