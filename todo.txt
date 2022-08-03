@@ -1,7 +1,5 @@
 High:
-- fix broken arrows
 - julie style tips
-- base zoom centering off of points in view and not total
 
 Low:
 - More than per day stats (ex per 2h)
