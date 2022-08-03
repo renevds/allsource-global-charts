@@ -7,6 +7,7 @@ import {toolTipLinePlugin} from "../../../../ChartUtils/Plugins/toolTipLinePlugi
 import {pluginTrendLineLinear} from "../../../../ChartUtils/Plugins/trendLinePlugin";
 import {getMax, getMin} from "../../../../ChartUtils/Utils/chartDataUtils";
 import {dayTimestampDuration} from "../../../../utils/timeUtils";
+import moment from "moment";
 
 const ScatterTrendChart = ({
                              defaultEndpoint,

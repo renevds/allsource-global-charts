@@ -1,24 +1,21 @@
 //Queries
-import {averagePerDaySaleForPeriod} from "../../../../queries/charthQueries";
+import {averagePerDaySaleForPeriod, floorAndMarketCap} from "../../../../queries/charthQueries";
 
 //Components
 import ScatterTrendChart from "../Types/ScatterTrendChart";
 
 const FloorPriceChart = ({address}) => {
   return (<ScatterTrendChart key={address}
-                             defaultEndpoint="31D"
+                             defaultEndpoint="14D"
                              durationMap={{
                                "7D": 7,
-                               "14D": 14,
-                               "31D": 31,
-                               "3M": 90,
-                               "1Y": 365,
+                               "14D": 14
                              }}
-                             dataEndpoint={async () => averagePerDaySaleForPeriod(address, 365)}
+                             dataEndpoint={async () => floorAndMarketCap(address)}
                              xKey="timestamp"
-                             yKey="volume"
+                             yKey="floorPrice"
                              lineFormatter={toolTipItem => {
-                               return `Tx ${toolTipItem.parsed.y.toLocaleString()}`
+                               return `Floor Ξ ${toolTipItem.parsed.y.toLocaleString()}`
                              }}/>)
 }
 

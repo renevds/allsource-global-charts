@@ -110,6 +110,7 @@ const BarLineChart = ({
     datasets: [
       {
         type: 'line',
+        tension: 0,
         data: data.map(a => a[lineYKey]),
         borderColor: horizontalBlueGreenGradient,
         tooltip: {

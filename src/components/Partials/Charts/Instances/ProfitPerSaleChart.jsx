@@ -6,13 +6,11 @@ import PosNegScatterLineChart from "../Types/PosNegScatterLineChart";
 
 const ProfitPerSaleChart = ({address}) => {
   return (<PosNegScatterLineChart key={address}
-                                  defaultEndpoint="31D"
+                                  defaultEndpoint="7D"
                                   durationMap={{
                                     "7D": 7,
                                     "14D": 14,
-                                    "31D": 31,
-                                    "3M": 90,
-                                    "1Y": 365,
+                                    "31D": 31
                                   }}
                                   dataEndpoint={async () => {
                                     return marginPerSale(address); // TODO remove place holder
@@ -20,11 +18,12 @@ const ProfitPerSaleChart = ({address}) => {
                                   xKey="timestamp"
                                   scatterYKey="percentageGain"
                                   lineYKey="ethGain"
-                                  lineFormatter={toolTipItem => {
-                                    return `Price Ξ ${toolTipItem.parsed.y.toLocaleString()}`
+                                  lineFormatter={() => {
+                                    return ``
                                   }}
                                   scatterFormatter={toolTipItem => {
-                                    return `Gain ${toolTipItem.parsed.y.toLocaleString()}%`
+                                    console.log(toolTipItem)
+                                    return `Held for ${Math.floor(toolTipItem.raw.holdingTime)} days  |  Gain ${toolTipItem.raw.percentageGain.toLocaleString()}%`
                                   }}
                                   scatterAxesLabel="Gain %"
                                   lineAxesLabel="Price Ξ"

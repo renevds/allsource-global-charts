@@ -1,40 +1,29 @@
-//Hooks
-import {useEffect, useRef, useState} from "react";
-
-//Components
 import BaseLineChart from "../Base/BaseLineChart";
 import ChartButton from "../Base/ChartButton";
-
-//Gradients
-import {
-  horizontalBlueGreenGradient,
-  verticalGradientWithNegativeRed
-} from "../../../../ChartUtils/Utils/chartGradientUtils";
-
-//Plugins
+import {useEffect, useRef, useState} from "react";
+import {horizontalBlueGreenGradient, verticalBlueDarkGradient} from "../../../../ChartUtils/Utils/chartGradientUtils";
+import ChartToggle from "../Base/ChartToggle";
 import {toolTipLinePlugin} from "../../../../ChartUtils/Plugins/toolTipLinePlugin";
-import annotationPlugin from 'chartjs-plugin-annotation';
-
-//Utils
 import {getMax, getMin} from "../../../../ChartUtils/Utils/chartDataUtils";
 import {dayTimestampDuration} from "../../../../utils/timeUtils";
 
-const PosNegScatterLineChart = ({
-                                  defaultEndpoint,
-                                  durationMap,
-                                  xKey,
-                                  scatterYKey,
-                                  lineYKey,
-                                  dataEndpoint,
-                                  scatterFormatter,
-                                  lineFormatter,
-                                  lineAxesLabel,
-                                  scatterAxesLabel
-                                }) => {
+const BasicTwoLineChart = ({
+                             defaultEndpoint,
+                             durationMap,
+                             xKey,
+                             yKey,
+                             dataEndpoint,
+                             secondXKey,
+                             secondYKey,
+                             secondDataEndpoint,
+                             formatter,
+                             secondFormatter
+                           }) => {
   const [init, setInit] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [active, setActive] = useState(defaultEndpoint);
   const [data, setData] = useState([]);
+  const [secondData, setSecondData] = useState([]);
   const [version, setVersion] = useState(0);
   const [error, setError] = useState("");
   const [logarithmic, setLogarithmic] = useState(false);
@@ -59,13 +48,20 @@ const PosNegScatterLineChart = ({
   if (!init) {
     dataEndpoint().then(a => {
       setData(a);
-      setInit(true);
+      if (secondDataEndpoint) {
+        secondDataEndpoint().then(a => {
+          setSecondData(a);
+          setInit(true)
+        })
+      } else {
+        setInit(true);
+      }
     })
   }
 
   const chartOptions = {
     interaction: {
-      mode: "index",
+      mode: "x",
       intersect: false
     },
     scales: {
@@ -79,24 +75,6 @@ const PosNegScatterLineChart = ({
       },
       yAxes: {
         type: logarithmic ? "log2Scale" : "modifiedLinear",
-        title: {
-          display: true,
-          text: scatterAxesLabel,
-          color: verticalGradientWithNegativeRed
-        }
-      },
-      yAxes1: {
-        type: logarithmic ? "log2Scale" : "modifiedLinear",
-        position: 'right',
-        display: true,
-        grid: {
-          drawOnChartArea: false
-        },
-        title: {
-          display: true,
-          text: lineAxesLabel,
-          color: "#14F4C9"
-        }
       }
     },
     plugins: {
@@ -113,23 +91,9 @@ const PosNegScatterLineChart = ({
         }
       },
       tooltip: {
-        mode: "x",
+        mode: "index",
         intersect: false
       },
-      annotation: {
-        annotations: {
-          line1: {
-            type: 'line',
-            borderColor: 'rgba(255,255,255,0.5)',
-            borderWidth: 3,
-            scaleID: 'yAxes',
-            value: 0,
-            label: {
-              enabled: false
-            }
-          }
-        }
-      }
     },
     transitions: {
       pan: {
@@ -139,56 +103,42 @@ const PosNegScatterLineChart = ({
       },
     }
   }
-
   const chartData = {
     version,
     datasets: [
       {
+        pointRadius: 0,
+        pointHitRadius: 10,
         type: 'line',
-        borderDash: [10,5],
-        tension: 0,
-        data,
+        data: data,
+        parsing: {
+          xAxisKey: xKey,
+          yAxisKey: yKey
+        },
         borderColor: horizontalBlueGreenGradient,
         tooltip: {
           callbacks: {
-            label: lineFormatter,
+            label: formatter,
           }
         },
-        yAxisID: 'yAxes1',
-        parsing: {
-          xAxisKey: xKey,
-          yAxisKey: lineYKey
-        }
+        backgroundColor: verticalBlueDarkGradient,
       },
       {
+        pointRadius: 0,
+        pointHitRadius: 10,
         type: 'line',
-        showLine: false,
-        data: data.filter(a => a[scatterYKey] > 0),
-        borderColor: '#ffffff',
+        data: secondData,
+        parsing: {
+          xAxisKey: secondXKey,
+          yAxisKey: secondYKey
+        },
+        borderColor: horizontalBlueGreenGradient,
         tooltip: {
           callbacks: {
-            label: scatterFormatter,
+            label: secondFormatter,
           }
         },
-        parsing: {
-          xAxisKey: xKey,
-          yAxisKey: scatterYKey
-        }
-      },
-      {
-        type: 'line',
-        showLine: false,
-        data: data.filter(a => a[scatterYKey] <= 0),
-        borderColor: '#ff0000',
-        tooltip: {
-          callbacks: {
-            label: scatterFormatter,
-          }
-        },
-        parsing: {
-          xAxisKey: xKey,
-          yAxisKey: scatterYKey
-        }
+        backgroundColor: verticalBlueDarkGradient
       }
     ]
   }
@@ -210,9 +160,12 @@ const PosNegScatterLineChart = ({
                    chartOptions={chartOptions}
                    isLoading={isLoading}
                    stats={[]}
-                   plugins={[toolTipLinePlugin, annotationPlugin]}
-                   controls={[]}/>
+                   plugins={[toolTipLinePlugin]}
+                   controls={[<ChartToggle key={1} name="Log" onToggle={a => {
+                     setLogarithmic(a);
+                     setVersion(version + 1);
+                   }} initChecked={logarithmic}/>]}/>
   );
 }
 
-export default PosNegScatterLineChart;
+export default BasicTwoLineChart;

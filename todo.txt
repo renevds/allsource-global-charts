@@ -1,12 +1,9 @@
 High:
-- test and fix zoom
-- profit of holders graph
-- add non-NZT to holders
-- julie style tips
-- profit graph tooltip
-- avg not between max/min
 - floor price stat on chart
 - fix overlapping ticks
+- fix broken arrows
+- julie style tips
+- floor price pan limits
 
 Low:
 - More than per day stats (ex per 2h)

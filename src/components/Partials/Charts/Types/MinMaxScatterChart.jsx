@@ -76,7 +76,7 @@ const MinMaxScatterChart = ({
           const avgInViewMin = getMin(avgInView, averageXAxisKey);
           const firstAvg = averageData.filter(a => a[averageXAxisKey] === avgInViewMin)[0][averageYAxisKey];
           const lastAvg = averageData.filter(a => a[averageXAxisKey] === newInitialMax)[0][averageYAxisKey];
-          setPricePercentage(Math.round((lastAvg - firstAvg)*100/firstAvg))
+          setPricePercentage(Math.round((lastAvg - firstAvg) * 100 / firstAvg))
           setInitialXMax(newInitialMax);
           setInitialXMin(newInitialMin);
           setAvg(newAvg);
@@ -139,22 +139,22 @@ const MinMaxScatterChart = ({
             onPanComplete: ({chart}) => {
             },
             onPan: ({chart}) => {
+              let newScatter = getDataBetween(scatterData, scatterXAxisKey, chart.scales.xAxes.min, chart.scales.xAxes.max)
+              if (!outliers) {
+                newScatter = filterOutliers(newScatter, scatterYAxisKey)
+              }
               if (isScatter) {
-                let newScatter = getDataBetween(scatterData, scatterXAxisKey, chart.scales.xAxes.min, chart.scales.xAxes.max)
-                if (!outliers) {
-                  newScatter = filterOutliers(newScatter, scatterYAxisKey)
-                }
                 chart.config.data.datasets[0].data = newScatter.filter(a => a.type === "Sale");
                 chart.config.data.datasets[4].data = loans ? newScatter.filter(a => a.type !== "Sale") : [];
-                setTx(newScatter.length);
               }
+              setTx(newScatter.length);
               const avgInView = getDataBetween(averageData, averageXAxisKey, chart.scales.xAxes.min, chart.scales.xAxes.max, averageXAxisKey);
               setAvg(getAvg(avgInView, averageYAxisKey));
               const avgInViewMin = getMin(avgInView, averageXAxisKey);
               const avgInViewMax = getMax(avgInView, averageXAxisKey);
               const firstAvg = averageData.filter(a => a[averageXAxisKey] === avgInViewMin)[0][averageYAxisKey];
               const lastAvg = averageData.filter(a => a[averageXAxisKey] === avgInViewMax)[0][averageYAxisKey];
-              setPricePercentage(Math.round((lastAvg - firstAvg)*100/firstAvg))
+              setPricePercentage(Math.round((lastAvg - firstAvg) * 100 / firstAvg))
             }
 
           },
@@ -217,6 +217,7 @@ const MinMaxScatterChart = ({
           pointHitRadius: 10
         },
         {
+          tension: 0,
           data: isScatter ? [] : minMaxData,
           showLine: false,
           pointRadius: 0,
@@ -235,6 +236,7 @@ const MinMaxScatterChart = ({
         },
         {
           data: averageData,
+          tension: 0,
           pointRadius: 0,
           pointHitRadius: 10,
           showLine: true,
@@ -250,6 +252,7 @@ const MinMaxScatterChart = ({
           }
         },
         {
+          tension: 0,
           data: isScatter ? [] : minMaxData,
           showLine: false,
           pointRadius: 0,
@@ -313,14 +316,14 @@ const MinMaxScatterChart = ({
                        }} initChecked={logarithmic}/>]}
                      plugins={[!isScatter && toolTipLinePlugin, initialZoom, showZoomPlugin]}
                      stats={[
-                       <ChartStat key={1} name="Floor" value="Ξ 11.39"
-                                  icon={<FontAwesomeIcon icon={faArrowDownWideShort}/>}/>,
+                       /*       <ChartStat key={1} name="Floor" value="Ξ 11.39"
+                                         icon={<FontAwesomeIcon icon={faArrowDownWideShort}/>}/>,*/
                        <ChartStat key={2} name="Average" value={`Ξ ${avg.toLocaleString()}`}
                                   icon={<FontAwesomeIcon icon={faChartLine}/>}
                                   percentage={pricePercentage}/>,
-                       isScatter ?
-                         <ChartStat key={3} name="Sales" value={tx}
-                                    icon={<FontAwesomeIcon icon={faShoppingBasket}/>}/> : null,
+
+                       <ChartStat key={3} name="Sales" value={tx}
+                                  icon={<FontAwesomeIcon icon={faShoppingBasket}/>}/>,
                      ]}
                      chartOptions={chartOptions}
                      isLoading={isLoading}/>

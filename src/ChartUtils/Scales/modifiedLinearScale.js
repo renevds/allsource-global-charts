@@ -4,9 +4,6 @@ import zoomPlugin from "chartjs-plugin-zoom";
 //Scales
 import {LinearScale} from "chart.js";
 
-//Utils
-import {updateRange} from "../Utils/zoomUtils";
-
 export const MODIFIED_LINEAR_ZOOM_STEP = 1;
 
 export default class ModifiedLinearScale extends LinearScale {
