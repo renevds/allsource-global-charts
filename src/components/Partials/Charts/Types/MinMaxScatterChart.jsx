@@ -149,7 +149,11 @@ const MinMaxScatterChart = ({
               }
               setTx(newScatter.length);
               const avgInView = getDataBetween(averageData, averageXAxisKey, chart.scales.xAxes.min, chart.scales.xAxes.max, averageXAxisKey);
-              setAvg(getAvg(avgInView, averageYAxisKey));
+              const avg = getAvg(avgInView, averageYAxisKey);
+              setAvg(avg);
+              chart.scales.yAxes.options.modifiedLinearCenter = avg;
+              chart.scales.yAxes.handleZoom();
+              //chart.update();
               const avgInViewMin = getMin(avgInView, averageXAxisKey);
               const avgInViewMax = getMax(avgInView, averageXAxisKey);
               const firstAvg = averageData.filter(a => a[averageXAxisKey] === avgInViewMin)[0][averageYAxisKey];

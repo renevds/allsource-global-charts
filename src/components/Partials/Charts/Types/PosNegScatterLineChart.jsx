@@ -144,6 +144,7 @@ const PosNegScatterLineChart = ({
     version,
     datasets: [
       {
+        pointRadius: 0,
         type: 'line',
         borderDash: [10,5],
         tension: 0,
