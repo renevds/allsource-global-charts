@@ -20,6 +20,7 @@ Following charts are available:
 - HoldersChart
 - VolatilitySpeedometer
 - CompactFloorPriceChart
+- Speedometer
 
 Use like so (arguments depend on chart):
 ```js

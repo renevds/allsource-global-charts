@@ -51,6 +51,11 @@ const SaleForPeriodChart = ({address}) => {
                         minFormatter={toolTipItem => {
                           return `Min Ξ ${toolTipItem.parsed.y.toLocaleString()}`
                         }}
+                        onClick={e => {
+                          if (e.chart.tooltip.dataPoints.length > 0) {
+                            window.open(`https://etherscan.io/tx/${e.chart.tooltip.dataPoints[0].raw.hash}`, '_blank').focus();
+                          }
+                        }}
     />
   )
 }

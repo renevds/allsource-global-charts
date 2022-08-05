@@ -1,5 +1,7 @@
 High:
 - julie style tips
+- rewrite cache
+- popup for choosing what tx to click
 
 Low:
 - More than per day stats (ex per 2h)

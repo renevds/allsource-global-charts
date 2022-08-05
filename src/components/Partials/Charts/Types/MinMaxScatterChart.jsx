@@ -40,7 +40,8 @@ const MinMaxScatterChart = ({
                               maxYAxisKey,
                               minMaxXAxisKey,
                               durationMap,
-                              scatterMap
+                              scatterMap,
+                              onClick
                             }) => {
 
     const [active, setActive] = useState(defaultEndpoint || Object.keys(durationMap)[0]);
@@ -113,6 +114,7 @@ const MinMaxScatterChart = ({
     const initialPannedFilteredScatterData = outliers ? initialPannedScatterData : filterOutliers(initialPannedScatterData, scatterYAxisKey);
 
     let chartOptions = {
+      onClick: isScatter ? onClick : undefined,
       interaction: {
         mode: toolTipMode,
         intersect: false
@@ -322,7 +324,7 @@ const MinMaxScatterChart = ({
                      stats={[
                        /*       <ChartStat key={1} name="Floor" value="Ξ 11.39"
                                          icon={<FontAwesomeIcon icon={faArrowDownWideShort}/>}/>,*/
-                       <ChartStat key={2} name="Average" value={`Ξ ${(Math.round(avg*100)/100).toLocaleString()}`}
+                       <ChartStat key={2} name="Average" value={`Ξ ${(Math.round(avg * 100) / 100).toLocaleString()}`}
                                   icon={<FontAwesomeIcon icon={faChartLine}/>}
                                   percentage={pricePercentage}/>,
 
