@@ -15,7 +15,8 @@ function App() {
     {'Woodies': '0x134460d32fc66A6d84487C20DCD9fdcF92316017'},
     {'Axolittles': '0xf36446105fF682999a442b003f2224BcB3D82067'},
     {'Toyboogers': '0xBF662A0e4069b58dFB9bceBEBaE99A6f13e06f5a'},
-    {'HashDemons': '0x032Dd2A3c6d234AA9620d65eb618FCdC72Be3dBb'}]
+    {'HashDemons': '0x032Dd2A3c6d234AA9620d65eb618FCdC72Be3dBb'},
+    {'Hunnys': '0x5DFEB75aBae11b138A16583E03A2bE17740EADeD'}]
 
   const [address, setAddress] = useState("0x23581767a106ae21c074b2276D25e5C3e136a68b")
 
