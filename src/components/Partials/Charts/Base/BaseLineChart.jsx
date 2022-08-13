@@ -95,7 +95,8 @@ const BaseLineChart = ({chartData, buttons, controls, plugins, stats, chartOptio
           },
           grid: {
             borderWidth: 0,
-            color: "#322F36"
+            color: "#322F36",
+            display: false
           }
         }
       },

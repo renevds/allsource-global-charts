@@ -5,3 +5,6 @@ High:
 
 Low:
 - More than per day stats (ex per 2h)
+
+Feedback:
+- 
