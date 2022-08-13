@@ -15,7 +15,7 @@ export const pluginTrendLineLinear = {
     const ctx = chartInstance.ctx;
 
     chartInstance.data.datasets.forEach(function (dataset, index) {
-      if (dataset.trendLineLinear && chartInstance.isDatasetVisible(index) && dataset.data.length !== 0) {
+      if (dataset.trendLineLinear && chartInstance.isDatasetVisible(index) && dataset.data.length !== 0 && dataset.trendLineLinear.enabled) {
         const {xAxisKey, yAxisKey} = dataset.parsing;
         const pointsInView = dataset.data.filter(a => a[xAxisKey] >= xScale.min).filter(a => a[xAxisKey] <= xScale.max)
         const xAvg = getAvg(pointsInView, xAxisKey);

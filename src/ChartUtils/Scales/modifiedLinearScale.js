@@ -12,13 +12,24 @@ export default class ModifiedLinearScale extends LinearScale {
     this.zoom = 1;
   }
 
-  handleZoom(){
-    this.options.max = this.options.zoomMax/this.zoom;
+  handleZoom() {
+    this.options.max = this.options.zoomMax / this.zoom;
     this.options.min = Math.max(0, this.options.modifiedLinearCenter - (this.options.max - this.options.modifiedLinearCenter))
   }
 
-  getZoomLevel(){
+  getZoomLevel() {
     return this.zoom;
+  }
+
+  buildTicks() {
+    let ret = super.buildTicks();
+    if (this.zoom !== 1) {
+      ret.pop();
+      if(ret[0].value !== 0){
+        ret.shift();
+      }
+    }
+    return ret;
   }
 
 }
@@ -26,10 +37,9 @@ ModifiedLinearScale.id = 'modifiedLinear';
 ModifiedLinearScale.defaults = {};
 
 zoomPlugin.zoomFunctions.modifiedLinear = (scale, zoom, center, limits) => {
-  if(zoom - 1 > 0){
+  if (zoom - 1 > 0) {
     scale.zoom += MODIFIED_LINEAR_ZOOM_STEP;
-  }
-  else{
+  } else {
     scale.zoom -= MODIFIED_LINEAR_ZOOM_STEP;
   }
   scale.zoom = Math.max(1, scale.zoom);

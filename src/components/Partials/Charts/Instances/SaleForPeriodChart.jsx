@@ -31,7 +31,7 @@ const SaleForPeriodChart = ({address}) => {
                      scatterXAxisKey="timestamp"
                      scatterYAxisKey="ethValue"
                      scatterFormatter={toolTipItem => {
-                       return `ID ${toolTipItem.raw.id} for ${" ".repeat(5 - toolTipItem.raw.id.length)} Ξ ${toolTipItem.raw.ethValue.toLocaleString()}`
+                       return `ID ${toolTipItem.raw.id} for ${" ".repeat(5 - toolTipItem.raw.id.toString().length)} Ξ ${toolTipItem.raw.ethValue.toLocaleString()}`
                      }}
                      averageEndpoint={async () => averagePerDaySaleForPeriod(address, 365)}
                      averageXAxisKey="timestamp"
@@ -49,6 +49,7 @@ const SaleForPeriodChart = ({address}) => {
                        price /= many.length;
                        return `${many.length} sales around Ξ ${price.toLocaleString()}`
                      }}
+                     axesLabel="Price"
     />
   )
 }

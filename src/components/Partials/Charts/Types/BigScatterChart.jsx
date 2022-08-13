@@ -19,6 +19,11 @@ import {toolTipLinePlugin} from "../../../../ChartUtils/Plugins/toolTipLinePlugi
 import {initialZoom} from "../../../../ChartUtils/Plugins/initialZoomPlugin";
 import {showZoomPlugin} from "../../../../ChartUtils/Plugins/showZoomPlugin";
 import {compressDataSet, ONE_HOUR} from "../../../../utils/dataSetSizeDecreaserUtils";
+import {pluginTrendLineLinear} from "../../../../ChartUtils/Plugins/trendLinePlugin";
+
+//Images
+import TrendLine from '../../../../images/trend.svg'
+import {horizontalBlueGreenGradient} from "../../../../ChartUtils/Utils/chartGradientUtils";
 
 const PERFORMANCE_SCATTER_LIMIT = 4000;
 
@@ -34,7 +39,8 @@ const BigScatterChart = ({
                            averageYAxisKey,
                            durationMap,
                            onClick,
-                           radiusMap
+                           radiusMap,
+                           axesLabel
                          }) => {
 
     const [active, setActive] = useState(defaultEndpoint || Object.keys(durationMap)[0]);
@@ -54,6 +60,7 @@ const BigScatterChart = ({
     const [init, setInit] = useState(false);
     const [dataMin, setDataMin] = useState(0);
     const [pricePercentage, setPricePercentage] = useState(0);
+    const [trend, setTrend] = useState(false);
 
     useEffect(() => {
       if (init) {
@@ -72,8 +79,8 @@ const BigScatterChart = ({
           yMargin *= 10;
           filtered = true;
         }
-        hours/=2;
-        yMargin/=10;
+        hours /= 2;
+        yMargin /= 10;
         setFilteredConfig({xMargin: ONE_HOUR * hours, yMargin, filtered});
         const newDataMin = getMin(averageData, averageXAxisKey);
         const avgInViewMin = getMin(avgInView, averageXAxisKey);
@@ -195,7 +202,12 @@ const BigScatterChart = ({
           type: logarithmic ? "OffsetLogScale" : "modifiedLinear",
           modifiedLinearCenter: avg,
           max: scatterMax,
-          min: getMin(scatterData, scatterYAxisKey)
+          min: getMin(scatterData, scatterYAxisKey),
+          title: {
+            display: trend,
+            text: axesLabel,
+            color: "#14F4C9"
+          }
         },
         xAxes: {
           type: 'time',
@@ -236,10 +248,15 @@ const BigScatterChart = ({
             return pointRadius;
           },
           hoverBorderWidth: pointRadius / 2,
-          pointHitRadius: 10
+          pointHitRadius: 10,
+          trendLineLinear: {
+            enabled: trend,
+            style: horizontalBlueGreenGradient,
+            width: 2,
+          }
         },
         {
-          hidden: true,
+          hidden: !garbage,
           data: garbageData,
           showLine: false,
           parsing: {
@@ -272,18 +289,26 @@ const BigScatterChart = ({
                                                                                     }}/>
                      )}
                      controls={[<ChartToggle key={2}
-                                             name={<FontAwesomeIcon style={{color: "rgba(255,0,0,0.5)"}} icon={faTrash}/>}
+                                             name={<img src={TrendLine} style={{height: '16px'}}/>}
                                              onToggle={a => {
-                                               if (chartRef.current) {
-                                                 chartRef.current.data.datasets[1].hidden = !a;
-                                                 chartRef.current.update();
-                                               }
-                                             }} initChecked={garbage}/>,
+                                               chartRef.current.data.datasets[0].trendLineLinear.enabled = a;
+                                               chartRef.current.update();
+                                               setTrend(a);
+                                             }} initChecked={trend}/>,
+                       <ChartToggle key={2}
+                                    name={<FontAwesomeIcon style={{color: "rgba(255,0,0,0.5)"}} icon={faTrash}/>}
+                                    onToggle={a => {
+                                      if (chartRef.current) {
+                                        chartRef.current.data.datasets[1].hidden = !a;
+                                        chartRef.current.update();
+                                        setGarbage(a);
+                                      }
+                                    }} initChecked={garbage}/>,
                        <ChartToggle key={3} name="Log" onToggle={a => {
                          setLogarithmic(a);
                          setVersion(version + 1);
                        }} initChecked={logarithmic}/>]}
-                     plugins={[initialZoom, showZoomPlugin]}
+                     plugins={[initialZoom, showZoomPlugin, pluginTrendLineLinear]}
                      stats={[<ChartStat key={2} name="Average"
                                         value={`Ξ ${(Math.round(avg * 100) / 100).toLocaleString()}`}
                                         icon={<FontAwesomeIcon icon={faChartLine}/>}
