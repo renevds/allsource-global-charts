@@ -15,11 +15,11 @@ import {filterOutliers, getAvg, getDataBetween, getMax, getMin} from "../../../.
 import {dayTimestampDuration} from "../../../../utils/timeUtils";
 
 //Plugins
-import {toolTipLinePlugin} from "../../../../ChartUtils/Plugins/toolTipLinePlugin";
 import {initialZoom} from "../../../../ChartUtils/Plugins/initialZoomPlugin";
 import {showZoomPlugin} from "../../../../ChartUtils/Plugins/showZoomPlugin";
 import {compressDataSet, ONE_HOUR} from "../../../../utils/dataSetSizeDecreaserUtils";
 import {pluginTrendLineLinear} from "../../../../ChartUtils/Plugins/trendLinePlugin";
+import '../../../../ChartUtils/Plugins/pointOrNearestInteractionMode';
 
 //Images
 import TrendLine from '../../../../images/trend.svg'
@@ -120,13 +120,13 @@ const BigScatterChart = ({
     let chartOptions = {
       onClick: onClick,
       interaction: {
-        mode: "point",
-        intersect: false
+        intersect: false,
+        mode: "pointOrNearest"
       },
       plugins: {
         toolTipLine: false,
         tooltip: {
-          mode: "point",
+          mode: "pointOrNearest",
           intersect: false,
           callbacks: {
             beforeBody: (toolTipItems) => {
@@ -138,7 +138,7 @@ const BigScatterChart = ({
                   newToolTipItems.push(toolTipItem);
                 }
               })
-              if (newToolTipItems.length > 10) {
+              if (newToolTipItems.length > 5) {
                 return scatterFormatterMany(newToolTipItems);
               } else {
                 return newToolTipItems.map(a => scatterFormatter(a))
@@ -220,14 +220,12 @@ const BigScatterChart = ({
           animation: {
             duration: 0
           }
-        }
-        ,
+        },
         pan: {
           animation: {
             duration: 0
           }
         }
-        ,
       }
     }
 
@@ -243,7 +241,7 @@ const BigScatterChart = ({
           },
           pointRadius: (data) => {
             if (data?.raw?.originals) {
-              return pointRadius * 2;
+              return pointRadius + 1 + Math.log10(data.raw.originals.length);
             }
             return pointRadius;
           },
@@ -265,12 +263,7 @@ const BigScatterChart = ({
           },
           pointBorderColor: "rgba(255,0,0,0.5)",
           pointHitRadius: 10,
-          pointRadius: (data) => {
-            if (data?.raw?.originals) {
-              return pointRadius * 2;
-            }
-            return pointRadius;
-          },
+          pointRadius,
         },
       ]
     }
@@ -288,7 +281,7 @@ const BigScatterChart = ({
                                                                                       }
                                                                                     }}/>
                      )}
-                     controls={[<ChartToggle key={2}
+                     controls={[<ChartToggle key={1}
                                              name={<img src={TrendLine} style={{height: '16px'}}/>}
                                              onToggle={a => {
                                                chartRef.current.data.datasets[0].trendLineLinear.enabled = a;

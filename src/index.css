@@ -73,11 +73,10 @@ html {
 }
 
 .charts__container{
-  width: 95%;
-  margin: auto;
+  width: 100%;
 }
 
 .test__row{
   height: 500px;
-  width: 90%;
+  width: 100%;
 }

@@ -100,8 +100,8 @@ const BaseLineChart = ({chartData, buttons, controls, plugins, stats, chartOptio
           }
         }
       },
-      animation: false,
-      hover: {animationDuration: 0},
+      animation: true,
+      //hover: {animationDuration: 0},
       responsiveAnimationDuration: 0,
       elements: {
         point: {
