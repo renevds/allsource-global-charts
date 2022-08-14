@@ -7,7 +7,11 @@ import ChartButton from "../Base/ChartButton";
 import ChartToggle from "../Base/ChartToggle";
 
 //Gradients
-import {horizontalBlueGreenGradient, verticalBlueDarkGradient} from "../../../../ChartUtils/Utils/chartGradientUtils";
+import {
+  horizontalBlueGreenGradient,
+  verticalBlueDarkGradient,
+  verticalBlueDarkGradientNonTransparent
+} from "../../../../ChartUtils/Utils/chartGradientUtils";
 
 //Plugins
 import {toolTipLinePlugin} from "../../../../ChartUtils/Plugins/toolTipLinePlugin";
@@ -124,7 +128,7 @@ const BarLineChart = ({
       {
         type: 'bar',
         data: data.map(a => a[barYkey]),
-        backgroundColor: verticalBlueDarkGradient,
+        backgroundColor: verticalBlueDarkGradientNonTransparent,
         hoverBackgroundColor: "rgba(86,245,184,0.5)",
         tooltip: {
           callbacks: {
