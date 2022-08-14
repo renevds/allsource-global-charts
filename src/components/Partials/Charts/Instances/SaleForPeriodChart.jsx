@@ -36,11 +36,10 @@ const SaleForPeriodChart = ({address}) => {
                      averageEndpoint={async () => averagePerDaySaleForPeriod(address, 365)}
                      averageXAxisKey="timestamp"
                      averageYAxisKey="averageValue"
-                     onClick={e => {
-                       if (e.chart.tooltip.dataPoints.length > 0) {
-                         window.open(`https://etherscan.io/tx/${e.chart.tooltip.dataPoints[0].raw.hash}`, '_blank').focus();
-                       }
-                     }}
+                     onClick={e => e.chart.tooltip.dataPoints.map(dataPoint => ({
+                       name: `ID ${dataPoint.raw.id} sold for Ξ ${dataPoint.raw.ethValue.toLocaleString()}`,
+                       url: `https://etherscan.io/tx/${dataPoint.raw.hash}`
+                     }))}
                      scatterFormatterMany={many => {
                        let price = 0;
                        many.forEach(toolTipItem => {
