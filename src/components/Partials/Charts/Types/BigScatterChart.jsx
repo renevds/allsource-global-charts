@@ -132,7 +132,6 @@ const BigScatterChart = ({
         }
       })
       const results = onClick({...e, chart: {...e.chart, tooltip: {...e.chart.tooltip, dataPoints: newDataPoints}}});
-      console.log(results);
       if (results.length === 1) {
         setUrls([]);
         window.open(results[0].url, '_blank').focus();
@@ -341,7 +340,7 @@ const BigScatterChart = ({
               <FontAwesomeIcon icon={faXmark}/>
             </div>
             <div className="bigscatterchart__urls__bg">
-              {urls.map(a => <a className="bigscatterchart__urls__a" href={a.url} target='_blank'>{a.name}</a>)}
+              {urls.map(a => <a key={a.url} className="bigscatterchart__urls__a" href={a.url} target='_blank'>{a.name}</a>)}
             </div>
           </div>
         </div>
