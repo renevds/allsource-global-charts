@@ -4,7 +4,7 @@ import moment from "moment";
 import BarLineChart from "../Types/BarLineChart";
 
 //Queries
-import {averagePerDaySaleForPeriod} from "../../../../queries/charthQueries";
+import {averagePerDaySaleForPeriod} from "@allsource/queries.chart_queries";
 
 const VolumeChart = ({address}) => {
   return (<BarLineChart

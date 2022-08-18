@@ -2,7 +2,7 @@
 import './ChartStat.css'
 
 //Components
-import HigherLower from "../../Icons/HigherLower";
+import {HigherLower} from "@allsource/ui.partials.icons.higher_lower";
 
 const ChartStat = ({name, value, icon, percentage}) => {
   return (

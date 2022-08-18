@@ -1,5 +1,5 @@
 //Queries
-import {marginPerSale} from "../../../../queries/charthQueries";
+import {marginPerSale} from "@allsource/queries.chart_queries";
 
 //Components
 import PosNegScatterLineChart from "../Types/PosNegScatterLineChart";

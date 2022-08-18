@@ -3,7 +3,7 @@ import "./BaseDonutChart.css";
 
 //Components
 import {Doughnut} from 'react-chartjs-2';
-import Loader from "../../Loader/Loader";
+import {Loader} from "@allsource/ui.partials.loader";
 
 //Tools
 import {mergeDeep} from "../../../../utils/objUtils";

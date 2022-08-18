@@ -1,8 +1,9 @@
 //Queries
-import {floorAndMarketCap, volatilityScore} from "../../../../queries/charthQueries";
+import {floorAndMarketCap} from "@allsource/queries.chart_queries";
 
 //Components
 import BasicCompactLineChart from "../Types/BasicCompactLineChart";
+
 
 const CompactFloorPriceChart = ({contractAddress, historicalData, saveToSession}) => {
   const callback = historicalData ? async () => historicalData : async () => floorAndMarketCap(contractAddress);

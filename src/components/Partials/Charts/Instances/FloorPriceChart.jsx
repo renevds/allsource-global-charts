@@ -1,5 +1,5 @@
 //Queries
-import {averagePerDaySaleForPeriod, floorAndMarketCap} from "../../../../queries/charthQueries";
+import {averagePerDaySaleForPeriod, floorAndMarketCap} from "@allsource/queries.chart_queries";
 
 //Components
 import ScatterTrendChart from "../Types/ScatterTrendChart";

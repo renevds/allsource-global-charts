@@ -1,5 +1,5 @@
 //Queries
-import {holdingAmountDistribution} from "../../../../queries/charthQueries";
+import {holdingAmountDistribution} from "@allsource/queries.chart_queries";
 
 //Components
 import DonutChartWithLegend from "../Types/DonutChartWithLegend";

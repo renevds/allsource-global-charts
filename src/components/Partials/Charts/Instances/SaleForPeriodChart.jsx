@@ -2,7 +2,7 @@
 import {
   anySaleInEthForPeriodHashV,
   averagePerDaySaleForPeriod
-} from "../../../../queries/charthQueries";
+} from "@allsource/queries.chart_queries";
 
 //Components
 import BigScatterChart from "../Types/BigScatterChart";

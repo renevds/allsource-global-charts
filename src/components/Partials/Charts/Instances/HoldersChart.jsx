@@ -1,5 +1,5 @@
 //Queries
-import {holdersInProfit, uniqueHoldersOverTime, uniqueHoldersOverTimeNZT} from "../../../../queries/charthQueries";
+import {holdersInProfit, uniqueHoldersOverTime, uniqueHoldersOverTimeNZT} from "@allsource/queries.chart_queries";
 
 //Components
 import BasicTwoLineChart from "../Types/BasicTwoLineChart";

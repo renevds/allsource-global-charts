@@ -3,7 +3,7 @@ import "./CompactLineChart.css";
 
 //Components
 import LineMemo from "./LineMemo";
-import Loader from "../../Loader/Loader";
+import {Loader} from "@allsource/ui.partials.loader";
 
 //Chart.js
 import {
