@@ -5,7 +5,6 @@ import {holdersInProfit, uniqueHoldersOverTime, uniqueHoldersOverTimeNZT} from "
 import BasicTwoLineChart from "../Types/BasicTwoLineChart";
 
 const HoldersChart = ({address}) => {
-  console.log("holder")
   return (<BasicTwoLineChart key={address}
                              defaultEndpoint="31D"
                              durationMap={{
@@ -16,7 +15,6 @@ const HoldersChart = ({address}) => {
                                "1Y": 365,
                              }}
                              dataEndpoint={async () => {
-                               console.log("uniqueHolder")
                                return uniqueHoldersOverTimeNZT(address).then(b => b.map(a => {
                                    a.timestamp = new Date(a.day).getTime();
                                    return a;
