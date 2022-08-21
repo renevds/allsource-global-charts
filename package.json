@@ -27,8 +27,8 @@
     ]
   },
   "devDependencies": {
-    "@allsource/config.axios_instances": "^0.0.1",
-    "@allsource/queries.chart_queries": "^0.0.1",
+    "@allsource/config.axios_instances": "^0.0.3",
+    "@allsource/queries.chart_queries": "^0.0.3",
     "@allsource/ui.partials.icons.higher_lower": "^0.0.3",
     "@babel/core": "^7.18.9",
     "@babel/preset-react": "^7.18.6",

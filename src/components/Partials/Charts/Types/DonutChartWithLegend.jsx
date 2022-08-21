@@ -38,8 +38,8 @@ const DonutChartWithLegend = ({
 
   if (!init) {
     dataEndpoint().then(a => {
-      setData(a);
       setInit(true);
+      setData(a);
     })
   }
 

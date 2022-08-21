@@ -49,12 +49,13 @@ const BasicTwoLineChart = ({
     dataEndpoint().then(a => {
       if (secondDataEndpoint) {
         secondDataEndpoint().then(b => {
+          setInit(true);
           setData(a);
           setSecondData(b);
-          setInit(true)
         })
       } else {
         setInit(true);
+        setData(a);
       }
     })
   }

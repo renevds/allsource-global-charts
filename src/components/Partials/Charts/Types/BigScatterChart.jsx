@@ -11,7 +11,7 @@ import ChartToggle from "../Base/ChartToggle";
 import ChartStat from "../Base/ChartStat";
 
 //Utils
-import {filterOutliers, getAvg, getDataBetween, getMax, getMin} from "../../../../ChartUtils/Utils/chartDataUtils";
+import {getAvg, getDataBetween, getMax, getMin} from "../../../../ChartUtils/Utils/chartDataUtils";
 import {dayTimestampDuration} from "../../../../utils/timeUtils";
 
 //Plugins
@@ -112,7 +112,6 @@ const BigScatterChart = ({
       setActive(active);
       setInit(true);
     }
-
     loadData();
   }, [])
 

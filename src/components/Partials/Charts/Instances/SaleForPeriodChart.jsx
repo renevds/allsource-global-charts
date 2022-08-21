@@ -7,11 +7,10 @@ import {
 //Components
 import BigScatterChart from "../Types/BigScatterChart";
 
-//TODO this chart infinite loops
-
 const SaleForPeriodChart = ({address}) => {
   return (
     <BigScatterChart key={address}
+                     test={address}
                      defaultEndpoint="3M"
                      durationMap={{
                        "7D": 7,
