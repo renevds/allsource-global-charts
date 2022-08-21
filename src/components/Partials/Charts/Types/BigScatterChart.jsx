@@ -112,6 +112,7 @@ const BigScatterChart = ({
       setActive(active);
       setInit(true);
     }
+
     loadData();
   }, [])
 
@@ -308,7 +309,7 @@ const BigScatterChart = ({
                                                chartRef.current.data.datasets[0].trendLineLinear.enabled = a;
                                                chartRef.current.update();
                                                setTrend(a);
-                                             }} initChecked={trend}/>,
+                                             }} initChecked={trend} tooltip="Enable Trend line"/>,
                        <ChartToggle key={2}
                                     name={<FontAwesomeIcon style={{color: "rgba(255,0,0,0.5)"}} icon={faTrash}/>}
                                     onToggle={a => {
@@ -317,11 +318,11 @@ const BigScatterChart = ({
                                         chartRef.current.update();
                                         setGarbage(a);
                                       }
-                                    }} initChecked={garbage}/>,
+                                    }} initChecked={garbage} tooltip="Show wash sales"/>,
                        <ChartToggle key={3} name="Log" onToggle={a => {
                          setLogarithmic(a);
                          setVersion(version + 1);
-                       }} initChecked={logarithmic}/>]}
+                       }} initChecked={logarithmic} tooltip="Logarithmic scale"/>]}
                      plugins={[initialZoom, showZoomPlugin, pluginTrendLineLinear]}
                      stats={[<ChartStat key={2} name="Average"
                                         value={`Ξ ${(Math.round(avg * 100) / 100).toLocaleString()}`}
@@ -339,7 +340,8 @@ const BigScatterChart = ({
               <FontAwesomeIcon icon={faXmark}/>
             </div>
             <div className="bigscatterchart__urls__bg">
-              {urls.map(a => <a key={a.url} className="bigscatterchart__urls__a" href={a.url} target='_blank'>{a.name}</a>)}
+              {urls.map(a => <a key={a.url} className="bigscatterchart__urls__a" href={a.url}
+                                target='_blank'>{a.name}</a>)}
             </div>
           </div>
         </div>

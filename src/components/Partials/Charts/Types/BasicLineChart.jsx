@@ -134,7 +134,7 @@ const BasicLineChart = ({
                    controls={[<ChartToggle key={1} name="Log" onToggle={a => {
                      setLogarithmic(a);
                      setVersion(version + 1);
-                   }} initChecked={logarithmic}/>]}/>
+                   }} initChecked={logarithmic} tooltip="Logarithmic scale"/>]}/>
   );
 }
 

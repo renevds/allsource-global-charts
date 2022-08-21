@@ -72,7 +72,7 @@ const ScatterTrendChart = ({
           mode: "x",
           enabled: true,
           onPan: ({chart}) => {
-            if(chart.scales.xAxes.max > initialXMax){ //TODO this is a bad fix for the panning that is bugged
+            if (chart.scales.xAxes.max > initialXMax) { //TODO this is a bad fix for the panning that is bugged
               chart.config.options.scales.xAxes.max = initialXMax;
               chart.config.options.scales.xAxes.min = initialXMin;
               chart.update();
@@ -130,23 +130,23 @@ const ScatterTrendChart = ({
     <BaseLineChart chartData={chartData}
                    chartRef={chartRef}
                    buttons={Object.keys(durationMap).map(endpoint => <ChartButton key={endpoint}
-                                                                          text={endpoint}
-                                                                          active={endpoint === active}
-                                                                          onClick={() => {
-                                                                            if (endpoint !== active) {
-                                                                              setIsLoading(true);
-                                                                              setActive(endpoint);
-                                                                            }
-                                                                          }}/>
-           )}
+                                                                                  text={endpoint}
+                                                                                  active={endpoint === active}
+                                                                                  onClick={() => {
+                                                                                    if (endpoint !== active) {
+                                                                                      setIsLoading(true);
+                                                                                      setActive(endpoint);
+                                                                                    }
+                                                                                  }}/>
+                   )}
                    chartOptions={chartOptions}
                    isLoading={isLoading}
                    stats={[]}
                    plugins={[toolTipLinePlugin, pluginTrendLineLinear]}
                    controls={[<ChartToggle key={1} name="Log" onToggle={a => {
-             setLogarithmic(a);
-             setVersion(version + 1);
-           }} initChecked={logarithmic}/>]}/>
+                     setLogarithmic(a);
+                     setVersion(version + 1);
+                   }} initChecked={logarithmic} tooltip="Logarithmic scale"/>]}/>
   );
 }
 

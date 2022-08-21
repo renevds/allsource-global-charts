@@ -30,6 +30,7 @@
     "@allsource/config.axios_instances": "^0.0.4",
     "@allsource/queries.chart_queries": "^0.0.4",
     "@allsource/ui.partials.icons.higher_lower": "^0.0.3",
+    "@allsource/ui.partials.loader": "^0.0.5",
     "@babel/core": "^7.18.9",
     "@babel/preset-react": "^7.18.6",
     "@fortawesome/fontawesome-svg-core": "^6.1.1",
@@ -67,10 +68,11 @@
     "webpack-cli": "^4.10.0"
   },
   "peerDependencies": {
+    "bootstrap": "^5.2.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
   },
   "dependencies": {
-    "@allsource/ui.partials.loader": "^0.0.5"
+    "@tippyjs/react": "^4.2.6"
   }
 }
