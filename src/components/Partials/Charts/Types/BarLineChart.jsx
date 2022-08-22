@@ -9,7 +9,6 @@ import ChartToggle from "../Base/ChartToggle";
 //Gradients
 import {
   horizontalBlueGreenGradient,
-  verticalBlueDarkGradient,
   verticalBlueDarkGradientNonTransparent
 } from "../../../../ChartUtils/Utils/chartGradientUtils";
 
@@ -71,8 +70,8 @@ const BarLineChart = ({
         type: logarithmic ? "log2Scale" : "modifiedLinear",
         title: {
           display: true,
-          text: barAxesLabel,
-          color: '#7230DE'
+          text: lineAxesLabel,
+          color: "#14F4C9"
         }
       },
       yAxes1: {
@@ -84,8 +83,8 @@ const BarLineChart = ({
         },
         title: {
           display: true,
-          text: lineAxesLabel,
-          color: "#14F4C9"
+          text: barAxesLabel,
+          color: '#7230DE'
         }
       }
     },
@@ -122,8 +121,7 @@ const BarLineChart = ({
           callbacks: {
             label: lineFormatter,
           }
-        },
-        yAxisID: 'yAxes1'
+        }
       },
       {
         type: 'bar',
@@ -134,7 +132,8 @@ const BarLineChart = ({
           callbacks: {
             label: barFormatter,
           }
-        }
+        },
+        yAxisID: 'yAxes1'
       }
     ],
     labels: data.map(a => a[labelKey])
