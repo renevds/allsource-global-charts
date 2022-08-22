@@ -12,7 +12,7 @@ All are written in react.
 Following charts are available:
 
 - SaleForPeriodChart
-- VolumeChart
+- VolumeTxChart
 - FloorPriceChart
 - ProfitPerSaleChart
 - HoldingAmountDistributionChart

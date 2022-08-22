@@ -1,38 +1,44 @@
+//Hooks
+import {useEffect, useRef, useState} from "react";
+
+//Components
 import BaseLineChart from "../Base/BaseLineChart";
 import ChartButton from "../Base/ChartButton";
-import {useEffect, useRef, useState} from "react";
-import {horizontalBlueGreenGradient} from "../../../../ChartUtils/Utils/chartGradientUtils";
 import ChartToggle from "../Base/ChartToggle";
-import {toolTipLinePlugin} from "../../../../ChartUtils/Plugins/toolTipLinePlugin";
-import {pluginTrendLineLinear} from "../../../../ChartUtils/Plugins/trendLinePlugin";
-import {getMax, getMin} from "../../../../ChartUtils/Utils/chartDataUtils";
-import {dayTimestampDuration} from "../../../../utils/timeUtils";
 
-const ScatterTrendChart = ({
-                             defaultEndpoint,
-                             durationMap,
-                             xKey,
-                             yKey,
-                             dataEndpoint,
-                             lineFormatter
-                           }) => {
+//Gradients
+import {
+  horizontalBlueGreenGradient,
+  verticalBlueDarkGradientNonTransparent
+} from "../../../../ChartUtils/Utils/chartGradientUtils";
+
+//Plugins
+import {toolTipLinePlugin} from "../../../../ChartUtils/Plugins/toolTipLinePlugin";
+import {averagePerDaySaleForPeriod} from "@allsource/queries.chart_queries";
+import moment from "moment";
+import {simpleLineDataset, simpleBarDataset} from "../../../../ChartUtils/datasets/datasetTemplates";
+import {chartBlue, chartPurple} from "../../../../ChartUtils/Utils/chartColors";
+
+const durationMap = {
+  "7D": 7,
+  "14D": 14,
+  "31D": 31,
+  "3M": 90,
+  "1Y": 365,
+}
+
+const VolumeTxChart = ({address}) => {
   const [init, setInit] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
-  const [active, setActive] = useState(defaultEndpoint);
+  const [active, setActive] = useState("31D");
   const [data, setData] = useState([]);
   const [version, setVersion] = useState(0);
   const [error, setError] = useState("");
   const [logarithmic, setLogarithmic] = useState(false);
-  const [initialXMin, setInitialXMin] = useState(0);
-  const [initialXMax, setInitialXMax] = useState(0);
 
   useEffect(() => {
     if (init) {
       try {
-        const newInitialMax = getMax(data, xKey);
-        const newInitialMin = newInitialMax - dayTimestampDuration * (durationMap[active] - 1);
-        setInitialXMax(newInitialMax);
-        setInitialXMin(newInitialMin);
         setIsLoading(false);
         setVersion(version + 1);
       } catch (e) {
@@ -42,7 +48,11 @@ const ScatterTrendChart = ({
   }, [active, init])
 
   if (!init) {
-    dataEndpoint().then(a => {
+    averagePerDaySaleForPeriod(address, 365)
+      .then(b => b.map(a => {
+        a.label = moment(a.timestamp).format("LL");
+        return a;
+      })).then(a => {
       setData(a);
       setInit(true);
     })
@@ -55,47 +65,44 @@ const ScatterTrendChart = ({
     },
     scales: {
       xAxes: {
-        type: 'time',
         ticks: {
           autoSkip: true
         },
-        max: initialXMax,
-        min: initialXMin
+        max: data.length - 1,
+        min: data.length - durationMap[active]
       },
       yAxes: {
         type: logarithmic ? "log2Scale" : "modifiedLinear",
+        title: {
+          display: true,
+          text: "Transactions",
+          color: chartBlue,
+        }
+      },
+      yAxes1: {
+        type: logarithmic ? "log2Scale" : "modifiedLinear",
+        position: 'right',
+        display: true,
+        grid: {
+          drawOnChartArea: false
+        },
+        title: {
+          display: true,
+          text: "Volume Ξ",
+          color: chartPurple,
+        }
       }
     },
     plugins: {
       zoom: {
         pan: {
           mode: "x",
-          enabled: true,
-          onPan: ({chart}) => {
-            if (chart.scales.xAxes.max > initialXMax) { //TODO this is a bad fix for the panning that is bugged
-              chart.config.options.scales.xAxes.max = initialXMax;
-              chart.config.options.scales.xAxes.min = initialXMin;
-              chart.update();
-            }
-          }
-        },
-        limits: {
-          xAxes: {
-            min: getMin(data, xKey),
-            max: initialXMax
-          }
+          enabled: true
         }
       },
       tooltip: {
         mode: "index",
         intersect: false
-      },
-    },
-    transitions: {
-      pan: {
-        animation: {
-          duration: 0
-        }
       },
     }
   }
@@ -103,26 +110,30 @@ const ScatterTrendChart = ({
     version,
     datasets: [
       {
-        type: 'line',
-        label: 'Line Dataset',
-        showLine: false,
-        data: data,
-        parsing: {
-          xAxisKey: xKey,
-          yAxisKey: yKey
-        },
-        borderColor: horizontalBlueGreenGradient,
+        ...simpleLineDataset,
+        data: data.map(a => a.txCount),
         tooltip: {
           callbacks: {
-            label: lineFormatter,
+            label: toolTipItem => {
+              return `Tx ${toolTipItem.parsed.y.toLocaleString()}`
+            },
+          }
+        }
+      },
+      {
+        ...simpleBarDataset,
+        data: data.map(a => a.volume),
+        tooltip: {
+          callbacks: {
+            label: toolTipItem => {
+              return `Vol Ξ ${toolTipItem.parsed.y.toLocaleString()}`
+            },
           }
         },
-        trendLineLinear: {
-          style: horizontalBlueGreenGradient,
-          width: 2,
-        }
+        yAxisID: 'yAxes1'
       }
-    ]
+    ],
+    labels: data.map(a => a["label"])
   }
   const chartRef = useRef(null);
 
@@ -142,7 +153,7 @@ const ScatterTrendChart = ({
                    chartOptions={chartOptions}
                    isLoading={isLoading}
                    stats={[]}
-                   plugins={[toolTipLinePlugin, pluginTrendLineLinear]}
+                   plugins={[toolTipLinePlugin]}
                    controls={[<ChartToggle key={1} name="Log" onToggle={a => {
                      setLogarithmic(a);
                      setVersion(version + 1);
@@ -150,4 +161,4 @@ const ScatterTrendChart = ({
   );
 }
 
-export default ScatterTrendChart;
+export default VolumeTxChart;

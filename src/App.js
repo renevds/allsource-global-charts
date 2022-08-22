@@ -1,9 +1,12 @@
 import {
   CompactFloorPriceChart,
-  FloorPriceChart, HoldersChart, HoldingAmountDistributionChart, HoldingPeriodDistributionChart, ProfitPerSaleChart,
+  HoldersChart,
+  HoldingAmountDistributionChart,
+  HoldingPeriodDistributionChart,
+  ProfitPerSaleChart,
   SaleForPeriodChart,
   VolatilitySpeedometer,
-  VolumeChart
+  VolumeTxChart
 } from "./export";
 import {useState} from "react";
 
@@ -34,31 +37,28 @@ function App() {
         )}
       </div>
       <div style={{width: "50%"}}>
-        <VolatilitySpeedometer contractAddress={address} saveToSession={true}/>
+        <VolatilitySpeedometer contractAddress={address} saveToSession={true} key={address}/>
       </div>
       <div style={{width: "99px", height: "65px"}}>
-        <CompactFloorPriceChart contractAddress={address} saveToSession={true}/>
+        <CompactFloorPriceChart contractAddress={address} saveToSession={true} key={address}/>
       </div>
       <div className="test__row">
-        <SaleForPeriodChart address={address}/>
+        <SaleForPeriodChart address={address} key={address}/>
       </div>
       <div className="test__row">
-        <VolumeChart address={address}/>
+        <VolumeTxChart address={address} key={address}/>
       </div>
       <div className="test__row">
-        <FloorPriceChart address={address}/>
-      </div>
-      <div className="test__row">
-        <ProfitPerSaleChart address={address}/>
+        <ProfitPerSaleChart address={address} key={address}/>
       </div>
       <div style={{width: "500px", height: "300px"}}>
-        <HoldingAmountDistributionChart address={address}/>
+        <HoldingAmountDistributionChart address={address} key={address}/>
       </div>
       <div style={{width: "500px", height: "300px"}}>
-        <HoldingPeriodDistributionChart address={address}/>
+        <HoldingPeriodDistributionChart address={address} key={address}/>
       </div>
       <div className="test__row">
-        <HoldersChart address={address}/>
+        <HoldersChart address={address} key={address}/>
       </div>
     </div>
   );

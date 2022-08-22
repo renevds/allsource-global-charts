@@ -102,17 +102,7 @@ const BaseLineChart = ({chartData, buttons, controls, plugins, stats, chartOptio
       },
       animation: true,
       //hover: {animationDuration: 0},
-      responsiveAnimationDuration: 0,
-      elements: {
-        point: {
-          backgroundColor: "rgba(255,255,255,0.1)",
-          radius: 4,
-          borderWidth: 1,
-          hoverBorderWidth: 2,
-          hoverRadius: 5.5,
-          borderColor: horizontalBlueGreenGradient
-        }
-      }
+      responsiveAnimationDuration: 0
     }
 
     const mergedOptions = mergeDeep(defaultChartOptions, chartOptions);

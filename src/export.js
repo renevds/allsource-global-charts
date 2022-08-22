@@ -1,7 +1,6 @@
 import React from "react";
 import SaleForPeriodChart from "./components/Partials/Charts/Instances/SaleForPeriodChart";
-import VolumeChart from "./components/Partials/Charts/Instances/VolumeChart";
-import FloorPriceChart from "./components/Partials/Charts/Instances/FloorPriceChart";
+import VolumeTxChart from "./components/Partials/Charts/Instances/VolumeTxChart";
 import ProfitPerSaleChart from "./components/Partials/Charts/Instances/ProfitPerSaleChart";
 import HoldingAmountDistributionChart from "./components/Partials/Charts/Instances/HoldingAmountDistributionChart";
 import HoldingPeriodDistributionChart from "./components/Partials/Charts/Instances/HoldingPeriodDistributionChart";
@@ -12,8 +11,7 @@ import Speedometer from "./components/Partials/Charts/Types/Speedometer";
 
 export {
   SaleForPeriodChart,
-  VolumeChart,
-  FloorPriceChart,
+  VolumeTxChart,
   ProfitPerSaleChart,
   HoldingAmountDistributionChart,
   HoldingPeriodDistributionChart,

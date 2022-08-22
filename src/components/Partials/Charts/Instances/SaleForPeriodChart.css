@@ -1,10 +1,10 @@
-.bigscatterchart__container{
+.saleforperiodchart__container{
     height: 100%;
     width: 100%;
     position: relative;
 }
 
-.bigscatterchart__urls{
+.saleforperiodchart__urls{
     position: absolute;
     color: white;
     top: 0;
@@ -16,13 +16,13 @@
     pointer-events: none;
 }
 
-.bigscatterchart__center{
+.saleforperiodchart__center{
     height: 75%;
     position: relative;
     pointer-events: all;
 }
 
-.bigscatterchart__urls__bg{
+.saleforperiodchart__urls__bg{
     background-color: var(--color-background-light);
     height: 75%;
     padding: 24px;
@@ -34,7 +34,7 @@
     z-index: 1;
 }
 
-.bigscatterchart__urls__close{
+.saleforperiodchart__urls__close{
     text-align: right;
     color: var(--color-secondary);
     cursor: pointer;
@@ -48,11 +48,11 @@
     margin-left: 5px;
 }
 
-.bigscatterchart__urls__a{
+.saleforperiodchart__urls__a{
     display: block;
     color: var(--color-text);
 }
 
-.bigscatterchart__urls__a:hover{
+.saleforperiodchart__urls__a:hover{
     color: gray;
 }
