@@ -160,7 +160,7 @@ const ProfitPerSaleChart = ({address}) => {
       {
         ...simpleScatterDataset,
         data: data.filter(a => a["percentageGain"] > 0),
-        borderColor: '#ffffff',
+        pointBorderColor: '#ffffff',
         tooltip: {
           callbacks: {
             label: scatterFormatter,
@@ -174,7 +174,7 @@ const ProfitPerSaleChart = ({address}) => {
       {
         ...simpleScatterDataset,
         data: data.filter(a => a["percentageGain"] <= 0),
-        borderColor: '#ff6c52',
+        pointBorderColor: '#ff6c52',
         tooltip: {
           callbacks: {
             label: scatterFormatter,
