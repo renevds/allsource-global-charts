@@ -33,13 +33,3 @@ export function verticalBlueGreenGradientWithNegativeRed(context) {
   grad.addColorStop(redStop, '#ff0000');
   return grad;
 }
-
-export function verticalGradientWithNegativeRed(context) {
-  const ctx = context.chart.ctx;
-  const grad = ctx.createLinearGradient(0, 0, 0, ctx.canvas.height);
-  const redStop = context.chart.scales.yAxes.getPixelForValue(0) / ctx.canvas.height || 0;
-  grad.addColorStop(0, '#ffffff');
-  grad.addColorStop(redStop, '#ffffff');
-  grad.addColorStop(redStop, '#ff0000');
-  return grad;
-}

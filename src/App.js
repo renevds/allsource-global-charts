@@ -21,7 +21,9 @@ function App() {
     {'Toyboogers': '0xBF662A0e4069b58dFB9bceBEBaE99A6f13e06f5a'},
     {'HashDemons': '0x032Dd2A3c6d234AA9620d65eb618FCdC72Be3dBb'},
     {'Hunnys': '0x5DFEB75aBae11b138A16583E03A2bE17740EADeD'},
-    {'Bored Ape Yacht Club': '0xBC4CA0EdA7647A8aB7C2061c2E118A18a936f13D'}]
+    {'Bored Ape Yacht Club': '0xBC4CA0EdA7647A8aB7C2061c2E118A18a936f13D'},
+    {'Cryptoburbs': '0x3e55D389D352f4905961a6B32cA53B2F229Fed73'},
+    {'CHFTY': '0xA720E16603f81CD82FaAE15AE16F1aCfE88ddF0F'}]
 
   const [address, setAddress] = useState("0x0c2E57EFddbA8c768147D1fdF9176a0A6EBd5d83")
 

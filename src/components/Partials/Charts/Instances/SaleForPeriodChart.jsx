@@ -53,6 +53,7 @@ const scatterXAxisKey = "timestamp"
 const scatterYAxisKey = "ethValue"
 const averageXAxisKey = "timestamp"
 const averageYAxisKey = "averageValue"
+const marketKey = "market"
 
 const SaleForPeriodChart = ({address}) => {
 
@@ -114,10 +115,10 @@ const SaleForPeriodChart = ({address}) => {
 
   useEffect(() => {
     async function loadData() {
-      const newScatterData = await anySaleInEthForPeriodHashV(address, 365, true)
-      const newAverageData = await averagePerDaySaleForPeriod(address, 365)
-      setScatterData(newScatterData.filter(a => a.type === "Sale"));
-      setGarbageData(newScatterData.filter(a => a.type !== "Sale"));
+      const newScatterData = await anySaleInEthForPeriodHashV(address, 365, true);
+      const newAverageData = await averagePerDaySaleForPeriod(address, 365);
+      setScatterData(newScatterData.filter(a => a[marketKey] === "Sale"));
+      setGarbageData(newScatterData.filter(a => a[marketKey] !== "Sale"));
       setAverageData(newAverageData);
       setActive(active);
       setInit(true);

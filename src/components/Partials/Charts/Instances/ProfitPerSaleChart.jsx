@@ -74,16 +74,17 @@ const ProfitPerSaleChart = ({address}) => {
         min: initialXMin
       },
       yAxes: {
-        type: "modifiedLinear",
+        type: "linear",
+        position: 'right',
         title: {
           display: true,
           text: "Gain %",
-          color: verticalGradientWithNegativeRed
+          color: '#ffffff'
         }
       },
       yAxes1: {
         type: "modifiedLinear",
-        position: 'right',
+        position: 'left',
         display: true,
         grid: {
           drawOnChartArea: false
@@ -137,30 +138,17 @@ const ProfitPerSaleChart = ({address}) => {
   }
 
   const scatterFormatter = toolTipItem => {
-    return `Held for ${Math.floor(toolTipItem.raw.holdingTime)} days  |  Gain ${toolTipItem.raw.percentageGain.toLocaleString()}%`
+    return `Held for ${Math.floor(toolTipItem.raw.holdingTime)} days  |  Gain ${toolTipItem.raw.percentageGain.toLocaleString()}% | profit ${toolTipItem.raw.ethGain.toLocaleString()}`
   }
 
   const chartData = {
     version,
     datasets: [
       {
-        ...dashedLineDataset,
-        data,
-        tooltip: {
-          callbacks: {
-            label: () => '',
-          }
-        },
-        yAxisID: 'yAxes1',
-        parsing: {
-          xAxisKey: "timestamp",
-          yAxisKey: "ethGain"
-        }
-      },
-      {
         ...simpleScatterDataset,
         data: data.filter(a => a["percentageGain"] > 0),
         pointBorderColor: '#ffffff',
+        pointBackgroundColor: 'rgba(255,255,255,0.5)',
         tooltip: {
           callbacks: {
             label: scatterFormatter,
@@ -175,6 +163,7 @@ const ProfitPerSaleChart = ({address}) => {
         ...simpleScatterDataset,
         data: data.filter(a => a["percentageGain"] <= 0),
         pointBorderColor: '#ff6c52',
+        pointBackgroundColor: 'rgba(255,108,82,0.5)',
         tooltip: {
           callbacks: {
             label: scatterFormatter,
@@ -183,6 +172,20 @@ const ProfitPerSaleChart = ({address}) => {
         parsing: {
           xAxisKey: "timestamp",
           yAxisKey: "percentageGain"
+        }
+      },
+      {
+        ...dashedLineDataset,
+        data,
+        tooltip: {
+          callbacks: {
+            label: () => '',
+          }
+        },
+        yAxisID: 'yAxes1',
+        parsing: {
+          xAxisKey: "timestamp",
+          yAxisKey: "saleValue"
         }
       }
     ]
