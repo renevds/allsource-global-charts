@@ -32,7 +32,7 @@ import {chartBlue} from "../../../../ChartUtils/Utils/chartColors";
 import {simpleScatterDataset} from "../../../../ChartUtils/datasets/datasetTemplates";
 
 
-const PERFORMANCE_SCATTER_LIMIT = 4000;
+const PERFORMANCE_SCATTER_LIMIT = 2000;
 
 const durationMap = {
   "7D": 7,
@@ -61,7 +61,7 @@ const SaleForPeriodChart = ({address}) => {
   const [version, setVersion] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
   const [scatterData, setScatterData] = useState([]);
-  const [filterConfig, setFilteredConfig] = useState({});
+  const [compressedScatterData, setCompressedScatterData] = useState([]);
   const [averageData, setAverageData] = useState([]);
   const [logarithmic, setLogarithmic] = useState(false);
   const [garbage, setGarbage] = useState(false);
@@ -77,36 +77,42 @@ const SaleForPeriodChart = ({address}) => {
   const [trend, setTrend] = useState(false);
   const [urls, setUrls] = useState([]);
 
+  const countTx = (compressed) => {
+    return compressed.map(a => a.originals?.length || 1).reduce((partialSum, a) => partialSum + a, 0);
+  }
+
   useEffect(() => {
     if (init) {
       const newInitialMax = getMax(averageData, averageXAxisKey);
       const newInitialMin = newInitialMax - dayTimestampDuration * (durationMap[active] - 1);
       const avgInView = getDataBetween(averageData, averageXAxisKey, newInitialMin, newInitialMax, averageXAxisKey);
       const newAvg = getAvg(avgInView, averageYAxisKey);
-      const newPannedFilteredData = getDataBetween(scatterData, scatterXAxisKey, newInitialMin, newInitialMax);
-      let compressedPannedFilteredData = newPannedFilteredData;
+
+      let newCompressedData = compressedScatterData;
+      let compressedPannedFilteredData = getDataBetween(newCompressedData, scatterXAxisKey, newInitialMin, newInitialMax);
       let filtered = false;
       let hours = 3;
       let yMargin = 0.01;
       while (compressedPannedFilteredData.length > PERFORMANCE_SCATTER_LIMIT) {
-        compressedPannedFilteredData = compressDataSet(newPannedFilteredData, scatterXAxisKey, scatterYAxisKey, ONE_HOUR * hours, yMargin);
+        newCompressedData = compressDataSet(scatterData, scatterXAxisKey, scatterYAxisKey, ONE_HOUR * hours, yMargin);
+        compressedPannedFilteredData = getDataBetween(newCompressedData, scatterXAxisKey, newInitialMin, newInitialMax);
         hours *= 2;
         yMargin *= 10;
         filtered = true;
       }
-      hours /= 2;
-      yMargin /= 10;
-      setFilteredConfig({xMargin: ONE_HOUR * hours, yMargin, filtered});
+
       const newDataMin = getMin(averageData, averageXAxisKey);
       const avgInViewMin = getMin(avgInView, averageXAxisKey);
       const firstAvg = averageData.filter(a => a[averageXAxisKey] === avgInViewMin)[0][averageYAxisKey];
       const lastAvg = averageData.filter(a => a[averageXAxisKey] === newInitialMax)[0][averageYAxisKey];
+
       setPricePercentage(Math.round((lastAvg - firstAvg) * 100 / firstAvg))
       setInitialXMax(newInitialMax);
       setInitialXMin(newInitialMin);
       setAvg(newAvg);
+      setCompressedScatterData(newCompressedData);
       setPannedFilteredData(compressedPannedFilteredData);
-      setTx(newPannedFilteredData.length);
+      setTx(countTx(compressedPannedFilteredData));
       setDataMin(newDataMin);
       setIsLoading(false);
       setVersion(v => v + 1);
@@ -117,7 +123,9 @@ const SaleForPeriodChart = ({address}) => {
     async function loadData() {
       const newScatterData = await anySaleInEthForPeriodHashV(address, 365, true);
       const newAverageData = await averagePerDaySaleForPeriod(address, 365);
-      setScatterData(newScatterData.filter(a => a[marketKey] === "Sale"));
+      const nonGarbage = newScatterData.filter(a => a[marketKey] === "Sale");
+      setScatterData(nonGarbage);
+      setCompressedScatterData(nonGarbage);
       setGarbageData(newScatterData.filter(a => a[marketKey] !== "Sale"));
       setAverageData(newAverageData);
       setActive(active);
@@ -210,11 +218,8 @@ const SaleForPeriodChart = ({address}) => {
           onPanComplete: ({chart}) => {
           },
           onPan: ({chart}) => {
-            let newScatter = getDataBetween(scatterData, scatterXAxisKey, chart.scales.xAxes.min, chart.scales.xAxes.max)
-            setTx(newScatter.length);
-            if (filterConfig.filtered) {
-              newScatter = compressDataSet(newScatter, scatterXAxisKey, scatterYAxisKey, filterConfig.xMargin, filterConfig.yMargin);
-            }
+            let newScatter = getDataBetween(compressedScatterData, scatterXAxisKey, chart.scales.xAxes.min, chart.scales.xAxes.max);
+            setTx(countTx(newScatter));
             chart.config.data.datasets[0].data = newScatter;
             const avgInView = getDataBetween(averageData, averageXAxisKey, chart.scales.xAxes.min, chart.scales.xAxes.max, averageXAxisKey);
             const avg = getAvg(avgInView, averageYAxisKey);
@@ -274,6 +279,9 @@ const SaleForPeriodChart = ({address}) => {
     }
   }
 
+  const whaleImage = new Image();
+  whaleImage.src =  "https://files.allsource.io/icons/tag-whale.svg";
+
   const chartData = {
     version,
     datasets: [
@@ -296,6 +304,9 @@ const SaleForPeriodChart = ({address}) => {
           enabled: trend,
           style: horizontalBlueGreenGradient,
           width: 2,
+        },
+        pointStyle: (data) => {
+          return "point"
         }
       },
       {
