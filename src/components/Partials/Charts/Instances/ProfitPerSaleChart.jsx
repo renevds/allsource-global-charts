@@ -44,7 +44,7 @@ const ProfitPerSaleChart = ({address}) => {
     if (init) {
       try {
         const newInitialMax = getMax(data, "timestamp");
-        const newInitialMin = newInitialMax - dayTimestampDuration * (durationMap[active] - 1);
+        const newInitialMin = newInitialMax - dayTimestampDuration * durationMap[active];
         setInitialXMax(newInitialMax);
         setInitialXMin(newInitialMin);
         setIsLoading(false);
@@ -127,7 +127,7 @@ const ProfitPerSaleChart = ({address}) => {
 
   const scatterFormatter = toolTipItem => {
     return `Held for ${Math.floor(toolTipItem.raw.holdingTime)} days` +
-      ` |  Gain ${toolTipItem.raw.percentageGain.toLocaleString()}%` +
+      ` | Gain ${toolTipItem.raw.percentageGain.toLocaleString()}%` +
       ` | bought for ${(toolTipItem.raw.saleValue - toolTipItem.raw.ethGain).toLocaleString()} Ξ` +
       ` | sold for ${(toolTipItem.raw.saleValue).toLocaleString()} Ξ`
   }
