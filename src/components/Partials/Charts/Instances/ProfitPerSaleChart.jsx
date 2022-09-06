@@ -4,38 +4,41 @@ import {useEffect, useRef, useState} from "react";
 //Components
 import BaseLineChart from "../Base/BaseLineChart";
 import ChartButton from "../Base/ChartButton";
-
-//Gradients
-import {
-  verticalGradientWithNegativeRed
-} from "../../../../ChartUtils/Utils/chartGradientUtils";
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import ChartToggle from "../Base/ChartToggle";
 
 //Plugins
 import {toolTipLinePlugin} from "../../../../ChartUtils/Plugins/toolTipLinePlugin";
 import annotationPlugin from 'chartjs-plugin-annotation';
 
 //Utils
-import {getMax, getMin} from "../../../../ChartUtils/Utils/chartDataUtils";
+import {filterOutliers, getMax, getMin} from "../../../../ChartUtils/Utils/chartDataUtils";
 import {dayTimestampDuration} from "../../../../utils/timeUtils";
 import {marginPerSale} from "@allsource/queries.chart_queries";
-import {chartBlue} from "../../../../ChartUtils/Utils/chartColors";
-import {dashedLineDataset, simpleScatterDataset} from "../../../../ChartUtils/datasets/datasetTemplates";
+import {simpleScatterDataset} from "../../../../ChartUtils/datasets/datasetTemplates";
+
+//Icons
+import {faMagnifyingGlassChart} from "@fortawesome/free-solid-svg-icons";
+
 
 const durationMap = {
+  "24H": 1,
   "7D": 7,
   "14D": 14,
-  "31D": 31
+  "31D": 31,
+  "3M": 90
 }
 
 const ProfitPerSaleChart = ({address}) => {
   const [init, setInit] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
-  const [active, setActive] = useState("7D");
+  const [active, setActive] = useState("14D");
   const [data, setData] = useState([]);
   const [version, setVersion] = useState(0);
   const [error, setError] = useState("");
   const [initialXMin, setInitialXMin] = useState(0);
   const [initialXMax, setInitialXMax] = useState(0);
+  const [outliers, setOutliers] = useState(false);
 
   useEffect(() => {
     if (init) {
@@ -61,8 +64,7 @@ const ProfitPerSaleChart = ({address}) => {
 
   const chartOptions = {
     interaction: {
-      mode: "x",
-      intersect: false
+      mode: "point",
     },
     scales: {
       xAxes: {
@@ -75,24 +77,11 @@ const ProfitPerSaleChart = ({address}) => {
       },
       yAxes: {
         type: "linear",
-        position: 'right',
+        position: 'left',
         title: {
           display: true,
           text: "Gain %",
           color: '#ffffff'
-        }
-      },
-      yAxes1: {
-        type: "modifiedLinear",
-        position: 'left',
-        display: true,
-        grid: {
-          drawOnChartArea: false
-        },
-        title: {
-          display: true,
-          text: "Price Ξ",
-          color: chartBlue
         }
       }
     },
@@ -110,8 +99,7 @@ const ProfitPerSaleChart = ({address}) => {
         }
       },
       tooltip: {
-        mode: "x",
-        intersect: false
+        mode: "point",
       },
       annotation: {
         annotations: {
@@ -138,7 +126,16 @@ const ProfitPerSaleChart = ({address}) => {
   }
 
   const scatterFormatter = toolTipItem => {
-    return `Held for ${Math.floor(toolTipItem.raw.holdingTime)} days  |  Gain ${toolTipItem.raw.percentageGain.toLocaleString()}% | profit ${toolTipItem.raw.ethGain.toLocaleString()}`
+    return `Held for ${Math.floor(toolTipItem.raw.holdingTime)} days` +
+      ` |  Gain ${toolTipItem.raw.percentageGain.toLocaleString()}%` +
+      ` | bought for ${(toolTipItem.raw.saleValue - toolTipItem.raw.ethGain).toLocaleString()} Ξ` +
+      ` | sold for ${(toolTipItem.raw.saleValue).toLocaleString()} Ξ`
+  }
+
+  let filteredData = data;
+
+  if (!outliers) {
+    filteredData = filterOutliers(data, "percentageGain")
   }
 
   const chartData = {
@@ -146,7 +143,7 @@ const ProfitPerSaleChart = ({address}) => {
     datasets: [
       {
         ...simpleScatterDataset,
-        data: data.filter(a => a["percentageGain"] > 0),
+        data: filteredData.filter(a => a["percentageGain"] > 0),
         pointBorderColor: '#ffffff',
         pointBackgroundColor: 'rgba(255,255,255,0.5)',
         tooltip: {
@@ -161,7 +158,7 @@ const ProfitPerSaleChart = ({address}) => {
       },
       {
         ...simpleScatterDataset,
-        data: data.filter(a => a["percentageGain"] <= 0),
+        data: filteredData.filter(a => a["percentageGain"] <= 0),
         pointBorderColor: '#ff6c52',
         pointBackgroundColor: 'rgba(255,108,82,0.5)',
         tooltip: {
@@ -172,20 +169,6 @@ const ProfitPerSaleChart = ({address}) => {
         parsing: {
           xAxisKey: "timestamp",
           yAxisKey: "percentageGain"
-        }
-      },
-      {
-        ...dashedLineDataset,
-        data,
-        tooltip: {
-          callbacks: {
-            label: () => '',
-          }
-        },
-        yAxisID: 'yAxes1',
-        parsing: {
-          xAxisKey: "timestamp",
-          yAxisKey: "saleValue"
         }
       }
     ]
@@ -208,8 +191,11 @@ const ProfitPerSaleChart = ({address}) => {
                    chartOptions={chartOptions}
                    isLoading={isLoading}
                    stats={[]}
-                   plugins={[toolTipLinePlugin, annotationPlugin]}
-                   controls={[]}/>
+                   plugins={[]}
+                   controls={[<ChartToggle name={<FontAwesomeIcon style={{color: "#b0b0b0"}} icon={faMagnifyingGlassChart}/>} onToggle={a => {
+                     setOutliers(!outliers);
+                     setVersion(version + 1);
+                   }} initChecked={!outliers} tooltip="Logarithmic scale"/>]}/>
   );
 }
 
