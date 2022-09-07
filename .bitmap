@@ -9,5 +9,11 @@
  */
 
 {
+    "queries/chart_queries": {
+        "scope": "allsource.global",
+        "version": "0.0.16",
+        "mainFile": "index.js",
+        "rootDir": "src/bit_components/queries/chart_queries"
+    },
     "$schema-version": "15.0.0"
 }

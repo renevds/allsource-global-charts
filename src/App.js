@@ -9,6 +9,7 @@ import {
   VolumeTxChart
 } from "./export";
 import {useState} from "react";
+import ProfitPerDayChart from "./components/Partials/Charts/Instances/ProfitPerDayChart";
 
 function App() {
 
@@ -25,7 +26,7 @@ function App() {
     {'Cryptoburbs': '0x3e55D389D352f4905961a6B32cA53B2F229Fed73'},
     {'CHFTY': '0xA720E16603f81CD82FaAE15AE16F1aCfE88ddF0F'}]
 
-  const [address, setAddress] = useState("0x0c2E57EFddbA8c768147D1fdF9176a0A6EBd5d83")
+  const [address, setAddress] = useState("0xBC4CA0EdA7647A8aB7C2061c2E118A18a936f13D")
 
 
   return (
@@ -61,6 +62,9 @@ function App() {
       </div>
       <div className="test__row">
         <HoldersChart address={address} key={address}/>
+      </div>
+      <div className="test__row">
+        <ProfitPerDayChart address={address} key={address}/>
       </div>
     </div>
   );
