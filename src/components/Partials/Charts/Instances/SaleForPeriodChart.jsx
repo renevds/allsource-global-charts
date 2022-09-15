@@ -32,7 +32,7 @@ import {chartBlue} from "../../../../ChartUtils/Utils/chartColors";
 import {simpleScatterDataset} from "../../../../ChartUtils/datasets/datasetTemplates";
 
 
-const PERFORMANCE_SCATTER_LIMIT = 2000;
+const PERFORMANCE_SCATTER_LIMIT = 3000;
 
 const durationMap = {
   "7D": 7,
@@ -93,7 +93,8 @@ const SaleForPeriodChart = ({address}) => {
       let filtered = false;
       let hours = 3;
       let yMargin = 0.01;
-      while (compressedPannedFilteredData.length > PERFORMANCE_SCATTER_LIMIT) {
+      const scatterFactor = 365 / durationMap[active];
+      while (compressedPannedFilteredData.length > (PERFORMANCE_SCATTER_LIMIT * scatterFactor)) {
         newCompressedData = compressDataSet(scatterData, scatterXAxisKey, scatterYAxisKey, ONE_HOUR * hours, yMargin);
         compressedPannedFilteredData = getDataBetween(newCompressedData, scatterXAxisKey, newInitialMin, newInitialMax);
         hours *= 2;
@@ -280,7 +281,7 @@ const SaleForPeriodChart = ({address}) => {
   }
 
   const whaleImage = new Image();
-  whaleImage.src =  "https://files.allsource.io/icons/tag-whale.svg";
+  whaleImage.src = "https://files.allsource.io/icons/tag-whale.svg";
 
   const chartData = {
     version,
@@ -353,7 +354,7 @@ const SaleForPeriodChart = ({address}) => {
                                         chartRef.current.update();
                                         setGarbage(a);
                                       }
-                                    }} initChecked={garbage} tooltip="Show wash sales"/>,
+                                    }} initChecked={garbage} tooltip="Show outliers"/>,
                        <ChartToggle key={3} name="Log" onToggle={a => {
                          setLogarithmic(a);
                          setVersion(version + 1);
@@ -369,17 +370,17 @@ const SaleForPeriodChart = ({address}) => {
                      chartOptions={chartOptions}
                      isLoading={isLoading}/>
       {(urls.length > 0) &&
-        <div className="saleforperiodchart__urls">
-          <div className="saleforperiodchart__center">
-            <div className="saleforperiodchart__urls__close" onClick={() => setUrls([])}>
-              <FontAwesomeIcon icon={faXmark}/>
-            </div>
-            <div className="saleforperiodchart__urls__bg">
-              {urls.map(a => <a key={a.url + '--' + a.name} className="saleforperiodchart__urls__a" href={a.url}
-                                target='_blank'>{a.name}</a>)}
-            </div>
+      <div className="saleforperiodchart__urls">
+        <div className="saleforperiodchart__center">
+          <div className="saleforperiodchart__urls__close" onClick={() => setUrls([])}>
+            <FontAwesomeIcon icon={faXmark}/>
+          </div>
+          <div className="saleforperiodchart__urls__bg">
+            {urls.map(a => <a key={a.url + '--' + a.name} className="saleforperiodchart__urls__a" href={a.url}
+                              target='_blank'>{a.name}</a>)}
           </div>
         </div>
+      </div>
       }
     </div>
   );
