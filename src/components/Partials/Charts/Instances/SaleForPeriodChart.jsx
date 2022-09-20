@@ -27,7 +27,7 @@ import {horizontalBlueGreenGradient} from "../../../../ChartUtils/Utils/chartGra
 
 //Style
 import './SaleForPeriodChart.css'
-import {anySaleInEthForPeriodHashV, averagePerDaySaleForPeriod} from "@allsource/queries.chart_queries";
+import {anySaleInEthForPeriod, averagePerDaySaleForPeriod} from "../../../../chart_queries";
 import {chartBlue} from "../../../../ChartUtils/Utils/chartColors";
 import {simpleScatterDataset} from "../../../../ChartUtils/datasets/datasetTemplates";
 
@@ -122,9 +122,10 @@ const SaleForPeriodChart = ({address}) => {
 
   useEffect(() => {
     async function loadData() {
-      const newScatterData = await anySaleInEthForPeriodHashV(address, 365, true);
+      const newScatterData = await anySaleInEthForPeriod(address, 365, true);
       const newAverageData = await averagePerDaySaleForPeriod(address, 365);
       const nonGarbage = newScatterData.filter(a => a[marketKey] === "Sale");
+      console.log(newScatterData.filter(a => a[marketKey] !== "Sale"))
       setScatterData(nonGarbage);
       setCompressedScatterData(nonGarbage);
       setGarbageData(newScatterData.filter(a => a[marketKey] !== "Sale"));

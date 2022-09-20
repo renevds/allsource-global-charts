@@ -1,14 +1,13 @@
 {
   "name": "degen-charts",
-  "version": "1.5.11",
+  "version": "1.5.14",
   "main": "dist/index.js",
   "module": "dist/index.es.js",
   "scripts": {
     "build": "rollup -c",
     "pack": "npm run build && npm pack",
     "start": "set PORT=2061 && react-scripts start",
-    "update-bits": "npx npm-check-updates -f \"/@allsource.*/\" -u",
-    "postinstall": "bit import && bit link"
+    "update-bits": "npx npm-check-updates -f \"/@allsource.*/\" -u"
   },
   "eslintConfig": {
     "extends": [
@@ -29,8 +28,7 @@
     ]
   },
   "devDependencies": {
-    "@allsource/config.axios_instances": "^0.0.16",
-    "@allsource/queries.chart_queries": "^0.0.16",
+    "@allsource/config.axios_instances": "^0.0.18",
     "@allsource/ui.partials.icons.higher_lower": "^0.0.11",
     "@allsource/ui.partials.loader": "^0.0.12",
     "@babel/core": "^7.18.9",

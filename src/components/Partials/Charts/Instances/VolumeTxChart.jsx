@@ -14,7 +14,7 @@ import {
 
 //Plugins
 import {toolTipLinePlugin} from "../../../../ChartUtils/Plugins/toolTipLinePlugin";
-import {averagePerDaySaleForPeriod} from "@allsource/queries.chart_queries";
+import {averagePerDaySaleForPeriod} from "../../../../chart_queries";
 import moment from "moment";
 import {simpleLineDataset, simpleBarDataset} from "../../../../ChartUtils/datasets/datasetTemplates";
 import {chartBlue, chartPurple} from "../../../../ChartUtils/Utils/chartColors";

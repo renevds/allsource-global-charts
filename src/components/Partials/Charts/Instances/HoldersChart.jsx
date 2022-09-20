@@ -5,7 +5,7 @@ import ChartToggle from "../Base/ChartToggle";
 import {toolTipLinePlugin} from "../../../../ChartUtils/Plugins/toolTipLinePlugin";
 import {getMax, getMin} from "../../../../ChartUtils/Utils/chartDataUtils";
 import {dayTimestampDuration} from "../../../../utils/timeUtils";
-import {holdersInProfit, uniqueHoldersOverTime, uniqueHoldersOverTimeNZT} from "@allsource/queries.chart_queries";
+import {holdersInProfit, uniqueHoldersOverTime, uniqueHoldersOverTimeNZT} from "../../../../chart_queries"
 import {simpleLineDataset} from "../../../../ChartUtils/datasets/datasetTemplates";
 import {chartBlue, chartPurple} from "../../../../ChartUtils/Utils/chartColors";
 

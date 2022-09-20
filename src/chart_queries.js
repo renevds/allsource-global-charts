@@ -1,6 +1,7 @@
 import {chartDataFetch, chartDataFetchNoLZW} from "@allsource/config.axios_instances";
 
-export function anySaleInEthForPeriodHashV(contractAddress, periodInDays, showLoans) {
+
+export function anySaleInEthForPeriod(contractAddress, periodInDays, showLoans) {
   return chartDataFetch.get('/anySaleInEthForPeriodTags', {
     params: {
       contractAddress,
@@ -54,9 +55,6 @@ export function floorAndMarketCap(contractAddress) {
   return chartDataFetchNoLZW.get('/floorAndMarketCap', {params: {contractAddress}}).then(a => a.data)
 }
 
-export function floorPerDay(contractAddress) {
-  return chartDataFetchNoLZW.get('/floorPerDay', {params: {contractAddress}}).then(a => a.data)
-}
 export function profitPerDay(contractAddress) {
   return chartDataFetch.get('/profitPerDay', {params: {contractAddress}}).then(a => a.data.data)
 }

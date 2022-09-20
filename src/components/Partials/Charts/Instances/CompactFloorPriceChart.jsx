@@ -1,5 +1,5 @@
 //Queries
-import {floorAndMarketCap} from "@allsource/queries.chart_queries";
+import {floorAndMarketCap} from "../../../../chart_queries";
 
 //Components
 import BasicCompactLineChart from "../Types/BasicCompactLineChart";

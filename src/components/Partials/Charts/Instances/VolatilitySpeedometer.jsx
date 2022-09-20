@@ -1,5 +1,5 @@
 //Queries
-import {volatilityScore} from "@allsource/queries.chart_queries";
+import {volatilityScore} from "../../../../chart_queries";
 
 //Components
 import Speedometer from "../Types/Speedometer";

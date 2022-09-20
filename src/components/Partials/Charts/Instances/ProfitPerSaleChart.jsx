@@ -14,7 +14,7 @@ import annotationPlugin from 'chartjs-plugin-annotation';
 //Utils
 import {filterOutliers, getMax, getMin} from "../../../../ChartUtils/Utils/chartDataUtils";
 import {dayTimestampDuration} from "../../../../utils/timeUtils";
-import {marginPerSale} from "@allsource/queries.chart_queries";
+import {marginPerSale} from "../../../../chart_queries";
 import {simpleScatterDataset} from "../../../../ChartUtils/datasets/datasetTemplates";
 
 //Icons
