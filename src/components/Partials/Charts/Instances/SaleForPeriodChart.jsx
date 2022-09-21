@@ -115,8 +115,6 @@ const SaleForPeriodChart = ({address}) => {
   const chartRef = useRef(null);
   const scatterMax = getMax(scatterData, scatterYAxisKey);
 
-  const pointRadius = 1;
-
   let chartOptions = {
     onClick: (e) => {
       const newDataPoints = []
@@ -142,33 +140,25 @@ const SaleForPeriodChart = ({address}) => {
     },
     interaction: {
       intersect: false,
-      mode: "point",
+      mode: "pointOrNearest",
       axis: 'x'
     },
     plugins: {
       toolTipLine: false,
       tooltip: {
-        mode: "point",
+        mode: "pointOrNearest",
         intersect: false,
         callbacks: {
           beforeBody: (toolTipItems) => {
-            const newToolTipItems = []
-            toolTipItems.forEach(toolTipItem => {
-              if (toolTipItem.raw.originals) {
-                newToolTipItems.push(...toolTipItem.raw.originals.map(a => ({raw: a})));
-              } else {
-                newToolTipItems.push(toolTipItem);
-              }
-            })
-            if (newToolTipItems.length > 5) {
+            if (toolTipItems.length > 5) {
               let price = 0;
-              newToolTipItems.forEach(toolTipItem => {
+              toolTipItems.forEach(toolTipItem => {
                 price += toolTipItem.raw.ethValue;
               })
-              price /= newToolTipItems.length;
-              return `${newToolTipItems.length} sales around Ξ ${price.toLocaleString()}`
+              price /= toolTipItems.length;
+              return `${toolTipItems.length} sales around Ξ ${price.toLocaleString()}`
             } else {
-              return newToolTipItems
+              return toolTipItems
                 .map(toolTipItem => `ID ${toolTipItem.raw.id} for 
                 ${" ".repeat(5 - toolTipItem.raw.id.toString().length)} 
                 Ξ ${toolTipItem.raw.ethValue.toLocaleString()}`)
@@ -256,7 +246,12 @@ const SaleForPeriodChart = ({address}) => {
     },
     animation: false,
     hover: {animationDuration: 0},
-    responsiveAnimationDuration: 0
+    responsiveAnimationDuration: 0,
+    elements: {
+      line: {
+        tension: 0 // disables bezier curves
+      }
+    }
   }
 
   const whaleImage = new Image();
@@ -272,14 +267,9 @@ const SaleForPeriodChart = ({address}) => {
           xAxisKey: scatterXAxisKey,
           yAxisKey: scatterYAxisKey
         },
-        pointRadius: (data) => {
-          if (data?.raw?.originals) {
-            return pointRadius + 1 + Math.log10(data.raw.originals.length);
-          }
-          return pointRadius;
-        },
-        hoverBorderWidth: pointRadius / 2,
-        pointHitRadius: 10,
+        pointRadius: 1,
+        hoverBorderWidth: 1,
+        pointHitRadius: 1,
         trendLineLinear: {
           enabled: trend,
           style: horizontalBlueGreenGradient,
@@ -298,8 +288,8 @@ const SaleForPeriodChart = ({address}) => {
           yAxisKey: scatterYAxisKey
         },
         pointBorderColor: "rgba(255,0,0,0.5)",
-        pointHitRadius: 10,
-        pointRadius,
+        pointHitRadius: 1,
+        pointRadius: 1,
       },
     ]
   }

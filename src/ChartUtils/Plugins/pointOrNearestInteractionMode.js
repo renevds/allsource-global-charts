@@ -3,7 +3,7 @@ import {Interaction} from "chart.js";
 Interaction.modes.pointOrNearest = function (chart, e, options, useFinalPosition) {
   const res = Interaction.modes.point(chart, e, options, useFinalPosition);
   if (res.length > 0) {
-    return res;
+    return Interaction.modes.nearest(chart, e, {}, useFinalPosition);
   } else {
     const res = []
     const ids = [];
