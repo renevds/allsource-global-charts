@@ -31,9 +31,6 @@ import {anySaleInEthForPeriod, averagePerDaySaleForPeriod} from "../../../../cha
 import {chartBlue} from "../../../../ChartUtils/Utils/chartColors";
 import {simpleScatterDataset} from "../../../../ChartUtils/datasets/datasetTemplates";
 
-
-const PERFORMANCE_SCATTER_LIMIT = 3000;
-
 const durationMap = {
   "7D": 7,
   "14D": 14,
@@ -54,7 +51,6 @@ const SaleForPeriodChart = ({address}) => {
   const [version, setVersion] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
   const [scatterData, setScatterData] = useState([]);
-  const [compressedScatterData, setCompressedScatterData] = useState([]);
   const [averageData, setAverageData] = useState([]);
   const [logarithmic, setLogarithmic] = useState(false);
   const [garbage, setGarbage] = useState(false);
@@ -80,32 +76,17 @@ const SaleForPeriodChart = ({address}) => {
       const newInitialMin = newInitialMax - dayTimestampDuration * (durationMap[active] - 1);
       const avgInView = getDataBetween(averageData, averageXAxisKey, newInitialMin, newInitialMax, averageXAxisKey);
       const newAvg = getAvg(avgInView, averageYAxisKey);
-      let newCompressedData = scatterData;
-      let compressedPannedFilteredData = getDataBetween(newCompressedData, scatterXAxisKey, newInitialMin, newInitialMax);
-      let filtered = false;
-      let hours = 3;
-      let yMargin = 0.01;
-      const scatterFactor = 365 / durationMap[active];
-      while (compressedPannedFilteredData.length > (PERFORMANCE_SCATTER_LIMIT * scatterFactor)) {
-        newCompressedData = compressDataSet(scatterData, scatterXAxisKey, scatterYAxisKey, ONE_HOUR * hours, yMargin);
-        compressedPannedFilteredData = getDataBetween(newCompressedData, scatterXAxisKey, newInitialMin, newInitialMax);
-        hours *= 2;
-        yMargin *= 10;
-        filtered = true;
-      }
-
+      let pannedFilteredData = getDataBetween(scatterData, scatterXAxisKey, newInitialMin, newInitialMax);
       const newDataMin = getMin(averageData, averageXAxisKey);
       const avgInViewMin = getMin(avgInView, averageXAxisKey);
       const firstAvg = averageData.filter(a => a[averageXAxisKey] === avgInViewMin)[0][averageYAxisKey];
       const lastAvg = averageData.filter(a => a[averageXAxisKey] === newInitialMax)[0][averageYAxisKey];
-
       setPricePercentage(Math.round((lastAvg - firstAvg) * 100 / firstAvg))
       setInitialXMax(newInitialMax);
       setInitialXMin(newInitialMin);
       setAvg(newAvg);
-      setCompressedScatterData(newCompressedData);
-      setPannedFilteredData(compressedPannedFilteredData);
-      setTx(countTx(compressedPannedFilteredData));
+      setPannedFilteredData(pannedFilteredData);
+      setTx(countTx(pannedFilteredData));
       setDataMin(newDataMin);
       setIsLoading(false);
       setVersion(v => v + 1);
@@ -161,13 +142,13 @@ const SaleForPeriodChart = ({address}) => {
     },
     interaction: {
       intersect: false,
-      mode: "pointOrNearest",
+      mode: "point",
       axis: 'x'
     },
     plugins: {
       toolTipLine: false,
       tooltip: {
-        mode: "pointOrNearest",
+        mode: "point",
         intersect: false,
         callbacks: {
           beforeBody: (toolTipItems) => {
@@ -214,7 +195,7 @@ const SaleForPeriodChart = ({address}) => {
           onPanComplete: ({chart}) => {
           },
           onPan: ({chart}) => {
-            let newScatter = getDataBetween(compressedScatterData, scatterXAxisKey, chart.scales.xAxes.min, chart.scales.xAxes.max);
+            let newScatter = getDataBetween(scatterData, scatterXAxisKey, chart.scales.xAxes.min, chart.scales.xAxes.max);
             setTx(countTx(newScatter));
             chart.config.data.datasets[0].data = newScatter;
             const avgInView = getDataBetween(averageData, averageXAxisKey, chart.scales.xAxes.min, chart.scales.xAxes.max, averageXAxisKey);
@@ -272,7 +253,10 @@ const SaleForPeriodChart = ({address}) => {
           duration: 0
         }
       }
-    }
+    },
+    animation: false,
+    hover: {animationDuration: 0},
+    responsiveAnimationDuration: 0
   }
 
   const whaleImage = new Image();
