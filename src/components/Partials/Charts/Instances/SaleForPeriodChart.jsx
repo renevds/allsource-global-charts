@@ -41,13 +41,6 @@ const durationMap = {
   "3M": 90,
   "1Y": 365,
 }
-const radiusMap = {
-  "7D": 5,
-  "14D": 4,
-  "31D": 3,
-  "3M": 2,
-  "1Y": 1,
-}
 
 const scatterXAxisKey = "timestamp"
 const scatterYAxisKey = "ethValue"
@@ -87,8 +80,7 @@ const SaleForPeriodChart = ({address}) => {
       const newInitialMin = newInitialMax - dayTimestampDuration * (durationMap[active] - 1);
       const avgInView = getDataBetween(averageData, averageXAxisKey, newInitialMin, newInitialMax, averageXAxisKey);
       const newAvg = getAvg(avgInView, averageYAxisKey);
-
-      let newCompressedData = compressedScatterData;
+      let newCompressedData = scatterData;
       let compressedPannedFilteredData = getDataBetween(newCompressedData, scatterXAxisKey, newInitialMin, newInitialMax);
       let filtered = false;
       let hours = 3;
@@ -124,10 +116,12 @@ const SaleForPeriodChart = ({address}) => {
     async function loadData() {
       const newScatterData = await anySaleInEthForPeriod(address, 365, true);
       const newAverageData = await averagePerDaySaleForPeriod(address, 365);
+
+      const markets = newScatterData.map(a => a[marketKey])
+      console.log([...new Set(markets)])
       const nonGarbage = newScatterData.filter(a => a[marketKey] === "Sale");
       console.log(newScatterData.filter(a => a[marketKey] !== "Sale"))
       setScatterData(nonGarbage);
-      setCompressedScatterData(nonGarbage);
       setGarbageData(newScatterData.filter(a => a[marketKey] !== "Sale"));
       setAverageData(newAverageData);
       setActive(active);
@@ -140,7 +134,7 @@ const SaleForPeriodChart = ({address}) => {
   const chartRef = useRef(null);
   const scatterMax = getMax(scatterData, scatterYAxisKey);
 
-  const pointRadius = radiusMap[active];
+  const pointRadius = 1;
 
   let chartOptions = {
     onClick: (e) => {

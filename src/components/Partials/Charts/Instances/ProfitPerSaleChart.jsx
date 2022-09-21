@@ -195,7 +195,7 @@ const ProfitPerSaleChart = ({address}) => {
                    controls={[<ChartToggle name={<FontAwesomeIcon style={{color: "#b0b0b0"}} icon={faMagnifyingGlassChart}/>} onToggle={a => {
                      setOutliers(!outliers);
                      setVersion(version + 1);
-                   }} initChecked={!outliers} tooltip="Logarithmic scale"/>]}/>
+                   }} initChecked={!outliers} tooltip="Hide outliers"/>]}/>
   );
 }
 
