@@ -35,6 +35,7 @@ import {anySaleInEthForPeriod, averagePerDaySaleForPeriod} from "../../../../cha
 import {chartBlue} from "../../../../ChartUtils/Utils/chartColors";
 import {simpleScatterDataset} from "../../../../ChartUtils/datasets/datasetTemplates";
 import {compressDataSet} from "../../../../ChartUtils/Utils/dataSetSizeDecreaserUtils";
+import UrlsPopup from "../Base/UrlsPopup";
 
 const durationMap = {
   "7D": 7,
@@ -114,7 +115,7 @@ const SaleForPeriodChart = ({address}) => {
       const newScatterData = await anySaleInEthForPeriod(address, 31, true);
       const newAverageData = await averagePerDaySaleForPeriod(address, 31);
       handleData(newScatterData, newAverageData);
-      console.log("first loaded");
+      loadMoreData();
     }
 
     async function loadMoreData() {
@@ -352,19 +353,7 @@ const SaleForPeriodChart = ({address}) => {
                      ]}
                      chartOptions={chartOptions}
                      isLoading={isLoading}/>
-      {(urls.length > 0) &&
-        <div className="saleforperiodchart__urls">
-          <div className="saleforperiodchart__center">
-            <div className="saleforperiodchart__urls__close" onClick={() => setUrls([])}>
-              <FontAwesomeIcon icon={faXmark}/>
-            </div>
-            <div className="saleforperiodchart__urls__bg">
-              {urls.map(a => <a key={a.url + '--' + a.name} className="saleforperiodchart__urls__a" href={a.url}
-                                target='_blank'>{a.name}</a>)}
-            </div>
-          </div>
-        </div>
-      }
+      <UrlsPopup onClose={() => setUrls([])} urls={urls}/>
     </div>
   );
 };

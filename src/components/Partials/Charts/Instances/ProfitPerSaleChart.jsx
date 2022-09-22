@@ -19,6 +19,7 @@ import {simpleScatterDataset} from "../../../../ChartUtils/datasets/datasetTempl
 
 //Icons
 import {faMagnifyingGlassChart} from "@fortawesome/free-solid-svg-icons";
+import UrlsPopup from "../Base/UrlsPopup";
 
 
 const durationMap = {
@@ -39,6 +40,7 @@ const ProfitPerSaleChart = ({address}) => {
   const [initialXMin, setInitialXMin] = useState(0);
   const [initialXMax, setInitialXMax] = useState(0);
   const [outliers, setOutliers] = useState(false);
+  const [urls, setUrls] = useState([]);
 
   useEffect(() => {
     if (init) {
@@ -63,8 +65,24 @@ const ProfitPerSaleChart = ({address}) => {
   }
 
   const chartOptions = {
+    onClick: e => {
+      const selected = e.chart.tooltip.dataPoints
+      console.log(selected)
+      const results = selected.map(dataPoint => ({
+        name: `ID ${dataPoint.raw.tokenId} sold for Ξ ${dataPoint.raw.saleValue.toLocaleString()}`,
+        url: `https://etherscan.io/tx/${dataPoint.raw.txHash}`
+      }))
+
+      if (results.length === 1) {
+        setUrls([]);
+        window.open(results[0].url, '_blank').focus();
+      } else {
+        setUrls(results);
+      }
+    },
     interaction: {
-      mode: "point",
+      mode: "nearest",
+      intersect: "false"
     },
     scales: {
       xAxes: {
@@ -99,7 +117,16 @@ const ProfitPerSaleChart = ({address}) => {
         }
       },
       tooltip: {
-        mode: "point",
+        mode: "nearest",
+        intersect: "false",
+        callbacks: {
+          beforeBody: (toolTipItems) => {
+            return (toolTipItems.length > 1 ? `${toolTipItems.length} sales | ` : "") + scatterFormatter(toolTipItems[0])
+          },
+          label: () => {
+            return false
+          }
+        }
       },
       annotation: {
         annotations: {
@@ -149,11 +176,6 @@ const ProfitPerSaleChart = ({address}) => {
         pointBackgroundColor: '#ffffff',
         pointRadius: pointRadius,
         hoverRadius: pointRadius,
-        tooltip: {
-          callbacks: {
-            label: scatterFormatter,
-          }
-        },
         parsing: {
           xAxisKey: "timestamp",
           yAxisKey: "percentageGain"
@@ -165,11 +187,6 @@ const ProfitPerSaleChart = ({address}) => {
         pointBackgroundColor: 'rgba(255,108,82,0.5)',
         pointRadius: pointRadius,
         hoverRadius: pointRadius,
-        tooltip: {
-          callbacks: {
-            label: scatterFormatter,
-          }
-        },
         parsing: {
           xAxisKey: "timestamp",
           yAxisKey: "percentageGain"
@@ -180,26 +197,31 @@ const ProfitPerSaleChart = ({address}) => {
   const chartRef = useRef(null);
 
   return (
-    <BaseLineChart chartData={chartData}
-                   chartRef={chartRef}
-                   buttons={Object.keys(durationMap).map(endpoint => <ChartButton key={endpoint}
-                                                                                  text={endpoint}
-                                                                                  active={endpoint === active}
-                                                                                  onClick={() => {
-                                                                                    if (endpoint !== active) {
-                                                                                      setIsLoading(true);
-                                                                                      setActive(endpoint);
-                                                                                    }
-                                                                                  }}/>
-                   )}
-                   chartOptions={chartOptions}
-                   isLoading={isLoading}
-                   stats={[]}
-                   plugins={[]}
-                   controls={[<ChartToggle name={<FontAwesomeIcon style={{color: "#b0b0b0"}} icon={faMagnifyingGlassChart}/>} onToggle={a => {
-                     setOutliers(!outliers);
-                     setVersion(version + 1);
-                   }} initChecked={!outliers} tooltip="Hide outliers"/>]}/>
+    <div style={{width: "100%", height: "100%", position: "relative"}}>
+      <BaseLineChart chartData={chartData}
+                     chartRef={chartRef}
+                     buttons={Object.keys(durationMap).map(endpoint => <ChartButton key={endpoint}
+                                                                                    text={endpoint}
+                                                                                    active={endpoint === active}
+                                                                                    onClick={() => {
+                                                                                      if (endpoint !== active) {
+                                                                                        setIsLoading(true);
+                                                                                        setActive(endpoint);
+                                                                                      }
+                                                                                    }}/>
+                     )}
+                     chartOptions={chartOptions}
+                     isLoading={isLoading}
+                     stats={[]}
+                     plugins={[]}
+                     controls={[<ChartToggle
+                       name={<FontAwesomeIcon style={{color: "#b0b0b0"}} icon={faMagnifyingGlassChart}/>}
+                       onToggle={a => {
+                         setOutliers(!outliers);
+                         setVersion(version + 1);
+                       }} initChecked={!outliers} tooltip="Hide outliers"/>]}/>
+      <UrlsPopup onClose={() => setUrls([])} urls={urls}/>
+    </div>
   );
 }
 
