@@ -64,7 +64,7 @@ const HoldersChart = ({address}) => {
         ticks: {
           autoSkip: true
         },
-        max: initialXMax,
+        max: Date.now(),
         min: initialXMin
       },
       yAxes: {

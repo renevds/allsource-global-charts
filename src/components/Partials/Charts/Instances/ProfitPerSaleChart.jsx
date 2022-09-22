@@ -44,7 +44,7 @@ const ProfitPerSaleChart = ({address}) => {
     if (init) {
       try {
         const newInitialMax = getMax(data, "timestamp");
-        const newInitialMin = newInitialMax - dayTimestampDuration * durationMap[active];
+        const newInitialMin = Math.max(Date.now() - dayTimestampDuration * durationMap[active], getMin(data, "timestamp"));
         setInitialXMax(newInitialMax);
         setInitialXMin(newInitialMin);
         setIsLoading(false);
@@ -94,7 +94,7 @@ const ProfitPerSaleChart = ({address}) => {
         limits: {
           xAxes: {
             min: getMin(data, "timestamp"),
-            max: initialXMax
+            max: Date.now()
           }
         }
       },

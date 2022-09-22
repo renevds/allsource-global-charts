@@ -289,6 +289,7 @@ const SaleForPeriodChart = ({address}) => {
     ]
   }
 
+
   return (
     <div className='saleforperiodchart__container'>
       <BaseLineChart chartData={chartData}
@@ -319,19 +320,21 @@ const SaleForPeriodChart = ({address}) => {
                                         setGarbage(a);
                                       }
                                     }} initChecked={garbage} tooltip="Show outliers"/>,
-                       <ChartToggle name={<FontAwesomeIcon style={{color: "#b0b0b0"}} icon={faMagnifyingGlassChart}/>}
+                       <ChartToggle key={3}
+                                    name={<FontAwesomeIcon style={{color: "#b0b0b0"}} icon={faMagnifyingGlassChart}/>}
                                     initChecked={zoomed}
                                     onToggle={a => {
                                       setZoomed(a);
                                       setVersion(version + 1);
                                     }} tooltip="Zoom"/>,
-                       <ChartToggle name={<div style={{
-                         backgroundColor: "#b0b0b0",
-                         width: "8px",
-                         height: "8px",
-                         marginRight: "4px",
-                         borderRadius: "50%"
-                       }}/>}
+                       <ChartToggle key={"4." + version.toString()}
+                                    name={<div style={{
+                                      backgroundColor: "#b0b0b0",
+                                      width: "8px",
+                                      height: "8px",
+                                      marginRight: "4px",
+                                      borderRadius: "50%"
+                                    }}/>}
                                     afterName={<FontAwesomeIcon style={{color: "#b0b0b0"}} icon={faCircle}/>}
                                     tooltip="Dot size"
                                     initChecked={largerDot}
