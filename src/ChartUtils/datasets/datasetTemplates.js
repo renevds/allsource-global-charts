@@ -11,6 +11,13 @@ const baseDataset = {
 
 export const simpleScatterDataset = {
   ...baseDataset,
+  pointBackgroundColor: horizontalBlueGreenGradient,
+  pointBorderColor: "rgba(255,255,255,0.5)",
+  pointRadius: 1,
+  pointBorderWidth: 0,
+  hoverBorderWidth: 10,
+  pointHitRadius: 10,
+  hoverRadius: 1,
   showLine: false
 }
 

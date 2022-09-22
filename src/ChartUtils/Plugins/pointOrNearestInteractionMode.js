@@ -21,7 +21,7 @@ Interaction.modes.pointOrNearest = function (chart, e, options, useFinalPosition
     const lowestIndex = ys.indexOf(Math.max(...ys));
     const lowest = res[lowestIndex];
     if (lowest) {
-      return Interaction.modes.point(chart, {
+      return Interaction.modes.nearest(chart, {
         ...e,
         x: lowest.element.x,
         y: lowest.element.y

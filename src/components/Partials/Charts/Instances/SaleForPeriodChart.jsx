@@ -34,9 +34,7 @@ import {simpleScatterDataset} from "../../../../ChartUtils/datasets/datasetTempl
 const durationMap = {
   "7D": 7,
   "14D": 14,
-  "31D": 31,
-  "3M": 90,
-  "1Y": 365,
+  "31D": 31
 }
 
 const scatterXAxisKey = "timestamp"
@@ -47,7 +45,7 @@ const marketKey = "market"
 
 const SaleForPeriodChart = ({address}) => {
 
-  const [active, setActive] = useState('3M' || Object.keys(durationMap)[0]);
+  const [active, setActive] = useState('31D');
   const [version, setVersion] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
   const [scatterData, setScatterData] = useState([]);
@@ -73,7 +71,7 @@ const SaleForPeriodChart = ({address}) => {
   useEffect(() => {
     if (init) {
       const newInitialMax = getMax(averageData, averageXAxisKey);
-      const newInitialMin = newInitialMax - dayTimestampDuration * (durationMap[active] - 1);
+      const newInitialMin = Math.min(Date.now() - dayTimestampDuration * durationMap[active], getMin(averageData, averageXAxisKey));
       const avgInView = getDataBetween(averageData, averageXAxisKey, newInitialMin, newInitialMax, averageXAxisKey);
       const newAvg = getAvg(avgInView, averageYAxisKey);
       let pannedFilteredData = getDataBetween(scatterData, scatterXAxisKey, newInitialMin, newInitialMax);
@@ -150,19 +148,7 @@ const SaleForPeriodChart = ({address}) => {
         intersect: false,
         callbacks: {
           beforeBody: (toolTipItems) => {
-            if (toolTipItems.length > 5) {
-              let price = 0;
-              toolTipItems.forEach(toolTipItem => {
-                price += toolTipItem.raw.ethValue;
-              })
-              price /= toolTipItems.length;
-              return `${toolTipItems.length} sales around Ξ ${price.toLocaleString()}`
-            } else {
-              return toolTipItems
-                .map(toolTipItem => `ID ${toolTipItem.raw.id} for 
-                ${" ".repeat(5 - toolTipItem.raw.id.toString().length)} 
-                Ξ ${toolTipItem.raw.ethValue.toLocaleString()}`)
-            }
+            return `Ξ ${toolTipItems[0].raw.ethValue.toLocaleString()}`
           },
           label: () => {
             return false
@@ -174,11 +160,6 @@ const SaleForPeriodChart = ({address}) => {
         enabled: !logarithmic
       },
       zoom: {
-        zoom: {
-          wheel: {enabled: true},
-          pinch: {enabled: true},
-          mode: 'y'
-        },
         pan: {
           enabled: true,
           mode: "x",
@@ -267,9 +248,6 @@ const SaleForPeriodChart = ({address}) => {
           xAxisKey: scatterXAxisKey,
           yAxisKey: scatterYAxisKey
         },
-        pointRadius: 1,
-        hoverBorderWidth: 1,
-        pointHitRadius: 1,
         trendLineLinear: {
           enabled: trend,
           style: horizontalBlueGreenGradient,
@@ -280,6 +258,7 @@ const SaleForPeriodChart = ({address}) => {
         }
       },
       {
+        ...simpleScatterDataset,
         hidden: !garbage,
         data: garbageData,
         showLine: false,
@@ -287,9 +266,7 @@ const SaleForPeriodChart = ({address}) => {
           xAxisKey: scatterXAxisKey,
           yAxisKey: scatterYAxisKey
         },
-        pointBorderColor: "rgba(255,0,0,0.5)",
-        pointHitRadius: 1,
-        pointRadius: 1,
+        pointBorderColor: "rgba(255,0,0,0.5)"
       },
     ]
   }
@@ -328,7 +305,7 @@ const SaleForPeriodChart = ({address}) => {
                          setLogarithmic(a);
                          setVersion(version + 1);
                        }} initChecked={logarithmic} tooltip="Logarithmic scale"/>]}
-                     plugins={[initialZoom, showZoomPlugin, pluginTrendLineLinear]}
+                     plugins={[pluginTrendLineLinear, initialZoom]}
                      stats={[<ChartStat key={2} name="Average"
                                         value={`Ξ ${(Math.round(avg * 100) / 100).toLocaleString()}`}
                                         icon={<FontAwesomeIcon icon={faChartLine}/>}
