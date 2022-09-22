@@ -16,8 +16,6 @@ import {dayTimestampDuration} from "../../../../utils/timeUtils";
 
 //Plugins
 import {initialZoom} from "../../../../ChartUtils/Plugins/initialZoomPlugin";
-import {showZoomPlugin} from "../../../../ChartUtils/Plugins/showZoomPlugin";
-import {compressDataSet, ONE_HOUR} from "../../../../utils/dataSetSizeDecreaserUtils";
 import {pluginTrendLineLinear} from "../../../../ChartUtils/Plugins/trendLinePlugin";
 import '../../../../ChartUtils/Plugins/pointOrNearestInteractionMode';
 
@@ -30,6 +28,7 @@ import './SaleForPeriodChart.css'
 import {anySaleInEthForPeriod, averagePerDaySaleForPeriod} from "../../../../chart_queries";
 import {chartBlue} from "../../../../ChartUtils/Utils/chartColors";
 import {simpleScatterDataset} from "../../../../ChartUtils/datasets/datasetTemplates";
+import {compressDataSet} from "../../../../utils/dataSetSizeDecreaserUtils";
 
 const durationMap = {
   "7D": 7,
@@ -71,7 +70,7 @@ const SaleForPeriodChart = ({address}) => {
   useEffect(() => {
     if (init) {
       const newInitialMax = getMax(averageData, averageXAxisKey);
-      const newInitialMin = Math.min(Date.now() - dayTimestampDuration * durationMap[active], getMin(averageData, averageXAxisKey));
+      const newInitialMin = Math.max(Date.now() - dayTimestampDuration * durationMap[active], getMin(averageData, averageXAxisKey));
       const avgInView = getDataBetween(averageData, averageXAxisKey, newInitialMin, newInitialMax, averageXAxisKey);
       const newAvg = getAvg(avgInView, averageYAxisKey);
       let pannedFilteredData = getDataBetween(scatterData, scatterXAxisKey, newInitialMin, newInitialMax);
@@ -95,12 +94,8 @@ const SaleForPeriodChart = ({address}) => {
     async function loadData() {
       const newScatterData = await anySaleInEthForPeriod(address, 365, true);
       const newAverageData = await averagePerDaySaleForPeriod(address, 365);
-
-      const markets = newScatterData.map(a => a[marketKey])
-      console.log([...new Set(markets)])
       const nonGarbage = newScatterData.filter(a => a[marketKey] === "Sale");
-      console.log(newScatterData.filter(a => a[marketKey] !== "Sale"))
-      setScatterData(nonGarbage);
+      setScatterData(compressDataSet(nonGarbage, scatterXAxisKey, scatterYAxisKey));
       setGarbageData(newScatterData.filter(a => a[marketKey] !== "Sale"));
       setAverageData(newAverageData);
       setActive(active);

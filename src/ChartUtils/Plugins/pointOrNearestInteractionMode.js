@@ -1,9 +1,22 @@
 import {Interaction} from "chart.js";
 
+const distance = (a, b) => {
+  return Math.sqrt(Math.pow(a.x - b.x, 2) + Math.pow(a.y - b.y, 2))
+}
+
 Interaction.modes.pointOrNearest = function (chart, e, options, useFinalPosition) {
   const res = Interaction.modes.point(chart, e, options, useFinalPosition);
   if (res.length > 0) {
-    return Interaction.modes.nearest(chart, e, {}, useFinalPosition);
+    let selected = res[0];
+    let dis = distance(res[0].element, e);
+    for (let i = 1; i < res.length; i++) {
+      const newDis = distance(res[i].element, e);
+      if(newDis < dis){
+        dis = newDis;
+        selected = res[i];
+      }
+    }
+    return [selected];
   } else {
     const res = []
     const ids = [];

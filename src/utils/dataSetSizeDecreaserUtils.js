@@ -1,13 +1,9 @@
-import {getAvg} from "../ChartUtils/Utils/chartDataUtils";
-
-export const ONE_HOUR = 60 * 60 * 1000;
-
-export function compressDataSet(dataSet, xKey, yKey, xMargin, yMargin) {
+export function compressDataSet(dataSet, xKey, yKey) {
   const groups = {}
 
   for (const i of dataSet) {
-    const xVal = Math.round(i[xKey]/xMargin)
-    const yVal = Math.round(i[yKey]/yMargin)
+    const xVal = i[xKey]
+    const yVal = i[yKey]
     if(!groups.hasOwnProperty(xVal)){
       groups[xVal] = {}
     }
@@ -24,8 +20,8 @@ export function compressDataSet(dataSet, xKey, yKey, xMargin, yMargin) {
       if(group.originals.length === 1){
         newDataSet.push(group.originals[0])
       }else {
-        group[xKey] = getAvg(group.originals, xKey);
-        group[yKey] = getAvg(group.originals, yKey);
+        group[xKey] = group.originals[0][xKey];
+        group[yKey] = group.originals[0][yKey];
         newDataSet.push(group)
       }
     }
