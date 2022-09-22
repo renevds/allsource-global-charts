@@ -8,7 +8,7 @@ import Tippy from '@tippyjs/react';
 import 'tippy.js/dist/tippy.css';
 import './ChartToggle.css'
 
-const ChartToggle = ({name, onToggle, initChecked, tooltip}) => {
+const ChartToggle = ({name, onToggle, initChecked, tooltip, afterName}) => {
   const [checked, setChecked] = useState(initChecked);
 
   return (
@@ -22,6 +22,8 @@ const ChartToggle = ({name, onToggle, initChecked, tooltip}) => {
           }}/>
           <span className="charttoggle__slider"/>
         </label>
+        {afterName && <div style={{width: "5px"}}/>}
+        {afterName}
       </div>
     </Tippy>
   )

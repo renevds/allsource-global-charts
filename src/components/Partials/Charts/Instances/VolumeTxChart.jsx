@@ -22,7 +22,7 @@ import {chartBlue, chartPurple} from "../../../../ChartUtils/Utils/chartColors";
 const durationMap = {
   "7D": 7,
   "14D": 14,
-  "31D": 31,
+  "30D": 30,
   "3M": 90,
   "1Y": 365,
 }
@@ -30,7 +30,7 @@ const durationMap = {
 const VolumeTxChart = ({address}) => {
   const [init, setInit] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
-  const [active, setActive] = useState("31D");
+  const [active, setActive] = useState("30D");
   const [data, setData] = useState([]);
   const [version, setVersion] = useState(0);
   const [error, setError] = useState("");

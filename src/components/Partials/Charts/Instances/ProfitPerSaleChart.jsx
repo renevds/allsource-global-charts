@@ -25,7 +25,7 @@ const durationMap = {
   "24H": 1,
   "7D": 7,
   "14D": 14,
-  "31D": 31,
+  "30D": 30,
   "3M": 90
 }
 
@@ -138,14 +138,17 @@ const ProfitPerSaleChart = ({address}) => {
     filteredData = filterOutliers(data, "percentageGain")
   }
 
+  const pointRadius = 2;
+
   const chartData = {
     version,
     datasets: [
       {
         ...simpleScatterDataset,
         data: filteredData.filter(a => a["percentageGain"] > 0),
-        pointBorderColor: '#ffffff',
-        pointBackgroundColor: 'rgba(255,255,255,0.5)',
+        pointBackgroundColor: '#ffffff',
+        pointRadius: pointRadius,
+        hoverRadius: pointRadius,
         tooltip: {
           callbacks: {
             label: scatterFormatter,
@@ -159,8 +162,9 @@ const ProfitPerSaleChart = ({address}) => {
       {
         ...simpleScatterDataset,
         data: filteredData.filter(a => a["percentageGain"] <= 0),
-        pointBorderColor: '#ff6c52',
         pointBackgroundColor: 'rgba(255,108,82,0.5)',
+        pointRadius: pointRadius,
+        hoverRadius: pointRadius,
         tooltip: {
           callbacks: {
             label: scatterFormatter,

@@ -6,7 +6,13 @@ import {useEffect, useRef, useState} from "react";
 //Components
 import BaseLineChart from "../Base/BaseLineChart";
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
-import {faChartLine, faShoppingBasket, faTrash, faXmark} from "@fortawesome/free-solid-svg-icons";
+import {
+  faChartLine, faCircle,
+  faMagnifyingGlassChart,
+  faShoppingBasket,
+  faTrash,
+  faXmark
+} from "@fortawesome/free-solid-svg-icons";
 import ChartToggle from "../Base/ChartToggle";
 import ChartStat from "../Base/ChartStat";
 
@@ -28,12 +34,12 @@ import './SaleForPeriodChart.css'
 import {anySaleInEthForPeriod, averagePerDaySaleForPeriod} from "../../../../chart_queries";
 import {chartBlue} from "../../../../ChartUtils/Utils/chartColors";
 import {simpleScatterDataset} from "../../../../ChartUtils/datasets/datasetTemplates";
-import {compressDataSet} from "../../../../utils/dataSetSizeDecreaserUtils";
+import {compressDataSet} from "../../../../ChartUtils/Utils/dataSetSizeDecreaserUtils";
 
 const durationMap = {
   "7D": 7,
   "14D": 14,
-  "31D": 31
+  "30D": 30
 }
 
 const scatterXAxisKey = "timestamp"
@@ -44,7 +50,7 @@ const marketKey = "market"
 
 const SaleForPeriodChart = ({address}) => {
 
-  const [active, setActive] = useState('31D');
+  const [active, setActive] = useState('30D');
   const [version, setVersion] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
   const [scatterData, setScatterData] = useState([]);
@@ -62,6 +68,8 @@ const SaleForPeriodChart = ({address}) => {
   const [pricePercentage, setPricePercentage] = useState(0);
   const [trend, setTrend] = useState(false);
   const [urls, setUrls] = useState([]);
+  const [zoomed, setZoomed] = useState(true);
+  const [largerDot, setLargerDot] = useState(false);
 
   const countTx = (compressed) => {
     return compressed.map(a => a.originals?.length || 1).reduce((partialSum, a) => partialSum + a, 0);
@@ -78,28 +86,41 @@ const SaleForPeriodChart = ({address}) => {
       const avgInViewMin = getMin(avgInView, averageXAxisKey);
       const firstAvg = averageData.filter(a => a[averageXAxisKey] === avgInViewMin)[0][averageYAxisKey];
       const lastAvg = averageData.filter(a => a[averageXAxisKey] === newInitialMax)[0][averageYAxisKey];
+      const newTx = countTx(pannedFilteredData);
       setPricePercentage(Math.round((lastAvg - firstAvg) * 100 / firstAvg))
       setInitialXMax(newInitialMax);
       setInitialXMin(newInitialMin);
       setAvg(newAvg);
       setPannedFilteredData(pannedFilteredData);
-      setTx(countTx(pannedFilteredData));
+      setTx(newTx);
+      setLargerDot(newTx <= 500);
       setDataMin(newDataMin);
       setIsLoading(false);
       setVersion(v => v + 1);
     }
   }, [active, init])
 
+  const handleData = (newScatterData, newAverageData) => {
+    const nonGarbage = newScatterData.filter(a => a[marketKey] === "Sale");
+    setScatterData(compressDataSet(nonGarbage, scatterXAxisKey, scatterYAxisKey));
+    setGarbageData(newScatterData.filter(a => a[marketKey] !== "Sale"));
+    setAverageData(newAverageData);
+    setActive(active);
+    setInit(true);
+  }
+
   useEffect(() => {
     async function loadData() {
+      const newScatterData = await anySaleInEthForPeriod(address, 31, true);
+      const newAverageData = await averagePerDaySaleForPeriod(address, 31);
+      handleData(newScatterData, newAverageData);
+      console.log("first loaded");
+    }
+
+    async function loadMoreData() {
       const newScatterData = await anySaleInEthForPeriod(address, 365, true);
       const newAverageData = await averagePerDaySaleForPeriod(address, 365);
-      const nonGarbage = newScatterData.filter(a => a[marketKey] === "Sale");
-      setScatterData(compressDataSet(nonGarbage, scatterXAxisKey, scatterYAxisKey));
-      setGarbageData(newScatterData.filter(a => a[marketKey] !== "Sale"));
-      setAverageData(newAverageData);
-      setActive(active);
-      setInit(true);
+      handleData(newScatterData, newAverageData);
     }
 
     loadData();
@@ -152,7 +173,7 @@ const SaleForPeriodChart = ({address}) => {
       },
       initialZoom: {
         center: avg,
-        enabled: !logarithmic
+        enabled: !logarithmic && zoomed
       },
       zoom: {
         pan: {
@@ -238,6 +259,7 @@ const SaleForPeriodChart = ({address}) => {
     datasets: [
       {
         ...simpleScatterDataset,
+        pointRadius: largerDot ? 3 : 1,
         data: pannedFilteredData,
         parsing: {
           xAxisKey: scatterXAxisKey,
@@ -254,6 +276,7 @@ const SaleForPeriodChart = ({address}) => {
       },
       {
         ...simpleScatterDataset,
+        pointRadius: largerDot ? 3 : 1,
         hidden: !garbage,
         data: garbageData,
         showLine: false,
@@ -296,10 +319,26 @@ const SaleForPeriodChart = ({address}) => {
                                         setGarbage(a);
                                       }
                                     }} initChecked={garbage} tooltip="Show outliers"/>,
-                       <ChartToggle key={3} name="Log" onToggle={a => {
-                         setLogarithmic(a);
-                         setVersion(version + 1);
-                       }} initChecked={logarithmic} tooltip="Logarithmic scale"/>]}
+                       <ChartToggle name={<FontAwesomeIcon style={{color: "#b0b0b0"}} icon={faMagnifyingGlassChart}/>}
+                                    initChecked={zoomed}
+                                    onToggle={a => {
+                                      setZoomed(a);
+                                      setVersion(version + 1);
+                                    }} tooltip="Zoom"/>,
+                       <ChartToggle name={<div style={{
+                         backgroundColor: "#b0b0b0",
+                         width: "8px",
+                         height: "8px",
+                         marginRight: "4px",
+                         borderRadius: "50%"
+                       }}/>}
+                                    afterName={<FontAwesomeIcon style={{color: "#b0b0b0"}} icon={faCircle}/>}
+                                    tooltip="Dot size"
+                                    initChecked={largerDot}
+                                    onToggle={a => {
+                                      setLargerDot(a);
+                                      setVersion(version + 1);
+                                    }}/>]}
                      plugins={[pluginTrendLineLinear, initialZoom]}
                      stats={[<ChartStat key={2} name="Average"
                                         value={`Ξ ${(Math.round(avg * 100) / 100).toLocaleString()}`}
@@ -311,17 +350,17 @@ const SaleForPeriodChart = ({address}) => {
                      chartOptions={chartOptions}
                      isLoading={isLoading}/>
       {(urls.length > 0) &&
-      <div className="saleforperiodchart__urls">
-        <div className="saleforperiodchart__center">
-          <div className="saleforperiodchart__urls__close" onClick={() => setUrls([])}>
-            <FontAwesomeIcon icon={faXmark}/>
-          </div>
-          <div className="saleforperiodchart__urls__bg">
-            {urls.map(a => <a key={a.url + '--' + a.name} className="saleforperiodchart__urls__a" href={a.url}
-                              target='_blank'>{a.name}</a>)}
+        <div className="saleforperiodchart__urls">
+          <div className="saleforperiodchart__center">
+            <div className="saleforperiodchart__urls__close" onClick={() => setUrls([])}>
+              <FontAwesomeIcon icon={faXmark}/>
+            </div>
+            <div className="saleforperiodchart__urls__bg">
+              {urls.map(a => <a key={a.url + '--' + a.name} className="saleforperiodchart__urls__a" href={a.url}
+                                target='_blank'>{a.name}</a>)}
+            </div>
           </div>
         </div>
-      </div>
       }
     </div>
   );

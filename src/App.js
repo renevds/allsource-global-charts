@@ -25,7 +25,8 @@ function App() {
     {'Bored Ape Yacht Club': '0xBC4CA0EdA7647A8aB7C2061c2E118A18a936f13D'},
     {'Cryptoburbs': '0x3e55D389D352f4905961a6B32cA53B2F229Fed73'},
     {'CHFTY': '0xA720E16603f81CD82FaAE15AE16F1aCfE88ddF0F'},
-    {'posersnft': '0x02BeeD1404c69e62b76Af6DbdaE41Bd98bcA2Eab'}]
+    {'posersnft': '0x02BeeD1404c69e62b76Af6DbdaE41Bd98bcA2Eab'},
+    {'DigiDaigakuSpirits': '0xa8824EeE90cA9D2e9906D377D36aE02B1aDe5973'}]
 
   const [address, setAddress] = useState("0xBC4CA0EdA7647A8aB7C2061c2E118A18a936f13D")
 
