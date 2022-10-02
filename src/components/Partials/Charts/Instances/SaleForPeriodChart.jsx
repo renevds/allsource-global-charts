@@ -285,7 +285,7 @@ const SaleForPeriodChart = ({address}) => {
           xAxisKey: scatterXAxisKey,
           yAxisKey: scatterYAxisKey
         },
-        pointBorderColor: "rgba(255,0,0,0.5)"
+        pointBackgroundColor: "rgba(255,0,0,0.5)"
       },
     ]
   }
@@ -345,7 +345,7 @@ const SaleForPeriodChart = ({address}) => {
                                     }}/>]}
                      plugins={[pluginTrendLineLinear, initialZoom]}
                      stats={[<ChartStat key={2} name="Average"
-                                        value={`Ξ ${(Math.round(avg * 100) / 100).toLocaleString()}`}
+                                        value={`${(Math.round(avg * 100) / 100).toLocaleString()} Ξ`}
                                         icon={<FontAwesomeIcon icon={faChartLine}/>}
                                         percentage={pricePercentage}/>,
                        <ChartStat key={3} name="Sales" value={tx}

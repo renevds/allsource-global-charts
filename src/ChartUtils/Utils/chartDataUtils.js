@@ -34,3 +34,19 @@ export function getDataBetween(data, key, lower, upper) {
 export function getSum(data, key) {
   return data.reduce((partialSum, a) => partialSum + a[key], 0);
 }
+
+export function formatDecimal(value) {
+  if(value > 10000){
+    return Math.round(value);
+  }
+  else if(value > 1000){
+    return Math.round(value*10)/10;
+  }
+  else if(value > 100){
+    return Math.round(value*100)/100;
+  }
+  else if (value > 10){
+    return Math.round(value*1000)/1000;
+  }
+  return value;
+}

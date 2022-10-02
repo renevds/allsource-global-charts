@@ -23,9 +23,6 @@ import {
 } from 'chart.js';
 import 'chartjs-adapter-moment';
 
-//Gradients
-import {horizontalBlueGreenGradient} from "../../../../ChartUtils/Utils/chartGradientUtils";
-
 //Scales
 import OffsetLogScale from "../../../../ChartUtils/Scales/offsetLogScale";
 import ModifiedLinearScale from "../../../../ChartUtils/Scales/modifiedLinearScale";
@@ -37,6 +34,7 @@ import annotationPlugin from "chartjs-plugin-annotation";
 
 //Utils
 import {mergeDeep} from "../../../../utils/objUtils";
+
 ChartJS.register(
   TimeScale,
   LinearScale,
@@ -54,7 +52,7 @@ ChartJS.register(
   BarElement,
   Log2ScalePlugin,
   annotationPlugin,
-  BarController
+  BarController,
 );
 
 const BaseLineChart = ({chartData, buttons, controls, plugins, stats, chartOptions, chartRef, isLoading}) => {
@@ -63,6 +61,9 @@ const BaseLineChart = ({chartData, buttons, controls, plugins, stats, chartOptio
       responsive: true,
       maintainAspectRatio: false,
       spanGaps: true,
+      layout: {
+        padding: 0
+      },
       plugins: {
         legend: {
           display: false
@@ -76,7 +77,7 @@ const BaseLineChart = ({chartData, buttons, controls, plugins, stats, chartOptio
           color: "#ffffff",
           maxTicksLimit: 6,
           grid: {
-            borderWidth: 0,
+            drawBorder: false,
             color: "#322F36"
           },
         },
@@ -94,7 +95,7 @@ const BaseLineChart = ({chartData, buttons, controls, plugins, stats, chartOptio
             }
           },
           grid: {
-            borderWidth: 0,
+            drawBorder: false,
             color: "#322F36",
             display: false
           }

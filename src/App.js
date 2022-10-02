@@ -37,7 +37,7 @@ function App() {
         {possibleAddresses.map(a => {
             const name = Object.keys(a)[0];
             const value = Object.values(a)[0];
-            return (<button disabled={value === address} onClick={() => setAddress(value)}>{name}</button>)
+            return (<button key={value} disabled={value === address} onClick={() => setAddress(value)}>{name}</button>)
           }
         )}
       </div>
