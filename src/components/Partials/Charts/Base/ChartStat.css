@@ -6,7 +6,13 @@
     padding-left: 10px;
     padding-right: 10px;
     border-right: 1px solid rgba(255,255,255,0.1);
+    width: 130px;
 }
+
+.chartstat__container__wide{
+    width: 180px;
+}
+
 .chartstat__container:last-child{
     border: 0;
 }

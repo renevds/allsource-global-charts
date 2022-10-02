@@ -10,7 +10,7 @@ const ChartStat = ({name, value, icon, percentage, colorValue, valueSign, valueC
   valueSign = valueSign || "";
 
   return (
-    <div className="chartstat__container">
+    <div className={"chartstat__container" + (percentage ? " chartstat__container__wide" : "")}>
       <div className="chartstat__icon">
         {icon}
       </div>
