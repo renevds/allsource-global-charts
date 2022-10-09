@@ -58,3 +58,7 @@ export function floorAndMarketCap(contractAddress, days) {
 export function profitPerDay(contractAddress) {
   return chartDataFetch.get('/profitPerDay', {params: {contractAddress}}).then(a => a.data.data)
 }
+
+export function getMintCharts(contractAddress){
+  return chartDataFetchNoLZW.get('/getMintCharts', {params: {contractAddress}}).then(a => a.data)
+}

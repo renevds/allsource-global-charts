@@ -29,7 +29,7 @@ function App() {
     {'DigiDaigakuSpirits': '0xa8824EeE90cA9D2e9906D377D36aE02B1aDe5973'},
     {'Broken': 'a'}]
 
-  const [address, setAddress] = useState("0xBC4CA0EdA7647A8aB7C2061c2E118A18a936f13D")
+  const [address, setAddress] = useState("0x0c2E57EFddbA8c768147D1fdF9176a0A6EBd5d83")
 
 
   return (

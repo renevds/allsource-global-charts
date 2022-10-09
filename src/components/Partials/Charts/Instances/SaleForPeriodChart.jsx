@@ -30,11 +30,12 @@ import {horizontalBlueGreenGradient} from "../../../../ChartUtils/Utils/chartGra
 
 //Style
 import './SaleForPeriodChart.css'
-import {anySaleInEthForPeriod, averagePerDaySaleForPeriod} from "../../../../chart_queries";
+import {anySaleInEthForPeriod, averagePerDaySaleForPeriod, getMintCharts} from "../../../../chart_queries";
 import {chartBlue} from "../../../../ChartUtils/Utils/chartColors";
 import {simpleScatterDataset} from "../../../../ChartUtils/datasets/datasetTemplates";
 import {compressDataSet} from "../../../../ChartUtils/Utils/dataSetSizeDecreaserUtils";
 import UrlsPopup from "../Base/UrlsPopup";
+import {object} from "prop-types";
 
 const durationMap = {
   "7D": 7,
@@ -118,6 +119,7 @@ const SaleForPeriodChart = ({address}) => {
         console.log(newScatterData);
         const newAverageData = await averagePerDaySaleForPeriod(address, 31);
         handleData(newScatterData, newAverageData);
+        getMintCharts(address).then(console.log)
         loadMoreData();
       } catch (e) {
         setError("Chart data not available.");
@@ -126,9 +128,14 @@ const SaleForPeriodChart = ({address}) => {
     }
 
     async function loadMoreData() {
-      const newScatterData = await anySaleInEthForPeriod(address, 365, true).catch(() => setError("Chart data not available."));
-      const newAverageData = await averagePerDaySaleForPeriod(address, 365).catch(() => setError("Chart data not available."));
-      handleData(newScatterData, newAverageData);
+      try {
+        const newScatterData = await anySaleInEthForPeriod(address, 365, true).catch(() => setError("Chart data not available."));
+        const newAverageData = await averagePerDaySaleForPeriod(address, 365).catch(() => setError("Chart data not available."));
+        handleData(newScatterData, newAverageData);
+      } catch (e) {
+        setError("Chart data not available.");
+        setInit(true);
+      }
     }
 
     loadData();
