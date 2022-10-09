@@ -36,6 +36,7 @@ const BasicLineChart = ({
         setVersion(version + 1);
       } catch (e) {
         setError(e);
+        setInit(true);
       }
     }
   }, [init])
@@ -44,7 +45,7 @@ const BasicLineChart = ({
     dataEndpoint().then(a => {
       setData(a);
       setInit(true);
-    })
+    }).catch(() => setError("Chart data not available."));
   }
 
   const chartOptions = {
@@ -101,7 +102,8 @@ const BasicLineChart = ({
                       chartRef={chartRef}
                       chartOptions={chartOptions}
                       isLoading={isLoading}
-                      plugins={[saveImageToStorage]}/>
+                      plugins={[saveImageToStorage]}
+    error={error}/>
   );
 }
 

@@ -7,10 +7,14 @@ import './Speedometer.css';
 const Speedometer = ({dataEndpoint, range, saveToSessionName}) => {
   const [init, setInit] = useState(false);
   const [value, setValue] = useState(0);
+  const [error, setError] = useState("");
 
   if (!init) {
     dataEndpoint().then(a => {
       setValue(a / range);
+      setInit(true);
+    }).catch(() => {
+      setError("Chart data not available.");
       setInit(true);
     })
   }

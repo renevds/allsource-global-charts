@@ -16,3 +16,15 @@
     padding: 20px;
     position: relative;
 }
+
+.base__donut__chart__error{
+    position: absolute;
+    color: var(--color-text);
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: rgba(50, 47, 54, 0.5);
+    border-radius: 12px;
+}

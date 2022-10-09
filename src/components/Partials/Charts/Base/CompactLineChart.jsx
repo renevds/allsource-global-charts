@@ -38,7 +38,7 @@ ChartJS.register(
   BarElement,
 );
 
-const CompactLineChart = ({chartData, plugins, chartOptions, chartRef, isLoading}) => {
+const CompactLineChart = ({chartData, plugins, chartOptions, chartRef, isLoading, error}) => {
 
     const defaultChartOptions = {
       responsive: true,
@@ -94,7 +94,7 @@ const CompactLineChart = ({chartData, plugins, chartOptions, chartRef, isLoading
 
     return (
       <div className="compact__chart__container">
-          <LineMemo options={mergedOptions} data={chartData} plugins={plugins} chartRef={chartRef}/>
+          <LineMemo options={mergedOptions} data={chartData} plugins={plugins} chartRef={chartRef} error={error}/>
         {isLoading && <Loader fullScreen={true} hideBackground={false}/>}
       </div>
     );

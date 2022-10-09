@@ -51,8 +51,8 @@ export function volatilityScore(contractAddress) {
   return chartDataFetchNoLZW.get('/volatilityScore', {params: {contractAddress}}).then(a => a.data)
 }
 
-export function floorAndMarketCap(contractAddress) {
-  return chartDataFetchNoLZW.get('/floorAndMarketCap', {params: {contractAddress}}).then(a => a.data)
+export function floorAndMarketCap(contractAddress, days) {
+  return chartDataFetchNoLZW.get('/floorAndMarketCap', {params: {contractAddress, days}}).then(a => a.data)
 }
 
 export function profitPerDay(contractAddress) {

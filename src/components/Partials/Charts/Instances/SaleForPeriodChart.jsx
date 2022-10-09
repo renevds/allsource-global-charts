@@ -71,6 +71,7 @@ const SaleForPeriodChart = ({address}) => {
   const [urls, setUrls] = useState([]);
   const [zoomed, setZoomed] = useState(true);
   const [largerDot, setLargerDot] = useState(false);
+  const [error, setError] = useState("");
 
   const countTx = (compressed) => {
     return compressed.map(a => a.originals?.length || 1).reduce((partialSum, a) => partialSum + a, 0);
@@ -112,15 +113,20 @@ const SaleForPeriodChart = ({address}) => {
 
   useEffect(() => {
     async function loadData() {
-      const newScatterData = await anySaleInEthForPeriod(address, 31, true);
-      const newAverageData = await averagePerDaySaleForPeriod(address, 31);
-      handleData(newScatterData, newAverageData);
-      loadMoreData();
+      try {
+        const newScatterData = await anySaleInEthForPeriod(address, 31, true);
+        const newAverageData = await averagePerDaySaleForPeriod(address, 31);
+        handleData(newScatterData, newAverageData);
+        loadMoreData();
+      } catch (e) {
+        setError("Chart data not available.");
+        setInit(true);
+      }
     }
 
     async function loadMoreData() {
-      const newScatterData = await anySaleInEthForPeriod(address, 365, true);
-      const newAverageData = await averagePerDaySaleForPeriod(address, 365);
+      const newScatterData = await anySaleInEthForPeriod(address, 365, true).catch(() => setError("Chart data not available."));
+      const newAverageData = await averagePerDaySaleForPeriod(address, 365).catch(() => setError("Chart data not available."));
       handleData(newScatterData, newAverageData);
     }
 
@@ -352,7 +358,8 @@ const SaleForPeriodChart = ({address}) => {
                                   icon={<FontAwesomeIcon icon={faShoppingBasket}/>}/>
                      ]}
                      chartOptions={chartOptions}
-                     isLoading={isLoading}/>
+                     isLoading={isLoading}
+                     error={error}/>
       <UrlsPopup onClose={() => setUrls([])} urls={urls}/>
     </div>
   );

@@ -45,9 +45,14 @@ const HoldersChart = ({address}) => {
 
   useEffect(() => {
     const load = async () => {
-      const profitPerDayData = await profitPerDay(address);
-      setInit(true);
-      setProfitPerDayData(profitPerDayData);
+      try {
+        const profitPerDayData = await profitPerDay(address);
+        setInit(true);
+        setProfitPerDayData(profitPerDayData);
+      } catch (e) {
+        setError("Chart data not available.");
+        setInit(true);
+      }
     }
     load();
   }, [])
@@ -71,7 +76,7 @@ const HoldersChart = ({address}) => {
         type: logarithmic ? "log2Scale" : "modifiedLinear",
         title: {
           display: true,
-          text: "Holders",
+          text: "Profit",
           color: chartBlue,
         }
       }
@@ -146,7 +151,8 @@ const HoldersChart = ({address}) => {
                    controls={[<ChartToggle key={1} name="Log" onToggle={a => {
                      setLogarithmic(a);
                      setVersion(version + 1);
-                   }} initChecked={logarithmic} tooltip="Logarithmic scale"/>]}/>
+                   }} initChecked={logarithmic} tooltip="Logarithmic scale"/>]}
+                   error={error}/>
   );
 }
 

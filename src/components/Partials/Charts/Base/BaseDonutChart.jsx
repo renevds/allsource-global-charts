@@ -26,7 +26,7 @@ ChartJS.register(
   ArcElement
 );
 
-const BaseDonutChart = ({chartData, plugins, chartOptions, chartRef, isLoading}) => {
+const BaseDonutChart = ({chartData, plugins, chartOptions, chartRef, isLoading, error}) => {
 
     const defaultChartOptions = {
       interaction: {
@@ -77,7 +77,10 @@ const BaseDonutChart = ({chartData, plugins, chartOptions, chartRef, isLoading})
         <div className="base__donut__chart__base__donut__chart">
           <Doughnut options={mergedOptions} data={chartData} plugins={plugins}/>
         </div>
-        {isLoading && <Loader fullScreen={true} hideBackground={false}/>}
+        {error ?
+          <div className="base__donut__chart__error">{error}</div> :
+          (isLoading && <Loader fullScreen={true} hideBackground={false}/>)
+        }
       </div>
     );
   }

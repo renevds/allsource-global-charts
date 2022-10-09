@@ -71,12 +71,12 @@ const ProfitPerSaleChart = ({address}) => {
         setVersion(version + 1);
       } catch (e) {
         setError(e);
+        setInit(true);
       }
     }
   }, [active, init])
 
   useEffect(() => {
-    console.log(pannedData)
     setAvg(getAvg(pannedData, ethGainKey));
     setSum(getSum(pannedData, ethGainKey));
     setAmountInProfit(pannedData.filter(a => a[percentageGainKey] > 0).length);
@@ -87,7 +87,7 @@ const ProfitPerSaleChart = ({address}) => {
     marginPerSale(address).then(a => {
       setInit(true);
       setData(a);
-    })
+    }).catch(() => setError("Chart data not available."))
   }
 
   const chartOptions = {
@@ -230,6 +230,7 @@ const ProfitPerSaleChart = ({address}) => {
     <div style={{width: "100%", height: "100%", position: "relative"}}>
       <BaseLineChart chartData={chartData}
                      chartRef={chartRef}
+                     error={error}
                      buttons={Object.keys(durationMap).map(endpoint => <ChartButton key={endpoint}
                                                                                     text={endpoint}
                                                                                     active={endpoint === active}
@@ -253,15 +254,13 @@ const ProfitPerSaleChart = ({address}) => {
                                   icon={<FontAwesomeIcon icon={faCoins}/>}
                                   valueSign={" Ξ"}
                                   colorValue/>,
-                       <ChartStat key={3} name="Sold profit"
+                       <ChartStat key={3} name="Wins"
                                   value={amountInProfit}
                                   icon={<FontAwesomeIcon icon={faPlus}/>}
-                                  valueSign={" Ξ"}
                                   valueClass="chartstat__positive"/>,
-                       <ChartStat key={4} name="Sold loss"
+                       <ChartStat key={4} name="Losses"
                                   value={amountInLoss}
                                   icon={<FontAwesomeIcon icon={faMinus}/>}
-                                  valueSign={" Ξ"}
                                   valueClass="chartstat__negative"/>
                      ]}
                      plugins={[]}

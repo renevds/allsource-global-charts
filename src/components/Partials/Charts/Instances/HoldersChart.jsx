@@ -47,18 +47,23 @@ const HoldersChart = ({address}) => {
 
   useEffect(() => {
     const load = async () => {
-      const uniqueHoldersNZT = await uniqueHoldersOverTimeNZT(address).then(b => b.map(a => {
+      try {
+        const uniqueHoldersNZT = await uniqueHoldersOverTimeNZT(address).then(b => b.map(a => {
+            a.timestamp = new Date(a.day).getTime();
+            return a;
+          }
+        ));
+        const uniqueHolders = await uniqueHoldersOverTime(address).then(b => b.map(a => {
           a.timestamp = new Date(a.day).getTime();
           return a;
-        }
-      ));
-      const uniqueHolders = await uniqueHoldersOverTime(address).then(b => b.map(a => {
-        a.timestamp = new Date(a.day).getTime();
-        return a;
-      }));
-      setInit(true);
-      setUniqueHoldersNZTData(uniqueHoldersNZT);
-      setUniqueHoldersData(uniqueHolders);
+        }));
+        setInit(true);
+        setUniqueHoldersNZTData(uniqueHoldersNZT);
+        setUniqueHoldersData(uniqueHolders);
+      }catch (e){
+        setError("Chart data not available.");
+        setInit(true);
+      }
     }
     load();
   }, [])
@@ -168,6 +173,7 @@ const HoldersChart = ({address}) => {
                    chartOptions={chartOptions}
                    isLoading={isLoading}
                    stats={[]}
+                   error={error}
                    plugins={[toolTipLinePlugin]}
                    controls={[<ChartToggle key={1} name="Log" onToggle={a => {
                      setLogarithmic(a);

@@ -11,13 +11,13 @@ import {interpolateColors} from "../../../../ChartUtils/Utils/chartColorUtils";
 import {differentThicknessDonutPlugin} from "../../../../ChartUtils/Plugins/differentThicknessDonutPlugin";
 
 const DonutChartWithLegend = ({
-                      defaultEndpoint,
-                      durationMap,
-                      valueKey,
-                      dataEndpoint,
-                      formatter,
-                      labelKey
-                    }) => {
+                                defaultEndpoint,
+                                durationMap,
+                                valueKey,
+                                dataEndpoint,
+                                formatter,
+                                labelKey
+                              }) => {
   const [init, setInit] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [active, setActive] = useState(defaultEndpoint);
@@ -40,7 +40,10 @@ const DonutChartWithLegend = ({
     dataEndpoint().then(a => {
       setInit(true);
       setData(a);
-    })
+    }).catch(() => {
+      setError("Chart data not available.");
+      setInit(true);
+    });
   }
 
   const chartOptions = {}
@@ -83,7 +86,8 @@ const DonutChartWithLegend = ({
 
 
   return (<BaseDonutChart chartData={chartData} plugins={[differentThicknessDonutPlugin]} chartOptions={chartOptions}
-                          isLoading={isLoading}/>)
+                          isLoading={isLoading}
+                          error={error}/>)
 
 }
 
