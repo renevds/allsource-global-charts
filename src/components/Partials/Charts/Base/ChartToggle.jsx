@@ -1,5 +1,5 @@
 //Hooks
-import {useEffect, useRef, useState} from "react";
+import {useState} from "react";
 
 //Components
 import Tippy from '@tippyjs/react';

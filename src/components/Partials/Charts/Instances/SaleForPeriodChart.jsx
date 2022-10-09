@@ -10,8 +10,7 @@ import {
   faChartLine, faCircle,
   faMagnifyingGlassChart,
   faShoppingBasket,
-  faTrash,
-  faXmark
+  faTrash
 } from "@fortawesome/free-solid-svg-icons";
 import ChartToggle from "../Base/ChartToggle";
 import ChartStat from "../Base/ChartStat";
@@ -40,7 +39,8 @@ import UrlsPopup from "../Base/UrlsPopup";
 const durationMap = {
   "7D": 7,
   "14D": 14,
-  "30D": 30
+  "30D": 30,
+  "3M": 90
 }
 
 const scatterXAxisKey = "timestamp"
@@ -51,7 +51,7 @@ const marketKey = "market"
 
 const SaleForPeriodChart = ({address}) => {
 
-  const [active, setActive] = useState('30D');
+  const [active, setActive] = useState('7D');
   const [version, setVersion] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
   const [scatterData, setScatterData] = useState([]);

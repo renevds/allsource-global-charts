@@ -1,5 +1,5 @@
 //Hooks
-import {useEffect, useRef, useState} from "react";
+import {useEffect, useState} from "react";
 
 //Components
 import BaseDonutChart from "../Base/BaseDonutChart";

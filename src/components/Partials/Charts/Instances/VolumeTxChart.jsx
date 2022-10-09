@@ -6,12 +6,6 @@ import BaseLineChart from "../Base/BaseLineChart";
 import ChartButton from "../Base/ChartButton";
 import ChartToggle from "../Base/ChartToggle";
 
-//Gradients
-import {
-  horizontalBlueGreenGradient,
-  verticalBlueDarkGradientNonTransparent
-} from "../../../../ChartUtils/Utils/chartGradientUtils";
-
 //Plugins
 import {toolTipLinePlugin} from "../../../../ChartUtils/Plugins/toolTipLinePlugin";
 import {averagePerDaySaleForPeriod, floorAndMarketCap} from "../../../../chart_queries";
@@ -19,9 +13,9 @@ import moment from "moment";
 import {simpleLineDataset, simpleBarDataset} from "../../../../ChartUtils/datasets/datasetTemplates";
 import {chartBlue, chartPurple} from "../../../../ChartUtils/Utils/chartColors";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faChartLine} from "@fortawesome/free-solid-svg-icons";
+import {faChartColumn, faShoppingBasket} from "@fortawesome/free-solid-svg-icons";
 import ChartStat from "../Base/ChartStat";
-import {getSum} from "../../../../ChartUtils/Utils/chartDataUtils";
+import {formatDecimal, getDataBetween, getSum} from "../../../../ChartUtils/Utils/chartDataUtils";
 
 const durationMap = {
   "7D": 7,
@@ -44,6 +38,7 @@ const VolumeTxChart = ({address}) => {
   useEffect(() => {
     if (init) {
       try {
+        setPannedData(averageData.slice(averageData.length - durationMap[active], averageData.length - 1));
         setIsLoading(false);
         setVersion(version + 1);
       } catch (e) {
@@ -61,8 +56,7 @@ const VolumeTxChart = ({address}) => {
         }))
 
         const newFloorPriceData = await floorAndMarketCap(address, 365);
-        console.log(newFloorPriceData);
-        const floorPriceByDate = {}
+        const floorPriceByDate = {};
 
         newFloorPriceData.forEach(a => {
           floorPriceByDate[a.date] = a.floorPrice;
@@ -74,7 +68,6 @@ const VolumeTxChart = ({address}) => {
         })
 
         setAverageData(newAverageData);
-        setPannedData(newAverageData.slice(newAverageData.length - durationMap[active], newAverageData.length - 1));
         setInit(true);
       } catch (e) {
         setError("Chart data not available.");
@@ -123,7 +116,11 @@ const VolumeTxChart = ({address}) => {
       zoom: {
         pan: {
           mode: "x",
-          enabled: true
+          enabled: true,
+          onPan: ({chart}) => {
+            const newPannedData = averageData.slice(chart.scales.xAxes.min, chart.scales.xAxes.max + 1);
+            setPannedData(newPannedData);
+          },
         }
       },
       tooltip: {
@@ -181,9 +178,14 @@ const VolumeTxChart = ({address}) => {
                    )}
                    chartOptions={chartOptions}
                    isLoading={isLoading}
-                   stats={[<ChartStat key={2} name="Total Volume"
-                                      value={`Ξ ${getSum(pannedData, "volume")}`}
-                                      icon={<FontAwesomeIcon icon={faChartLine}/>}/>]}
+                   stats={[<ChartStat key={1} name="Total Vol"
+                                      value={formatDecimal(getSum(pannedData, "volume")).toLocaleString()}
+                                      icon={<FontAwesomeIcon icon={faChartColumn}/>}
+                                      valueSign={" Ξ"}/>,
+                     <ChartStat key={2} name="Total Profit"
+                                value={formatDecimal(getSum(pannedData, "txCount")).toLocaleString()}
+                                icon={<FontAwesomeIcon icon={faShoppingBasket}/>}
+                                valueSign={" Ξ"}/>]}
                    plugins={[toolTipLinePlugin]}
                    controls={[<ChartToggle key={1} name="Log" onToggle={a => {
                      setLogarithmic(a);

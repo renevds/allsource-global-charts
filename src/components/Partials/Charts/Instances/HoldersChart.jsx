@@ -5,7 +5,7 @@ import ChartToggle from "../Base/ChartToggle";
 import {toolTipLinePlugin} from "../../../../ChartUtils/Plugins/toolTipLinePlugin";
 import {getMax, getMin} from "../../../../ChartUtils/Utils/chartDataUtils";
 import {dayTimestampDuration} from "../../../../utils/timeUtils";
-import {holdersInProfit, uniqueHoldersOverTime, uniqueHoldersOverTimeNZT} from "../../../../chart_queries"
+import {uniqueHoldersOverTime, uniqueHoldersOverTimeNZT} from "../../../../chart_queries"
 import {simpleLineDataset} from "../../../../ChartUtils/datasets/datasetTemplates";
 import {chartBlue, chartPurple} from "../../../../ChartUtils/Utils/chartColors";
 
@@ -20,7 +20,7 @@ const durationMap = {
 const HoldersChart = ({address}) => {
   const [init, setInit] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
-  const [active, setActive] = useState("30D");
+  const [active, setActive] = useState("1Y");
   const [uniqueHoldersNZTData, setUniqueHoldersNZTData] = useState([]);
   const [uniqueHoldersData, setUniqueHoldersData] = useState([]);
   const [uniqueHoldersInProfitData, setUniqueHoldersInProfitData] = useState([]);
@@ -95,8 +95,7 @@ const HoldersChart = ({address}) => {
     plugins: {
       zoom: {
         pan: {
-          mode: "nearest",
-          axis: 'x',
+          mode: 'x',
           enabled: true
         },
         limits: {

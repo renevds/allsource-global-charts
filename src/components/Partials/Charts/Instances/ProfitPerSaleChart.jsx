@@ -8,8 +8,6 @@ import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import ChartToggle from "../Base/ChartToggle";
 
 //Plugins
-import {toolTipLinePlugin} from "../../../../ChartUtils/Plugins/toolTipLinePlugin";
-import annotationPlugin from 'chartjs-plugin-annotation';
 
 //Utils
 import {
@@ -34,7 +32,6 @@ const percentageGainKey = "percentageGain";
 const ethGainKey = "ethGain";
 
 const durationMap = {
-  "24H": 1,
   "7D": 7,
   "14D": 14,
   "30D": 30,
@@ -44,7 +41,7 @@ const durationMap = {
 const ProfitPerSaleChart = ({address}) => {
   const [init, setInit] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
-  const [active, setActive] = useState("14D");
+  const [active, setActive] = useState("7D");
   const [data, setData] = useState([]);
   const [pannedData, setPannedData] = useState([]);
   const [version, setVersion] = useState(0);
