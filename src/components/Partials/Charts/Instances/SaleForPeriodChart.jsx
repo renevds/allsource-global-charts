@@ -115,6 +115,7 @@ const SaleForPeriodChart = ({address}) => {
     async function loadData() {
       try {
         const newScatterData = await anySaleInEthForPeriod(address, 31, true);
+        console.log(newScatterData);
         const newAverageData = await averagePerDaySaleForPeriod(address, 31);
         handleData(newScatterData, newAverageData);
         loadMoreData();

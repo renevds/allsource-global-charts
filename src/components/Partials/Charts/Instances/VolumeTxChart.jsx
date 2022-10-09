@@ -149,9 +149,9 @@ const VolumeTxChart = ({address}) => {
             label: toolTipItem => {
               const raw = averageData[toolTipItem.dataIndex];
               return [
-                raw.floorPrice ? `Floor ${raw.floorPrice.toLocaleString()} Ξ` : "",
-                `Vol ${raw.volume.toLocaleString()} Ξ`,
-                `Tx ${raw.txCount.toLocaleString()}`]
+                raw.floorPrice ? `Floor price ${raw.floorPrice.toLocaleString()} Ξ` : "",
+                `Volume ${raw.volume.toLocaleString()} Ξ`,
+                `Transactions ${raw.txCount.toLocaleString()}`]
             },
           }
         },
