@@ -73,6 +73,7 @@ const SaleForPeriodChart = ({address}) => {
   const [zoomed, setZoomed] = useState(true);
   const [largerDot, setLargerDot] = useState(false);
   const [error, setError] = useState("");
+  const [transparentError, setTransparentError] = useState(false);
 
   const countTx = (compressed) => {
     return compressed.map(a => a.originals?.length || 1).reduce((partialSum, a) => partialSum + a, 0);
@@ -81,27 +82,33 @@ const SaleForPeriodChart = ({address}) => {
   useEffect(() => {
     if (init) {
       const newInitialMax = getMax(averageData, averageXAxisKey);
-      console.log(Date.now() - dayTimestampDuration * durationMap[active]);
       const newInitialMin = Math.max(Date.now() - dayTimestampDuration * durationMap[active], getMin(averageData, averageXAxisKey));
-      console.log(averageData)
       const avgInView = getDataBetween(averageData, averageXAxisKey, newInitialMin, newInitialMax, averageXAxisKey);
-      const newAvg = getAvg(avgInView, averageYAxisKey);
       let pannedFilteredData = getDataBetween(scatterData, scatterXAxisKey, newInitialMin, newInitialMax);
-      const newDataMin = getMin(averageData, averageXAxisKey);
-      const avgInViewMin = getMin(avgInView, averageXAxisKey);
-      const firstAvg = averageData.filter(a => a[averageXAxisKey] === avgInViewMin)[0][averageYAxisKey];
-      const lastAvg = averageData.filter(a => a[averageXAxisKey] === newInitialMax)[0][averageYAxisKey];
       const newTx = countTx(pannedFilteredData);
-      setPricePercentage(Math.round((lastAvg - firstAvg) * 100 / firstAvg))
-      setInitialXMax(newInitialMax);
-      setInitialXMin(newInitialMin);
-      setAvg(newAvg);
-      setPannedFilteredData(pannedFilteredData);
-      setTx(newTx);
-      setLargerDot(newTx <= 500);
-      setDataMin(newDataMin);
+      if (avgInView.length === 0) {
+        setTransparentError(true);
+        setError(`No sales in last ${durationMap[active]} days.`);
+        setPricePercentage(0);
+      } else {
+        setError("");
+        const newAvg = getAvg(avgInView, averageYAxisKey);
+        const newDataMin = getMin(averageData, averageXAxisKey);
+        const avgInViewMin = getMin(avgInView, averageXAxisKey);
+        const firstAvg = averageData.filter(a => a[averageXAxisKey] === avgInViewMin)[0][averageYAxisKey];
+        const lastAvg = averageData.filter(a => a[averageXAxisKey] === newInitialMax)[0][averageYAxisKey];
+        setPricePercentage(Math.round((lastAvg - firstAvg) * 100 / firstAvg))
+        setPricePercentage(0);
+        setAvg(newAvg);
+        setLargerDot(newTx <= 500);
+        setDataMin(newDataMin);
+      }
       setIsLoading(false);
       setVersion(v => v + 1);
+      setPannedFilteredData(pannedFilteredData);
+      setTx(newTx);
+      setInitialXMax(newInitialMax);
+      setInitialXMin(newInitialMin);
     }
   }, [active, init])
 
@@ -368,7 +375,8 @@ const SaleForPeriodChart = ({address}) => {
                      ]}
                      chartOptions={chartOptions}
                      isLoading={isLoading}
-                     error={error}/>
+                     error={error}
+                     transparentError={transparentError}/>
       <UrlsPopup onClose={() => setUrls([])} urls={urls}/>
     </div>
   );

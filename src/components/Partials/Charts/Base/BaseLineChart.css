@@ -65,3 +65,7 @@
     border-radius: 12px;
 }
 
+.chart__error__transparent{
+    background-color: transparent;
+    pointer-events: none;
+}
