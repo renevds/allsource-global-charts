@@ -1,5 +1,5 @@
 export function filterOutliers(data, key) {
-  data.sort((a, b) => a[key] - b[key])
+  data.sort((a, b) => Math.abs(a[key]) - Math.abs(b[key]))
   const top = Math.round(data.length * 0.8)
   const bottom = 0
   return data.slice(bottom, top + 1)

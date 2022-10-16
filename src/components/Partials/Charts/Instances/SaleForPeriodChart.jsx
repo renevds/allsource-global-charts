@@ -30,7 +30,7 @@ import {horizontalBlueGreenGradient} from "../../../../ChartUtils/Utils/chartGra
 
 //Style
 import './SaleForPeriodChart.css'
-import {anySaleInEthForPeriod, averagePerDaySaleForPeriod, getMintCharts} from "../../../../chart_queries";
+import {anySaleInEthForPeriod, averagePerDaySaleForPeriod} from "../../../../chart_queries";
 import {chartBlue} from "../../../../ChartUtils/Utils/chartColors";
 import {simpleScatterDataset} from "../../../../ChartUtils/datasets/datasetTemplates";
 import {compressDataSet} from "../../../../ChartUtils/Utils/dataSetSizeDecreaserUtils";
@@ -81,7 +81,9 @@ const SaleForPeriodChart = ({address}) => {
   useEffect(() => {
     if (init) {
       const newInitialMax = getMax(averageData, averageXAxisKey);
+      console.log(Date.now() - dayTimestampDuration * durationMap[active]);
       const newInitialMin = Math.max(Date.now() - dayTimestampDuration * durationMap[active], getMin(averageData, averageXAxisKey));
+      console.log(averageData)
       const avgInView = getDataBetween(averageData, averageXAxisKey, newInitialMin, newInitialMax, averageXAxisKey);
       const newAvg = getAvg(avgInView, averageYAxisKey);
       let pannedFilteredData = getDataBetween(scatterData, scatterXAxisKey, newInitialMin, newInitialMax);
@@ -119,7 +121,6 @@ const SaleForPeriodChart = ({address}) => {
         console.log(newScatterData);
         const newAverageData = await averagePerDaySaleForPeriod(address, 31);
         handleData(newScatterData, newAverageData);
-        getMintCharts(address).then(console.log)
         loadMoreData();
       } catch (e) {
         setError("Chart data not available.");

@@ -27,7 +27,8 @@ function App() {
     {'CHFTY': '0xA720E16603f81CD82FaAE15AE16F1aCfE88ddF0F'},
     {'posersnft': '0x02BeeD1404c69e62b76Af6DbdaE41Bd98bcA2Eab'},
     {'DigiDaigakuSpirits': '0xa8824EeE90cA9D2e9906D377D36aE02B1aDe5973'},
-    {'Broken': 'a'}]
+    {'Broken': 'a'},
+    {'Pixelmon': '0x32973908FaeE0Bf825A343000fE412ebE56F802A'}]
 
   const [address, setAddress] = useState("0x0c2E57EFddbA8c768147D1fdF9176a0A6EBd5d83")
 
