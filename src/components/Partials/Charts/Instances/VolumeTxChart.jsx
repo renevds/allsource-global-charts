@@ -8,7 +8,7 @@ import ChartToggle from "../Base/ChartToggle";
 
 //Plugins
 import {toolTipLinePlugin} from "../../../../ChartUtils/Plugins/toolTipLinePlugin";
-import {averagePerDaySaleForPeriod, floorAndMarketCap} from "../../../../chart_queries";
+import {txnAndVol, floorAndMarketCap} from "../../../../chart_queries";
 import moment from "moment";
 import {simpleLineDataset, simpleBarDataset} from "../../../../ChartUtils/datasets/datasetTemplates";
 import {chartBlue, chartPurple} from "../../../../ChartUtils/Utils/chartColors";
@@ -16,6 +16,7 @@ import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faChartColumn, faShoppingBasket} from "@fortawesome/free-solid-svg-icons";
 import ChartStat from "../Base/ChartStat";
 import {formatDecimal, getDataBetween, getSum} from "../../../../ChartUtils/Utils/chartDataUtils";
+import {horizontalBlueGreenGradient} from "../../../../ChartUtils/Utils/chartGradientUtils";
 
 const durationMap = {
   "7D": 7,
@@ -24,6 +25,12 @@ const durationMap = {
   "3M": 90,
   "1Y": 365,
 }
+
+const timestampKey = "ts";
+const dateKey = "date";
+const floorPriceKey = "floorPrice";
+const volumeKey = "volume";
+const txCountKey = "txCount";
 
 const VolumeTxChart = ({address}) => {
   const [init, setInit] = useState(false);
@@ -50,22 +57,21 @@ const VolumeTxChart = ({address}) => {
   if (!init) {
     const load = async () => {
       try {
-        let newAverageData = await averagePerDaySaleForPeriod(address, 365).then(b => b.map(a => {
-          a.label = moment(a.timestamp).format("ll");
-          return a;
-        }))
+        let newAverageData = await txnAndVol(address, 365);
 
         const newFloorPriceData = await floorAndMarketCap(address, 365);
         const floorPriceByDate = {};
 
         newFloorPriceData.forEach(a => {
-          floorPriceByDate[a.date] = a.floorPrice;
+          floorPriceByDate[a[dateKey]] = a[floorPriceKey];
         })
 
         newAverageData = newAverageData.map(a => {
-          a.floorPrice = floorPriceByDate[a.day];
+          a[floorPriceKey] = floorPriceByDate[a[dateKey]];
           return a;
         })
+
+        newAverageData = newAverageData
 
         setAverageData(newAverageData);
         setInit(true);
@@ -95,7 +101,7 @@ const VolumeTxChart = ({address}) => {
         title: {
           display: true,
           text: "Floor Ξ",
-          color: chartBlue,
+          color: horizontalBlueGreenGradient,
         }
       },
       yAxes1: {
@@ -129,12 +135,13 @@ const VolumeTxChart = ({address}) => {
       },
     }
   }
+
   const chartData = {
     version,
     datasets: [
       {
         ...simpleLineDataset,
-        data: averageData.map(a => a.floorPrice),
+        data: averageData.map(a => a[floorPriceKey]),
         tooltip: {
           callbacks: {
             label: () => false,
@@ -143,22 +150,22 @@ const VolumeTxChart = ({address}) => {
       },
       {
         ...simpleBarDataset,
-        data: averageData.map(a => a.volume),
+        data: averageData.map(a => a[volumeKey]),
         tooltip: {
           callbacks: {
             label: toolTipItem => {
               const raw = averageData[toolTipItem.dataIndex];
               return [
-                raw.floorPrice ? `Floor price ${raw.floorPrice.toLocaleString()} Ξ` : "",
-                `Volume ${raw.volume.toLocaleString()} Ξ`,
-                `Transactions ${raw.txCount.toLocaleString()}`]
+                raw.floorPrice ? `Floor price ${raw[floorPriceKey].toLocaleString()} Ξ` : "",
+                `Volume ${raw[volumeKey].toLocaleString()} Ξ`,
+                `Transactions ${raw[txCountKey].toLocaleString()}`]
             },
           }
         },
         yAxisID: 'yAxes1'
       }
     ],
-    labels: averageData.map(a => a["label"])
+    labels: averageData.map(a => a[dateKey])
   }
   const chartRef = useRef(null);
 

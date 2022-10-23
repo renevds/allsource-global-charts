@@ -8,6 +8,7 @@ import HoldersChart from "./components/Partials/Charts/Instances/HoldersChart";
 import VolatilitySpeedometer from "./components/Partials/Charts/Instances/VolatilitySpeedometer";
 import CompactFloorPriceChart from "./components/Partials/Charts/Instances/CompactFloorPriceChart";
 import Speedometer from "./components/Partials/Charts/Types/Speedometer";
+import MintingHistoryChart from "./components/Partials/Charts/Instances/MintingHistoryChart";
 
 export {
   SaleForPeriodChart,
@@ -18,5 +19,6 @@ export {
   HoldersChart,
   VolatilitySpeedometer,
   CompactFloorPriceChart,
-  Speedometer
+  Speedometer,
+  MintingHistoryChart
 };

@@ -19,7 +19,7 @@ import {
   getSum
 } from "../../../../ChartUtils/Utils/chartDataUtils";
 import {dayTimestampDuration} from "../../../../utils/timeUtils";
-import {marginPerSale} from "../../../../chart_queries";
+import {profitPerSale} from "../../../../chart_queries";
 import {simpleScatterDataset} from "../../../../ChartUtils/datasets/datasetTemplates";
 
 //Icons
@@ -27,9 +27,11 @@ import {faChartLine, faCoins, faMagnifyingGlassChart, faMinus, faPlus} from "@fo
 import UrlsPopup from "../Base/UrlsPopup";
 import ChartStat from "../Base/ChartStat";
 
-const xKey = "timestamp";
+const xKey = "ts";
 const percentageGainKey = "percentageGain";
 const ethGainKey = "ethGain";
+const holdingKey = "holdingTime";
+const saleValueKey = "sell";
 
 const durationMap = {
   "7D": 7,
@@ -67,7 +69,7 @@ const ProfitPerSaleChart = ({address}) => {
         setIsLoading(false);
         setVersion(version + 1);
       } catch (e) {
-        setError(e);
+        setError("Chart data not available.");
         setInit(true);
       }
     }
@@ -80,17 +82,20 @@ const ProfitPerSaleChart = ({address}) => {
     setAmountInLoss(pannedData.filter(a => a[percentageGainKey] <= 0).length);
   }, [pannedData])
 
-  if (!init) {
-    marginPerSale(address).then(a => {
+  const load = async (time) => {
+    await profitPerSale(address, time).then(a => {
       setInit(true);
       setData(a);
     }).catch(() => setError("Chart data not available."))
   }
 
+  if (!init) {
+    load(31).then(() => load(3650));
+  }
+
   const chartOptions = {
     onClick: e => {
-      const selected = e.chart.tooltip.dataPoints
-      console.log(selected)
+      const selected = e.chart.tooltip.dataPoints;
       const results = selected.map(dataPoint => ({
         name: `ID ${dataPoint.raw.tokenId} sold for Ξ ${dataPoint.raw.saleValue.toLocaleString()}`,
         url: `https://etherscan.io/tx/${dataPoint.raw.txHash}`
@@ -180,10 +185,10 @@ const ProfitPerSaleChart = ({address}) => {
   }
 
   const scatterFormatter = toolTipItem => {
-    return `Held for ${Math.floor(toolTipItem.raw.holdingTime)} days` +
+    return `Held for ${Math.floor(toolTipItem.raw[holdingKey])} days` +
       ` | Gain ${toolTipItem.raw[percentageGainKey].toLocaleString()}%` +
-      ` | bought for ${(toolTipItem.raw.saleValue - toolTipItem.raw[ethGainKey]).toLocaleString()} Ξ` +
-      ` | sold for ${(toolTipItem.raw.saleValue).toLocaleString()} Ξ`
+      ` | bought for ${(toolTipItem.raw[saleValueKey] - toolTipItem.raw[ethGainKey]).toLocaleString()} Ξ` +
+      ` | sold for ${(toolTipItem.raw[saleValueKey]).toLocaleString()} Ξ`
   }
 
   let filteredData = pannedData;

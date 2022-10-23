@@ -5,7 +5,7 @@ import ChartToggle from "../Base/ChartToggle";
 import {toolTipLinePlugin} from "../../../../ChartUtils/Plugins/toolTipLinePlugin";
 import {getMax, getMin} from "../../../../ChartUtils/Utils/chartDataUtils";
 import {dayTimestampDuration} from "../../../../utils/timeUtils";
-import {uniqueHoldersOverTime, uniqueHoldersOverTimeNZT} from "../../../../chart_queries"
+import {holderOverTime, uniqueHoldersOverTimeNZT} from "../../../../chart_queries"
 import {simpleLineDataset} from "../../../../ChartUtils/datasets/datasetTemplates";
 import {chartBlue, chartPurple} from "../../../../ChartUtils/Utils/chartColors";
 
@@ -17,13 +17,16 @@ const durationMap = {
   "1Y": 365,
 }
 
+const timestampKey = "ts";
+const onlyNZTKey = "onlyNZT";
+const zeroValueKey = "withZeroValueTransfers";
+const numKey = "num";
+
 const HoldersChart = ({address}) => {
   const [init, setInit] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [active, setActive] = useState("1Y");
-  const [uniqueHoldersNZTData, setUniqueHoldersNZTData] = useState([]);
-  const [uniqueHoldersData, setUniqueHoldersData] = useState([]);
-  const [uniqueHoldersInProfitData, setUniqueHoldersInProfitData] = useState([]);
+  const [holdersData, setHoldersData] = useState({[onlyNZTKey]: [], [zeroValueKey]: []});
   const [version, setVersion] = useState(0);
   const [error, setError] = useState("");
   const [logarithmic, setLogarithmic] = useState(false);
@@ -33,7 +36,7 @@ const HoldersChart = ({address}) => {
   useEffect(() => {
     if (init) {
       try {
-        const newInitialMax = getMax(uniqueHoldersNZTData, "timestamp");
+        const newInitialMax = getMax(holdersData[onlyNZTKey], timestampKey);
         const newInitialMin = newInitialMax - dayTimestampDuration * (durationMap[active] - 1);
         setInitialXMax(newInitialMax);
         setInitialXMin(newInitialMin);
@@ -48,18 +51,9 @@ const HoldersChart = ({address}) => {
   useEffect(() => {
     const load = async () => {
       try {
-        const uniqueHoldersNZT = await uniqueHoldersOverTimeNZT(address).then(b => b.map(a => {
-            a.timestamp = new Date(a.day).getTime();
-            return a;
-          }
-        ));
-        const uniqueHolders = await uniqueHoldersOverTime(address).then(b => b.map(a => {
-          a.timestamp = new Date(a.day).getTime();
-          return a;
-        }));
+        const holders = await holderOverTime(address, 3650);
+        setHoldersData(holders);
         setInit(true);
-        setUniqueHoldersNZTData(uniqueHoldersNZT);
-        setUniqueHoldersData(uniqueHolders);
       }catch (e){
         setError("Chart data not available.");
         setInit(true);
@@ -100,7 +94,7 @@ const HoldersChart = ({address}) => {
         },
         limits: {
           xAxes: {
-            min: getMin(uniqueHoldersNZTData, "timestamp"),
+            min: getMin(holdersData[onlyNZTKey], timestampKey),
             max: initialXMax
           }
         }
@@ -123,10 +117,10 @@ const HoldersChart = ({address}) => {
     datasets: [
       {
         ...simpleLineDataset,
-        data: uniqueHoldersData,
+        data: holdersData[zeroValueKey],
         parsing: {
-          xAxisKey: "timestamp",
-          yAxisKey: "holdersNumber"
+          xAxisKey: timestampKey,
+          yAxisKey: numKey
         },
         tooltip: {
           callbacks: {
@@ -139,10 +133,10 @@ const HoldersChart = ({address}) => {
       {
         ...simpleLineDataset,
         borderColor: chartPurple,
-        data: uniqueHoldersNZTData,
+        data: holdersData[onlyNZTKey],
         parsing: {
-          xAxisKey: "timestamp",
-          yAxisKey: "holdersNumber"
+          xAxisKey: timestampKey,
+          yAxisKey: numKey
         },
         tooltip: {
           callbacks: {

@@ -30,7 +30,7 @@ import {horizontalBlueGreenGradient} from "../../../../ChartUtils/Utils/chartGra
 
 //Style
 import './SaleForPeriodChart.css'
-import {anySaleInEthForPeriod, averagePerDaySaleForPeriod} from "../../../../chart_queries";
+import {anySaleInEthForPeriod, txnAndVol} from "../../../../chart_queries";
 import {chartBlue} from "../../../../ChartUtils/Utils/chartColors";
 import {simpleScatterDataset} from "../../../../ChartUtils/datasets/datasetTemplates";
 import {compressDataSet} from "../../../../ChartUtils/Utils/dataSetSizeDecreaserUtils";
@@ -44,11 +44,13 @@ const durationMap = {
   "3M": 90
 }
 
-const scatterXAxisKey = "timestamp"
-const scatterYAxisKey = "ethValue"
-const averageXAxisKey = "timestamp"
+const scatterXAxisKey = "ts"
+const scatterYAxisKey = "ev"
+const averageXAxisKey = "ts"
 const averageYAxisKey = "averageValue"
-const marketKey = "market"
+const marketKey = "action"
+const idKey = "tid"
+const hashKey = "th"
 
 const SaleForPeriodChart = ({address}) => {
 
@@ -124,25 +126,30 @@ const SaleForPeriodChart = ({address}) => {
   useEffect(() => {
     async function loadData() {
       try {
-        const newScatterData = await anySaleInEthForPeriod(address, 31, true);
-        console.log(newScatterData);
-        const newAverageData = await averagePerDaySaleForPeriod(address, 31);
+        const newScatterData = await anySaleInEthForPeriod(address, 31, false);
+        const newAverageData = await txnAndVol(address, 31).then(b => b.map(a => ({
+          ...a,
+          averageValue: a.volume/a.txCount //TODO remove once endpoint is fixed
+        })));
         handleData(newScatterData, newAverageData);
         loadMoreData();
       } catch (e) {
         setError("Chart data not available.");
-        setInit(true);
+        setInit(false);
       }
     }
 
     async function loadMoreData() {
       try {
-        const newScatterData = await anySaleInEthForPeriod(address, 365, true).catch(() => setError("Chart data not available."));
-        const newAverageData = await averagePerDaySaleForPeriod(address, 365).catch(() => setError("Chart data not available."));
+        const newScatterData = await anySaleInEthForPeriod(address, 365, false);
+        const newAverageData = await txnAndVol(address, 365).then(b => b.map(a => ({
+          ...a,
+          averageValue: a.volume/a.txCount //TODO remove once endpoint is fixed
+        })));
         handleData(newScatterData, newAverageData);
       } catch (e) {
         setError("Chart data not available.");
-        setInit(true);
+        setInit(false);
       }
     }
 
@@ -164,8 +171,8 @@ const SaleForPeriodChart = ({address}) => {
       })
 
       const results = newDataPoints.map(dataPoint => ({
-        name: `ID ${dataPoint.id} sold for Ξ ${dataPoint.ethValue.toLocaleString()}`,
-        url: `https://etherscan.io/tx/${dataPoint.hash}`
+        name: `ID ${dataPoint[idKey]} sold for Ξ ${dataPoint[scatterYAxisKey].toLocaleString()}`,
+        url: `https://etherscan.io/tx/${dataPoint[hashKey]}`
       }))
 
       if (results.length === 1) {
@@ -187,7 +194,7 @@ const SaleForPeriodChart = ({address}) => {
         intersect: false,
         callbacks: {
           beforeBody: (toolTipItems) => {
-            return `Ξ ${toolTipItems[0].raw.ethValue.toLocaleString()}`
+            return `Ξ ${toolTipItems[0].raw[scatterYAxisKey].toLocaleString()}`
           },
           label: () => {
             return false
@@ -241,9 +248,9 @@ const SaleForPeriodChart = ({address}) => {
         max: scatterMax,
         min: getMin(scatterData, scatterYAxisKey),
         title: {
-          display: trend,
+          display: true,
           text: "Price",
-          color: chartBlue
+          color: horizontalBlueGreenGradient
         }
       },
       xAxes: {
