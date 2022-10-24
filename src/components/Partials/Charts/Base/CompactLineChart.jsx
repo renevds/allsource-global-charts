@@ -60,7 +60,6 @@ const CompactLineChart = ({chartData, plugins, chartOptions, chartRef, isLoading
           display: false,
           ticks: {
             maxTicksLimit: 10,
-            autoSkip: false,
             maxRotation: 0,
             minRotation: 0,
           },

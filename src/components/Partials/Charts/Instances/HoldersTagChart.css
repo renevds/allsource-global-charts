@@ -1,0 +1,8 @@
+.holderstagchart__stat {
+    display: flex;
+    align-items: center;
+}
+
+.holderstagchart__logo{
+    margin-right: 4px;
+}

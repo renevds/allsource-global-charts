@@ -83,9 +83,9 @@ const BaseLineChart = ({chartData, buttons, controls, plugins, stats, chartOptio
         },
         xAxes: {
           ticks: {
-            maxTicksLimit: 10,
             maxRotation: 0,
             minRotation: 0,
+            autoSkip: true
           },
           time: {
             unit: 'day',

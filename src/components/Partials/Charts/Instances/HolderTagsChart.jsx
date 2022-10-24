@@ -1,21 +1,36 @@
 //Components
 import BaseLineChart from "../Base/BaseLineChart";
 import ChartButton from "../Base/ChartButton";
+import ChartStat from "../Base/ChartStat";
 
 //Hooks
 import {useEffect, useRef, useState} from "react";
-import ChartToggle from "../Base/ChartToggle";
 
 //Plugins
 import {toolTipLinePlugin} from "../../../../ChartUtils/Plugins/toolTipLinePlugin";
-import {simpleLineDataset} from "../../../../ChartUtils/datasets/datasetTemplates";
-import {chartBlue, chartPurple} from "../../../../ChartUtils/Utils/chartColors";
+
 //Utils
 import {getMax, getMin} from "../../../../ChartUtils/Utils/chartDataUtils";
 import {dayTimestampDuration} from "../../../../utils/timeUtils";
+import {simpleLineDataset} from "../../../../ChartUtils/datasets/datasetTemplates";
+import {
+  chartBlue,
+  chartPurple,
+  FUDerColor,
+  goldfingerColor,
+  whaleColor
+} from "../../../../ChartUtils/Utils/chartColors";
 
 //Queries
-import {holderOverTime} from "../../../../chart_queries"
+import {holderOverTime, uniqueHoldersOverTimeNZT} from "../../../../chart_queries"
+
+//Images
+import WhaleLogo from '../../../../images/whale.svg';
+import GoldfingerLogo from '../../../../images/goldfinger.svg';
+import FUDerLogo from '../../../../images/fuder.svg';
+
+//Style
+import './HoldersTagChart.css';
 
 const durationMap = {
   "7D": 7,
@@ -25,25 +40,32 @@ const durationMap = {
 
 const timestampKey = "ts";
 const onlyNZTKey = "onlyNZT";
-const zeroValueKey = "withZeroValueTransfers";
-const numKey = "num";
+const whalesKey = "whales";
+const goldFingersKey = "goldFingers";
+const FUDersKey = "fuders";
 
-const HoldersChart = ({address}) => {
+const HolderTagsChart = ({address}) => {
   const [init, setInit] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
-  const [active, setActive] = useState("30D");
-  const [holdersData, setHoldersData] = useState({[onlyNZTKey]: [], [zeroValueKey]: []});
+  const [active, setActive] = useState("7D");
+  const [holdersData, setHoldersData] = useState([]);
   const [version, setVersion] = useState(0);
   const [error, setError] = useState("");
-  const [logarithmic, setLogarithmic] = useState(false);
   const [initialXMin, setInitialXMin] = useState(0);
   const [initialXMax, setInitialXMax] = useState(0);
+  const [whales, setWhales] = useState(0);
+  const [goldfingers, setGoldfingers] = useState(0);
+  const [FUDers, setFUDers] = useState(0);
 
   useEffect(() => {
     if (init) {
       try {
-        const newInitialMax = getMax(holdersData[onlyNZTKey], timestampKey);
+        const newInitialMax = getMax(holdersData, timestampKey);
         const newInitialMin = newInitialMax - dayTimestampDuration * (durationMap[active] - 1);
+        const last = holdersData[holdersData.length - 1];
+        setWhales(last[whalesKey]);
+        setGoldfingers(last[goldFingersKey]);
+        setFUDers(last[FUDersKey]);
         setInitialXMax(newInitialMax);
         setInitialXMin(newInitialMin);
         setIsLoading(false);
@@ -58,9 +80,9 @@ const HoldersChart = ({address}) => {
     const load = async () => {
       try {
         const holders = await holderOverTime(address, 3650);
-        setHoldersData(holders);
+        setHoldersData(holders[onlyNZTKey]);
         setInit(true);
-      }catch (e){
+      } catch (e) {
         setError("Chart data not available.");
         setInit(true);
       }
@@ -81,11 +103,11 @@ const HoldersChart = ({address}) => {
         min: initialXMin
       },
       yAxes: {
-        type: logarithmic ? "log2Scale" : "modifiedLinear",
+        type: "modifiedLinear",
         title: {
           display: true,
           text: "Holders",
-          color: chartBlue,
+          color: "#FFFFFF",
         }
       }
     },
@@ -97,7 +119,7 @@ const HoldersChart = ({address}) => {
         },
         limits: {
           xAxes: {
-            min: getMin(holdersData[onlyNZTKey], timestampKey),
+            min: getMin(holdersData, timestampKey),
             max: initialXMax
           }
         }
@@ -120,32 +142,51 @@ const HoldersChart = ({address}) => {
     datasets: [
       {
         ...simpleLineDataset,
-        data: holdersData[zeroValueKey],
+        borderColor: whaleColor,
+        pointBorderColor: whaleColor,
+        data: holdersData,
         parsing: {
           xAxisKey: timestampKey,
-          yAxisKey: numKey
+          yAxisKey: whalesKey
         },
         tooltip: {
           callbacks: {
             label: toolTipItem => {
-              return `Holders: ${toolTipItem.parsed.y.toLocaleString()}`
+              return `Whales: ${toolTipItem.parsed.y.toLocaleString()}`
             },
           }
         },
       },
       {
         ...simpleLineDataset,
-        borderColor: chartPurple,
-        pointBorderColor: chartPurple,
-        data: holdersData[onlyNZTKey],
+        borderColor: goldfingerColor,
+        pointBorderColor: goldfingerColor,
+        data: holdersData,
         parsing: {
           xAxisKey: timestampKey,
-          yAxisKey: numKey
+          yAxisKey: goldFingersKey
         },
         tooltip: {
           callbacks: {
             label: toolTipItem => {
-              return `Smart filtered holders: ${toolTipItem.parsed.y.toLocaleString()}`
+              return `Goldfingers: ${toolTipItem.parsed.y.toLocaleString()}`
+            },
+          }
+        }
+      },
+      {
+        ...simpleLineDataset,
+        borderColor: FUDerColor,
+        pointBorderColor: FUDerColor,
+        data: holdersData,
+        parsing: {
+          xAxisKey: timestampKey,
+          yAxisKey: FUDersKey
+        },
+        tooltip: {
+          callbacks: {
+            label: toolTipItem => {
+              return `FUDers: ${toolTipItem.parsed.y.toLocaleString()}`
             },
           }
         }
@@ -169,14 +210,23 @@ const HoldersChart = ({address}) => {
                    )}
                    chartOptions={chartOptions}
                    isLoading={isLoading}
-                   stats={[]}
+                   stats={[<ChartStat key={1} name="Whale"
+                                      value={<div className="holderstagchart__stat"><img
+                                        className="holderstagchart__logo" src={WhaleLogo}/>{whales}</div>}
+                                      textColor="#9352FF"/>,
+                     <ChartStat key={2} name="Goldfinger"
+                                value={<div className="holderstagchart__stat"><img className="holderstagchart__logo"
+                                                                                   src={GoldfingerLogo}/>{goldfingers}
+                                </div>}
+                                textColor="#FFAE40"/>,
+                     <ChartStat key={3} name="FUDer"
+                                value={<div className="holderstagchart__stat"><img className="holderstagchart__logo"
+                                                                                   src={FUDerLogo}/>{FUDers}</div>}
+                                textColor="#FF2700"/>]}
                    error={error}
                    plugins={[toolTipLinePlugin]}
-                   controls={[<ChartToggle key={1} name="Log" onToggle={a => {
-                     setLogarithmic(a);
-                     setVersion(version + 1);
-                   }} initChecked={logarithmic} tooltip="Logarithmic scale"/>]}/>
+                   controls={[]}/>
   );
 }
 
-export default HoldersChart;
+export default HolderTagsChart;

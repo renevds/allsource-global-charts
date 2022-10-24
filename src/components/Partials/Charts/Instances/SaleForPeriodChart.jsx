@@ -14,10 +14,13 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import ChartToggle from "../Base/ChartToggle";
 import ChartStat from "../Base/ChartStat";
+import UrlsPopup from "../Base/UrlsPopup";
 
 //Utils
 import {getAvg, getDataBetween, getMax, getMin} from "../../../../ChartUtils/Utils/chartDataUtils";
 import {dayTimestampDuration} from "../../../../utils/timeUtils";
+import {simpleScatterDataset} from "../../../../ChartUtils/datasets/datasetTemplates";
+import {compressDataSet} from "../../../../ChartUtils/Utils/dataSetSizeDecreaserUtils";
 
 //Plugins
 import {initialZoom} from "../../../../ChartUtils/Plugins/initialZoomPlugin";
@@ -30,12 +33,9 @@ import {horizontalBlueGreenGradient} from "../../../../ChartUtils/Utils/chartGra
 
 //Style
 import './SaleForPeriodChart.css'
+
+//Queries
 import {anySaleInEthForPeriod, txnAndVol} from "../../../../chart_queries";
-import {chartBlue} from "../../../../ChartUtils/Utils/chartColors";
-import {simpleScatterDataset} from "../../../../ChartUtils/datasets/datasetTemplates";
-import {compressDataSet} from "../../../../ChartUtils/Utils/dataSetSizeDecreaserUtils";
-import UrlsPopup from "../Base/UrlsPopup";
-import {object} from "prop-types";
 
 const durationMap = {
   "7D": 7,

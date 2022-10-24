@@ -55,9 +55,6 @@ const BasicLineChart = ({
     scales: {
       xAxes: {
         type: 'time',
-        ticks: {
-          autoSkip: true
-        },
         max: initialXMax,
         min: initialXMin
       },

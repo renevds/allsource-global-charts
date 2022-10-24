@@ -1,13 +1,22 @@
+//Components
 import BaseLineChart from "../Base/BaseLineChart";
 import ChartButton from "../Base/ChartButton";
-import {useEffect, useRef, useState} from "react";
 import ChartToggle from "../Base/ChartToggle";
+
+//Hooks
+import {useEffect, useRef, useState} from "react";
+
+//Plugins
 import {toolTipLinePlugin} from "../../../../ChartUtils/Plugins/toolTipLinePlugin";
+
+//Utils
 import {getMax, getMin} from "../../../../ChartUtils/Utils/chartDataUtils";
 import {dayTimestampDuration} from "../../../../utils/timeUtils";
-import {profitPerDay} from "../../../../chart_queries";
 import {simpleLineDataset} from "../../../../ChartUtils/datasets/datasetTemplates";
 import {chartBlue, chartPurple} from "../../../../ChartUtils/Utils/chartColors";
+
+//Queries
+import {profitPerDay} from "../../../../chart_queries";
 
 const durationMap = {
   "7D": 7,
@@ -66,9 +75,6 @@ const HoldersChart = ({address}) => {
     scales: {
       xAxes: {
         type: 'time',
-        ticks: {
-          autoSkip: true
-        },
         max: Date.now(),
         min: initialXMin
       },

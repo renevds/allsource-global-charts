@@ -11,6 +11,7 @@ import {
 import {useState} from "react";
 import ProfitPerDayChart from "./components/Partials/Charts/Instances/ProfitPerDayChart";
 import MintingHistoryChart from "./components/Partials/Charts/Instances/MintingHistoryChart";
+import HolderTagsChart from "./components/Partials/Charts/Instances/HolderTagsChart";
 
 function App() {
 
@@ -29,9 +30,11 @@ function App() {
     {'posersnft': '0x02BeeD1404c69e62b76Af6DbdaE41Bd98bcA2Eab'},
     {'DigiDaigakuSpirits': '0xa8824EeE90cA9D2e9906D377D36aE02B1aDe5973'},
     {'Broken': 'a'},
-    {'Pixelmon': '0x32973908FaeE0Bf825A343000fE412ebE56F802A'}]
+    {'Pixelmon': '0x32973908FaeE0Bf825A343000fE412ebE56F802A'},
+    {'Murakaimi': '0x40958816c61a222BaE9B71867217322D84B21B01'},
+    {'Moonbird Oddities': '0x1792a96E5668ad7C167ab804a100ce42395Ce54D'}]
 
-  const [address, setAddress] = useState("0xBC4CA0EdA7647A8aB7C2061c2E118A18a936f13D")
+  const [address, setAddress] = useState("0x1792a96E5668ad7C167ab804a100ce42395Ce54D")
 
 
   return (
@@ -73,6 +76,9 @@ function App() {
       </div>
       <div className="test__row">
         <MintingHistoryChart address={address} key={address}/>
+      </div>
+      <div className="test__row">
+        <HolderTagsChart address={address} key={address}/>
       </div>
     </div>
   );

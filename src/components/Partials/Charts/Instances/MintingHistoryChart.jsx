@@ -5,35 +5,19 @@ import {useEffect, useRef, useState} from "react";
 import BaseLineChart from "../Base/BaseLineChart";
 import ChartButton from "../Base/ChartButton";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import ChartToggle from "../Base/ChartToggle";
-
-//Plugins
+import ChartStat from "../Base/ChartStat";
 
 //Utils
-import {
-  filterOutliers, formatDecimal,
-  getAvg,
-  getDataBetween,
-  getMax,
-  getMin,
-  getSum
-} from "../../../../ChartUtils/Utils/chartDataUtils";
+import {getDataBetween, getMin,} from "../../../../ChartUtils/Utils/chartDataUtils";
 import {dayTimestampDuration} from "../../../../utils/timeUtils";
 import {getMintCharts} from "../../../../chart_queries";
 import {simpleScatterDataset} from "../../../../ChartUtils/datasets/datasetTemplates";
+import {horizontalBlueGreenGradient} from "../../../../ChartUtils/Utils/chartGradientUtils";
 
 //Icons
 import {
   faChartColumn,
-  faChartLine,
-  faCoins,
-  faMagnifyingGlassChart,
-  faMinus,
-  faPlus
 } from "@fortawesome/free-solid-svg-icons";
-import UrlsPopup from "../Base/UrlsPopup";
-import ChartStat from "../Base/ChartStat";
-import {horizontalBlueGreenGradient} from "../../../../ChartUtils/Utils/chartGradientUtils";
 
 const xKey = "timestamp";
 const amountKey = "amount";
@@ -91,9 +75,6 @@ const MintingHistoryChart = ({address}) => {
     scales: {
       xAxes: {
         type: 'time',
-        ticks: {
-          autoSkip: true
-        },
         max: initialXMax,
         min: initialXMin
       },

@@ -5,16 +5,20 @@ import {useEffect, useRef, useState} from "react";
 import BaseLineChart from "../Base/BaseLineChart";
 import ChartButton from "../Base/ChartButton";
 import ChartToggle from "../Base/ChartToggle";
-
-//Plugins
-import {toolTipLinePlugin} from "../../../../ChartUtils/Plugins/toolTipLinePlugin";
-import {txnAndVol, floorAndMarketCap} from "../../../../chart_queries";
-import moment from "moment";
-import {simpleLineDataset, simpleBarDataset} from "../../../../ChartUtils/datasets/datasetTemplates";
-import {chartBlue, chartPurple} from "../../../../ChartUtils/Utils/chartColors";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faChartColumn, faShoppingBasket} from "@fortawesome/free-solid-svg-icons";
 import ChartStat from "../Base/ChartStat";
+
+//Plugins
+import {toolTipLinePlugin} from "../../../../ChartUtils/Plugins/toolTipLinePlugin";
+
+//Queries
+import {txnAndVol, floorAndMarketCap} from "../../../../chart_queries";
+
+//Utils
+import moment from "moment";
+import {simpleLineDataset, simpleBarDataset} from "../../../../ChartUtils/datasets/datasetTemplates";
+import {chartBlue, chartPurple} from "../../../../ChartUtils/Utils/chartColors";
 import {formatDecimal, getDataBetween, getSum} from "../../../../ChartUtils/Utils/chartDataUtils";
 import {horizontalBlueGreenGradient} from "../../../../ChartUtils/Utils/chartGradientUtils";
 
@@ -90,9 +94,6 @@ const VolumeTxChart = ({address}) => {
     },
     scales: {
       xAxes: {
-        ticks: {
-          autoSkip: true
-        },
         max: averageData.length - 1,
         min: averageData.length - durationMap[active]
       },
@@ -165,7 +166,7 @@ const VolumeTxChart = ({address}) => {
         yAxisID: 'yAxes1'
       }
     ],
-    labels: averageData.map(a => a[dateKey])
+    labels: averageData.map(a => moment(a[dateKey]).format('ll'))
   }
   const chartRef = useRef(null);
 
