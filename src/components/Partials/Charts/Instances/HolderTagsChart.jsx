@@ -80,11 +80,13 @@ const HolderTagsChart = ({address}) => {
     const load = async () => {
       try {
         const holders = await holderOverTime(address, 3650);
+        if(holders[onlyNZTKey].length === 0){
+          throw 'No holders';
+        }
         setHoldersData(holders[onlyNZTKey]);
         setInit(true);
       } catch (e) {
         setError("Chart data not available.");
-        setInit(true);
       }
     }
     load();
