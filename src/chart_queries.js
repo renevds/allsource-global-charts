@@ -44,3 +44,7 @@ export function profitPerDay(contractAddress) {
 export function getMintCharts(contractAddress){
   return chartDataFetchNoLZW.get('/getMintCharts', {params: {contractAddress}}).then(a => a.data)
 }
+
+export function getListingsData(contractAddress){
+  return chartDataFetchNoLZW.get('/v2/getListingsData', {params: {contractAddress}}).then(a => a.data)
+}

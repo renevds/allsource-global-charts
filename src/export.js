@@ -10,6 +10,7 @@ import CompactFloorPriceChart from "./components/Partials/Charts/Instances/Compa
 import Speedometer from "./components/Partials/Charts/Types/Speedometer";
 import MintingHistoryChart from "./components/Partials/Charts/Instances/MintingHistoryChart";
 import HolderTagsChart from "./components/Partials/Charts/Instances/HolderTagsChart";
+import Listings from "./components/Partials/Charts/Listings/Listings";
 
 export {
   SaleForPeriodChart,
@@ -22,5 +23,6 @@ export {
   CompactFloorPriceChart,
   Speedometer,
   MintingHistoryChart,
-  HolderTagsChart
+  HolderTagsChart,
+  Listings
 };

@@ -12,6 +12,7 @@ import {useState} from "react";
 import ProfitPerDayChart from "./components/Partials/Charts/Instances/ProfitPerDayChart";
 import MintingHistoryChart from "./components/Partials/Charts/Instances/MintingHistoryChart";
 import HolderTagsChart from "./components/Partials/Charts/Instances/HolderTagsChart";
+import Listings from "./components/Partials/Charts/Listings/Listings";
 
 function App() {
 
@@ -35,14 +36,18 @@ function App() {
     {'Moonbird Oddities': '0x1792a96E5668ad7C167ab804a100ce42395Ce54D'},
     {'Wave Catchers': '0x1A331c89898C37300CccE1298c62aefD3dFC016c'},
     {'Mutant Ape Yach Club': '0x60E4d786628Fea6478F785A6d7e704777c86a7c6'},
-    {'Doodles': '0x8a90CAb2b38dba80c64b7734e58Ee1dB38B8992e'}]
+    {'Doodles': '0x8a90CAb2b38dba80c64b7734e58Ee1dB38B8992e'},
+    {'CandyRobbers': '0x33857Ad1031122A00A68E6Bf9Ac4475ba6c6F8be'}]
 
 
-  const [address, setAddress] = useState("0x40958816c61a222BaE9B71867217322D84B21B01")
-
+  const [address, setAddress] = useState("0x33857Ad1031122A00A68E6Bf9Ac4475ba6c6F8be")
+  const [section, setSection] = useState("holder")
 
   return (
     <div className="charts__container">
+      <button onClick={() => setSection("main")}>main</button>
+      <button onClick={() => setSection("holder")}>holder</button>
+      <div style={{width:"100%", height: "2px", backgroundColor: "#14F4C9"}}/>
       <div>
         {possibleAddresses.map(a => {
             const name = Object.keys(a)[0];
@@ -51,39 +56,49 @@ function App() {
           }
         )}
       </div>
-      <div style={{width: "50%"}}>
-        <VolatilitySpeedometer contractAddress={address} saveToSession={true} key={address}/>
-      </div>
-      <div style={{width: "99px", height: "65px"}}>
-        <CompactFloorPriceChart contractAddress={address} saveToSession={true} key={address}/>
-      </div>
-      <div className="test__row">
-        <SaleForPeriodChart address={address} key={address}/>
-      </div>
-      <div className="test__row">
-        <VolumeTxChart address={address} key={address}/>
-      </div>
-      <div className="test__row">
-        <ProfitPerSaleChart address={address} key={address}/>
-      </div>
-      <div style={{width: "500px", height: "300px"}}>
-        <HoldingAmountDistributionChart address={address} key={address}/>
-      </div>
-      <div style={{width: "500px", height: "300px"}}>
-        <HoldingPeriodDistributionChart address={address} key={address}/>
-      </div>
-      <div className="test__row">
-        <HoldersChart address={address} key={address}/>
-      </div>
-      <div className="test__row">
-        <ProfitPerDayChart address={address} key={address}/>
-      </div>
-      <div className="test__row">
-        <MintingHistoryChart address={address} key={address}/>
-      </div>
-      <div className="test__row">
-        <HolderTagsChart address={address} key={address}/>
-      </div>
+      {section === 'main' ?
+        <>
+          <div style={{width: "50%"}}>
+            <VolatilitySpeedometer contractAddress={address} saveToSession={true} key={address}/>
+          </div>
+          <div style={{width: "99px", height: "65px"}}>
+            <CompactFloorPriceChart contractAddress={address} saveToSession={true} key={address}/>
+          </div>
+          <div className="test__row">
+            <SaleForPeriodChart address={address} key={address}/>
+          </div>
+          <div className="test__row">
+            <VolumeTxChart address={address} key={address}/>
+          </div>
+          <div className="test__row">
+            <ProfitPerSaleChart address={address} key={address}/>
+          </div>
+        </>
+        :
+        <>
+          <div style={{width: "500px", height: "300px"}}>
+            <HoldingAmountDistributionChart address={address} key={address}/>
+          </div>
+          <div style={{width: "500px", height: "300px"}}>
+            <HoldingPeriodDistributionChart address={address} key={address}/>
+          </div>
+          <div className="test__row">
+            <HoldersChart address={address} key={address}/>
+          </div>
+          <div className="test__row">
+            <ProfitPerDayChart address={address} key={address}/>
+          </div>
+          <div className="test__row">
+            <MintingHistoryChart address={address} key={address}/>
+          </div>
+          <div className="test__row">
+            <HolderTagsChart address={address} key={address}/>
+          </div>
+          <div className="" style={{backgroundColor: "#242127", paddingTop: '30px', paddingLeft: '26px', paddingRight: '26px'}}>
+            <Listings address={address} key={address}/>
+          </div>
+        </>
+      }
     </div>
   );
 }

@@ -72,5 +72,9 @@
     "bootstrap": "^5.2.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
+  },
+  "dependencies": {
+    "@allsource/ui.partials.button": "^0.0.17",
+    "@allsource/ui.partials.ethereum": "^0.0.2"
   }
 }

@@ -1,0 +1,25 @@
+.listings__container{
+    width: 100%;
+}
+
+.listings__buttons{
+    display: flex;
+    column-gap: 8px;
+}
+
+.listings__button {
+    border: none;
+    color: var(--color-text);
+    border-radius: 8px;
+    background-color: #43404A;
+    height: 30px;
+    width: 90px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+
+.listings__button__active{
+    background-color: var(--color-primary);
+}
