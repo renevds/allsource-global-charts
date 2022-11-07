@@ -24,6 +24,12 @@
     font-size: 16px;
 }
 
+.listing__red{
+    color: #FF8062;
+    font-weight: 700;
+    font-size: 16px;
+}
+
 .listing__buy{
     height: 24px;
     display: flex;

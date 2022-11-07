@@ -7,19 +7,27 @@ import moment from "moment";
 //Components
 import {Ethereum} from "@allsource/ui.partials.ethereum";
 
-const contractAddressKey = "0x33857Ad1031122A00A68E6Bf9Ac4475ba6c6F8be"
-const expireKey = "expire"
+const expireKey = "expires"
 const orderHashKey = "orderHash"
 const timestampKey = "timestamp"
-const tokenNameKey = "tokenName"
+const tokenNameKey = "contractSlug"
 const valueKey = "value"
+const nftIdKey = "nftId"
+const soldKey = "hasSold"
+const canceledKey = "hasBeenCanceled"
 
 const Listing = ({listing}) => (
   <div className="listing__container">
     <div className="listing__row">
-      <div className="listing__green listing__buy">
-        Buy<img src="https://files.allsource.io/icons/opensea-logo.svg" className="listing__button"/>
-      </div>
+      {listing[soldKey] ?
+        <div className="listing__red listing__buy">
+          Sold
+        </div>
+        :
+        <div className="listing__green listing__buy">
+          Buy<img src="https://files.allsource.io/icons/opensea-logo.svg" className="listing__button"/>
+        </div>
+      }
       <div className="listing__date">about {moment(listing[timestampKey]).fromNow()}</div>
     </div>
     <div className="listing__row listing__gap">
@@ -36,10 +44,10 @@ const Listing = ({listing}) => (
       <img src="https://i.imgur.com/MApXoYW.png" className="listing__img"/>
       <div className="listing__token__info listing__gap">
         <div className="listing__text">
-          {listing[tokenNameKey].split('#')[0]}
+          {listing[tokenNameKey]}
         </div>
         <div className="listing__green">
-          #{listing[tokenNameKey].split('#')[1]}
+          #{listing[nftIdKey].split('/')[2]}
         </div>
       </div>
     </div>
@@ -47,7 +55,7 @@ const Listing = ({listing}) => (
       <Ethereum/>&nbsp;{listing[valueKey]}
     </div>
     <div className="listing__row__small">
-      <img src="https://files.allsource.io/icons/etherscan.svg" className="listing__button"/>
+      <img src="https://files.allsource.io/icons/etherscan-logo.svg" className="listing__button"/>
     </div>
   </div>
 )

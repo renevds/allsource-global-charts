@@ -9,9 +9,8 @@ import './Listings.css'
 
 //Components
 import Listing from "./Listing";
-import ListingDropdown from "./ListingDropdown";
 
-const tokenNameKey = "tokenName"
+const tokenNameKey = "contractSlug"
 const valueKey = "value"
 const timestampKey = "timestamp"
 
@@ -21,30 +20,17 @@ const filters = {
   Sell: null
 }
 
-const sorters = {
-  Price: {key: valueKey, defaultReversed: false},
-  Date: {key: timestampKey, defaultReversed: true}
-}
-
 const Listings = ({address}) => {
 
   const [filter, setFilter] = useState("All");
   const [listings, setListings] = useState([]);
-  const [sorter, setSorter] = useState()
+
+  console.log(listings)
 
   useEffect(() => {
-    getListingsData(address).then(a => setListings(a.sort((a, b) => (a[timestampKey] > b[timestampKey]) ? -1 : 1)))
+    getListingsData(address).then(a => setListings(a.reverse()))
   }, [])
 
-
-  const handleChange = (key, reversed) => {
-    console.log(key, reversed)
-    if (reversed) {
-      setListings([...listings].sort((a, b) => (a[key] > b[key]) ? -1 : 1));
-    } else {
-      setListings([...listings].sort((a, b) => (a[key] > b[key]) ? 1 : -1));
-    }
-  }
 
   return (
     <div className="listings__container">
@@ -52,7 +38,6 @@ const Listings = ({address}) => {
         {Object.keys(filters).map(a => <button key={a}
                                                className={"listings__button" + (filter === a ? " listings__button__active" : "")}
                                                onClick={() => setFilter(a)}>{a}</button>)}
-        <ListingDropdown options={sorters} defaultOption="Date" handleChange={handleChange} defaultReversed={true}/>
       </div>
       <div className="listings__entries">
         {listings.map(a => <Listing key={a[tokenNameKey]} listing={a}/>)}
