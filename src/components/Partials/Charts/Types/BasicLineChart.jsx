@@ -1,7 +1,7 @@
 import BaseLineChart from "../Base/BaseLineChart";
 import ChartButton from "../Base/ChartButton";
 import {useEffect, useRef, useState} from "react";
-import {horizontalBlueGreenGradient, verticalBlueDarkGradient} from "../../../../ChartUtils/Utils/chartGradientUtils";
+import {horizontalBlueGreenGradient, verticalPurpleDarkGradient} from "../../../../ChartUtils/Utils/chartGradientUtils";
 import ChartToggle from "../Base/ChartToggle";
 import {toolTipLinePlugin} from "../../../../ChartUtils/Plugins/toolTipLinePlugin";
 import {getMax, getMin} from "../../../../ChartUtils/Utils/chartDataUtils";
@@ -104,7 +104,7 @@ const BasicLineChart = ({
             label: formatter,
           }
         },
-        backgroundColor: verticalBlueDarkGradient,
+        backgroundColor: verticalPurpleDarkGradient,
         fill: 'origin'
       }
     ]

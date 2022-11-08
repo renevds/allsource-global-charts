@@ -1,4 +1,6 @@
 import React from "react";
+import "@allsource/ui.style.base";
+
 import SaleForPeriodChart from "./components/Partials/Charts/Instances/SaleForPeriodChart";
 import VolumeTxChart from "./components/Partials/Charts/Instances/VolumeTxChart";
 import ProfitPerSaleChart from "./components/Partials/Charts/Instances/ProfitPerSaleChart";
@@ -10,7 +12,8 @@ import CompactFloorPriceChart from "./components/Partials/Charts/Instances/Compa
 import Speedometer from "./components/Partials/Charts/Types/Speedometer";
 import MintingHistoryChart from "./components/Partials/Charts/Instances/MintingHistoryChart";
 import HolderTagsChart from "./components/Partials/Charts/Instances/HolderTagsChart";
-import Listings from "./components/Partials/Charts/Listings/Listings";
+import TransactionList from "./components/Partials/Charts/Listings/TransactionList";
+import FloorStrengthChart from "./components/Partials/Charts/Instances/FloorStrengthChart";
 
 export {
   SaleForPeriodChart,
@@ -24,5 +27,6 @@ export {
   Speedometer,
   MintingHistoryChart,
   HolderTagsChart,
-  Listings
+  TransactionList,
+  FloorStrengthChart
 };

@@ -1,0 +1,37 @@
+.floorstrengthwidget__container{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-left: 22px;
+    padding-right: 22px;
+    height: 72px;
+    width: 100%;
+}
+
+.floorstrengthwidget__title{
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--color-text);
+}
+
+.floorstrengthwidget__input{
+    color: var(--color-text);
+    font-size: 12px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.floorstrengthwidget__input > input{
+    margin-left: 5px;
+    width: 55px;
+    background-color: transparent;
+    border: 2px solid #989BAA;
+    border-radius: 2px;
+    height: 17px;
+    text-align: start;
+    color: var(--color-text);
+    font-weight: 700;
+    font-size: 12px;
+}

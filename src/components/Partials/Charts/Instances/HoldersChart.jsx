@@ -9,7 +9,7 @@ import ChartToggle from "../Base/ChartToggle";
 //Plugins
 import {toolTipLinePlugin} from "../../../../ChartUtils/Plugins/toolTipLinePlugin";
 import {simpleLineDataset} from "../../../../ChartUtils/datasets/datasetTemplates";
-import {chartBlue, chartPurple} from "../../../../ChartUtils/Utils/chartColors";
+import {chartGreen, chartPurple} from "../../../../ChartUtils/Utils/chartColors";
 //Utils
 import {getMax, getMin} from "../../../../ChartUtils/Utils/chartDataUtils";
 import {dayTimestampDuration} from "../../../../utils/timeUtils";
@@ -85,7 +85,7 @@ const HoldersChart = ({address}) => {
         title: {
           display: true,
           text: "Holders",
-          color: chartBlue,
+          color: chartGreen,
         }
       }
     },

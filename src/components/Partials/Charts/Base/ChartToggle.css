@@ -48,11 +48,11 @@
 }
 
 input:checked + .charttoggle__slider {
-    background-color: #8675f0;
+    background-color: var(--color-primary);
 }
 
 input:focus + .charttoggle__slider {
-    box-shadow: 0 0 1px #8675f0;
+    box-shadow: 0 0 1px var(--color-primary);
 }
 
 input:checked + .charttoggle__slider:before {

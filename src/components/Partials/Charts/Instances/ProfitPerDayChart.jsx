@@ -13,7 +13,7 @@ import {toolTipLinePlugin} from "../../../../ChartUtils/Plugins/toolTipLinePlugi
 import {getMax, getMin} from "../../../../ChartUtils/Utils/chartDataUtils";
 import {dayTimestampDuration} from "../../../../utils/timeUtils";
 import {simpleLineDataset} from "../../../../ChartUtils/datasets/datasetTemplates";
-import {chartBlue, chartPurple} from "../../../../ChartUtils/Utils/chartColors";
+import {chartGreen, chartPurple} from "../../../../ChartUtils/Utils/chartColors";
 
 //Queries
 import {profitPerDay} from "../../../../chart_queries";
@@ -83,7 +83,7 @@ const HoldersChart = ({address}) => {
         title: {
           display: true,
           text: "Profit",
-          color: chartBlue,
+          color: chartGreen,
         }
       }
     },

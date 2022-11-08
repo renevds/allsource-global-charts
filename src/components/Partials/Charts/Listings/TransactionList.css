@@ -1,13 +1,13 @@
-.listings__container{
+.transaction__list__container{
     width: 100%;
 }
 
-.listings__buttons{
+.transaction__list__buttons{
     display: flex;
     column-gap: 8px;
 }
 
-.listings__button {
+.transaction__list__button {
     border: none;
     color: var(--color-text);
     border-radius: 8px;
@@ -20,6 +20,6 @@
     cursor: pointer;
 }
 
-.listings__button__active{
+.transaction__list__button__active{
     background-color: var(--color-primary);
 }

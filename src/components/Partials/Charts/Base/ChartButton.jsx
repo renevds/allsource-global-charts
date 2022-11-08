@@ -1,11 +1,13 @@
 //Style
 import './ChartButton.css'
 
-const ChartButton = ({text, active, onClick}) => {
+const ChartButton = ({text, active, onClick, style}) => {
   const className = "chart__button" + (active ? " chart__button__active" : "")
 
   return (
-    <button className={className} onClick={onClick}>{text}</button>
+    <div className="chart__button__container">
+      <button style={style} className={className} onClick={onClick}>{text}</button>
+    </div>
   );
 };
 

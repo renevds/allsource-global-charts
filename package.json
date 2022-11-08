@@ -28,9 +28,13 @@
     ]
   },
   "devDependencies": {
-    "@allsource/config.axios_instances": "^0.0.20",
+    "@allsource/config.axios_instances": "^0.0.24",
     "@allsource/ui.partials.icons.higher_lower": "^0.0.12",
     "@allsource/ui.partials.loader": "^0.0.13",
+    "@allsource/ui.partials.button": "^0.0.17",
+    "@allsource/ui.partials.divider": "^0.0.15",
+    "@allsource/ui.partials.ethereum": "^0.0.2",
+    "@allsource/ui.style.base": "^0.0.8",
     "@babel/core": "^7.18.9",
     "@babel/preset-react": "^7.18.6",
     "@fortawesome/fontawesome-svg-core": "^6.1.1",
@@ -74,7 +78,5 @@
     "react-dom": "^18.2.0"
   },
   "dependencies": {
-    "@allsource/ui.partials.button": "^0.0.17",
-    "@allsource/ui.partials.ethereum": "^0.0.2"
   }
 }

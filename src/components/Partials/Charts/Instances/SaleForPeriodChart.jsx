@@ -141,8 +141,8 @@ const SaleForPeriodChart = ({address}) => {
 
     async function loadMoreData() {
       try {
-        const newScatterData = await anySaleInEthForPeriod(address, 365, false);
-        const newAverageData = await txnAndVol(address, 365).then(b => b.map(a => ({
+        const newScatterData = await anySaleInEthForPeriod(address, 3650, false);
+        const newAverageData = await txnAndVol(address, 3650).then(b => b.map(a => ({
           ...a,
           averageValue: a.volume/a.txCount //TODO remove once endpoint is fixed
         })));

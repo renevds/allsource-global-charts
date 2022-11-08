@@ -18,7 +18,7 @@ import {txnAndVol, floorAndMarketCap} from "../../../../chart_queries";
 //Utils
 import moment from "moment";
 import {simpleLineDataset, simpleBarDataset} from "../../../../ChartUtils/datasets/datasetTemplates";
-import {chartBlue, chartPurple} from "../../../../ChartUtils/Utils/chartColors";
+import {chartGreen, chartPurple} from "../../../../ChartUtils/Utils/chartColors";
 import {formatDecimal, getDataBetween, getSum} from "../../../../ChartUtils/Utils/chartDataUtils";
 import {horizontalBlueGreenGradient} from "../../../../ChartUtils/Utils/chartGradientUtils";
 

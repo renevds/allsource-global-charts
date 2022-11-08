@@ -1,4 +1,5 @@
 import {horizontalBlueGreenGradient, verticalBlueDarkGradientNonTransparent} from "../Utils/chartGradientUtils";
+import {hoverBackgroundGreen} from "../Utils/chartColors";
 
 const baseDataset = {
   pointBackgroundColor: "rgba(255,255,255,0.1)",
@@ -38,5 +39,5 @@ export const dashedLineDataset = {
 export const simpleBarDataset = {
   type: 'bar',
   backgroundColor: verticalBlueDarkGradientNonTransparent,
-  hoverBackgroundColor: "rgba(86,245,184,0.5)"
+  hoverBackgroundColor: hoverBackgroundGreen
 }

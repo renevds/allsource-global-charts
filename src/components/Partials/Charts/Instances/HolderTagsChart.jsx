@@ -14,7 +14,7 @@ import {getMax, getMin} from "../../../../ChartUtils/Utils/chartDataUtils";
 import {dayTimestampDuration} from "../../../../utils/timeUtils";
 import {simpleLineDataset} from "../../../../ChartUtils/datasets/datasetTemplates";
 import {
-  chartBlue,
+  chartGreen,
   chartPurple,
   FUDerColor,
   goldfingerColor,

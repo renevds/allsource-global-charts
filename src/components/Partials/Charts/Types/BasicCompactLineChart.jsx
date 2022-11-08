@@ -2,7 +2,7 @@
 import {useEffect, useRef, useState} from "react";
 
 //Gradients
-import {horizontalBlueGreenGradient, verticalBlueDarkGradient} from "../../../../ChartUtils/Utils/chartGradientUtils";
+import {horizontalBlueGreenGradient, verticalPurpleDarkGradient} from "../../../../ChartUtils/Utils/chartGradientUtils";
 
 //Utils
 import {getMax, getMin} from "../../../../ChartUtils/Utils/chartDataUtils";
@@ -86,7 +86,7 @@ const BasicLineChart = ({
           yAxisKey: yKey
         },
         borderColor: horizontalBlueGreenGradient,
-        backgroundColor: verticalBlueDarkGradient,
+        backgroundColor: verticalPurpleDarkGradient,
         fill: 'origin'
       }
     ]

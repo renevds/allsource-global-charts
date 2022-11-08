@@ -1,16 +1,16 @@
-.listing__container{
+.transaction__list__item__container{
     display: flex;
     border-bottom: 1px solid #332F37;
     align-items: center;
     height: 86px;
 }
 
-.listing__row{
+.transaction__list__item__row{
     flex-grow: 2;
     flex-basis: 0;
 }
 
-.listing__row__small{
+.transaction__list__item__row__small{
     flex-grow: 1;
     flex-basis: 0;
     justify-content: center;
@@ -18,72 +18,73 @@
 }
 
 
-.listing__green{
+.transaction__list__item__green{
     color: var(--color-secondary);
     font-weight: 700;
     font-size: 16px;
 }
 
-.listing__red{
+.transaction__list__item__red{
     color: #FF8062;
     font-weight: 700;
     font-size: 16px;
 }
 
-.listing__buy{
+.transaction__list__item__buy{
     height: 24px;
     display: flex;
     justify-content: start;
     align-items: center;
     gap: 8px;
     margin-bottom: 5px;
+    cursor: pointer;
 }
 
-.listing__date{
+.transaction__list__item__date{
     font-size: 14px;
     font-weight: 500;
     color: #989BAA;
 }
 
-.listing__title{
+.transaction__list__item__title{
     font-size: 16px;
     color: #989BAA;
 }
 
-.listing__text{
+.transaction__list__item__text{
     font-size: 16px;
     font-weight: 700;
     color: var(--color-text);
 }
 
-.listing__title__column{
+.transaction__list__item__title__column{
     display: inline-block;
     width: 47px;
     margin-right: 10px;
 }
 
-.listing__button{
+.transaction__list__item__button{
     height: 24px;
     width: 24px;
 }
 
-.listing__button:hover{
+.transaction__list__item__button:hover{
     cursor: pointer;
     filter: brightness(150);
 }
 
-.listing__gap{
+.transaction__list__item__gap{
     gap: 8px;
     display: flex;
     flex-direction: column;
 }
 
-.listing__token{
+.transaction__list__item__token{
     display: flex;
     gap: 8px;
 }
 
-.listing__img{
+.transaction__list__item__img{
     border-radius: 8px;
     height: 50px;
     width: 50px;

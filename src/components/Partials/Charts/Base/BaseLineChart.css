@@ -3,7 +3,7 @@
     height: 100%;
     margin: 0;
     padding: 0;
-    background-color: #26232b;
+    background-color: var(--color-background-dark);
     border-radius: 12px;
     font-size: 16px;
     display: flex;
@@ -33,7 +33,7 @@
 }
 
 .chart__buttons__bg {
-    background-color: #322f36;
+    background-color: var(--color-background-light);
     border-radius: 8px;
     height: 32px;
     display: flex;
@@ -61,11 +61,16 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    background-color: rgba(50, 47, 54, 0.5);
+    background-color: var(--color-background-dark);
     border-radius: 12px;
 }
 
 .chart__error__transparent{
     background-color: transparent;
     pointer-events: none;
+}
+
+.chart__sharp{
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
 }

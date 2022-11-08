@@ -12,7 +12,8 @@ import {useState} from "react";
 import ProfitPerDayChart from "./components/Partials/Charts/Instances/ProfitPerDayChart";
 import MintingHistoryChart from "./components/Partials/Charts/Instances/MintingHistoryChart";
 import HolderTagsChart from "./components/Partials/Charts/Instances/HolderTagsChart";
-import Listings from "./components/Partials/Charts/Listings/Listings";
+import TransactionList from "./components/Partials/Charts/Listings/TransactionList";
+import FloorStrengthChart from "./components/Partials/Charts/Instances/FloorStrengthChart";
 
 function App() {
 
@@ -40,14 +41,14 @@ function App() {
     {'CandyRobbers': '0x33857Ad1031122A00A68E6Bf9Ac4475ba6c6F8be'}]
 
 
-  const [address, setAddress] = useState("0x33857Ad1031122A00A68E6Bf9Ac4475ba6c6F8be")
-  const [section, setSection] = useState("holder")
+  const [address, setAddress] = useState("0x8a90CAb2b38dba80c64b7734e58Ee1dB38B8992e")
+  const [section, setSection] = useState("main")
 
   return (
     <div className="charts__container">
       <button onClick={() => setSection("main")}>main</button>
       <button onClick={() => setSection("holder")}>holder</button>
-      <div style={{width:"100%", height: "2px", backgroundColor: "#14F4C9"}}/>
+      <div style={{width: "100%", height: "2px", backgroundColor: "#14F4C9"}}/>
       <div>
         {possibleAddresses.map(a => {
             const name = Object.keys(a)[0];
@@ -56,8 +57,15 @@ function App() {
           }
         )}
       </div>
+      <div style={{width: "100%", height: "2px", backgroundColor: "#14F4C9", marginBottom: "50px"}}/>
       {section === 'main' ?
         <>
+          <div style={{backgroundColor: "var(--color-background-dark)", padding: "20px"}}>
+            <div className="test__row"
+                 style={{borderRadius: "16px", padding: "5px", backgroundColor: "var(--color-background-light)"}}>
+              <FloorStrengthChart address={address} key={address}/>
+            </div>
+          </div>
           <div style={{width: "50%"}}>
             <VolatilitySpeedometer contractAddress={address} saveToSession={true} key={address}/>
           </div>
@@ -72,6 +80,10 @@ function App() {
           </div>
           <div className="test__row">
             <ProfitPerSaleChart address={address} key={address}/>
+          </div>
+          <div className=""
+               style={{backgroundColor: "#242127", paddingTop: '30px', paddingLeft: '26px', paddingRight: '26px'}}>
+            <TransactionList address={address} key={address}/>
           </div>
         </>
         :
@@ -93,9 +105,6 @@ function App() {
           </div>
           <div className="test__row">
             <HolderTagsChart address={address} key={address}/>
-          </div>
-          <div className="" style={{backgroundColor: "#242127", paddingTop: '30px', paddingLeft: '26px', paddingRight: '26px'}}>
-            <Listings address={address} key={address}/>
           </div>
         </>
       }

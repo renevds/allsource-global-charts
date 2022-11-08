@@ -55,7 +55,7 @@ ChartJS.register(
   BarController,
 );
 
-const BaseLineChart = ({chartData, buttons, controls, plugins, stats, chartOptions, chartRef, isLoading, error, transparentError}) => {
+const BaseLineChart = ({chartData, buttons, controls, plugins, stats, chartOptions, chartRef, isLoading, error, transparentError, sharpTop}) => {
 
     const defaultChartOptions = {
       responsive: true,
@@ -109,7 +109,7 @@ const BaseLineChart = ({chartData, buttons, controls, plugins, stats, chartOptio
     const mergedOptions = mergeDeep(defaultChartOptions, chartOptions);
 
     return (
-      <div className="chart__container">
+      <div className={"chart__container" + (sharpTop ? " chart__sharp" : "")}>
         <div className="chart__row">
           <div className="chart__stats">
             {stats}
