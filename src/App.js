@@ -36,12 +36,12 @@ function App() {
     {'Murakaimi': '0x40958816c61a222BaE9B71867217322D84B21B01'},
     {'Moonbird Oddities': '0x1792a96E5668ad7C167ab804a100ce42395Ce54D'},
     {'Wave Catchers': '0x1A331c89898C37300CccE1298c62aefD3dFC016c'},
-    {'Mutant Ape Yach Club': '0x60E4d786628Fea6478F785A6d7e704777c86a7c6'},
+    {'Mutant Ape Yacht Club': '0x60E4d786628Fea6478F785A6d7e704777c86a7c6'},
     {'Doodles': '0x8a90CAb2b38dba80c64b7734e58Ee1dB38B8992e'},
     {'CandyRobbers': '0x33857Ad1031122A00A68E6Bf9Ac4475ba6c6F8be'}]
 
 
-  const [address, setAddress] = useState("0x8a90CAb2b38dba80c64b7734e58Ee1dB38B8992e")
+  const [address, setAddress] = useState("0xBC4CA0EdA7647A8aB7C2061c2E118A18a936f13D")
   const [section, setSection] = useState("main")
 
   return (

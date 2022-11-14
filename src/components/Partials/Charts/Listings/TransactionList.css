@@ -23,3 +23,10 @@
 .transaction__list__button__active{
     background-color: var(--color-primary);
 }
+
+.transaction__list__error{
+    color: var(--color-text);
+    padding: 30px;
+    text-align: center;
+    font-weight: 700;
+}
