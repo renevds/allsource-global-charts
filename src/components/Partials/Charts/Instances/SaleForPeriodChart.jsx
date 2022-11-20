@@ -36,6 +36,7 @@ import './SaleForPeriodChart.css'
 
 //Queries
 import {anySaleInEthForPeriod, txnAndVol} from "../../../../chart_queries";
+import moment from "moment";
 
 const durationMap = {
   "7D": 7,
@@ -75,23 +76,20 @@ const SaleForPeriodChart = ({address}) => {
   const [zoomed, setZoomed] = useState(true);
   const [largerDot, setLargerDot] = useState(false);
   const [error, setError] = useState("");
-  const [transparentError, setTransparentError] = useState(false);
-
   const countTx = (compressed) => {
     return compressed.map(a => a.originals?.length || 1).reduce((partialSum, a) => partialSum + a, 0);
   }
 
   useEffect(() => {
     if (init) {
-      const newInitialMax = getMax(averageData, averageXAxisKey);
-      const newInitialMin = Math.max(Date.now() - dayTimestampDuration * durationMap[active], getMin(averageData, averageXAxisKey));
+      const newInitialMax = Date.now();
+      const newInitialMin = newInitialMax - dayTimestampDuration * durationMap[active];
       const avgInView = getDataBetween(averageData, averageXAxisKey, newInitialMin, newInitialMax, averageXAxisKey);
       let pannedFilteredData = getDataBetween(scatterData, scatterXAxisKey, newInitialMin, newInitialMax);
       const newTx = countTx(pannedFilteredData);
       if (avgInView.length === 0) {
-        setTransparentError(true);
-        setError(`No sales in last ${durationMap[active]} days.`);
-        setPricePercentage(0);
+        setPricePercentage(undefined);
+        setAvg(NaN);
       } else {
         setError("");
         const newAvg = getAvg(avgInView, averageYAxisKey);
@@ -115,36 +113,38 @@ const SaleForPeriodChart = ({address}) => {
   }, [active, init])
 
   const handleData = (newScatterData, newAverageData) => {
+    console.log(newScatterData)
+    console.log(newAverageData)
     const nonGarbage = newScatterData.filter(a => a[marketKey] === "Sale");
     setScatterData(compressDataSet(nonGarbage, scatterXAxisKey, scatterYAxisKey));
     setGarbageData(newScatterData.filter(a => a[marketKey] !== "Sale"));
     setAverageData(newAverageData);
-    setActive(active);
-    setInit(true);
   }
 
   useEffect(() => {
-    async function loadData() {
+    async function loadPartialData() {
       try {
         const newScatterData = await anySaleInEthForPeriod(address, 31, false);
         const newAverageData = await txnAndVol(address, 31).then(b => b.map(a => ({
           ...a,
-          averageValue: a.volume/a.txCount //TODO remove once endpoint is fixed
+          averageValue: a.volume / a.txCount //TODO remove once endpoint is fixed
         })));
         handleData(newScatterData, newAverageData);
-        loadMoreData();
+        setInit(true);
+        setActive(active);
+        loadFullData();
       } catch (e) {
         setError("Chart data not available.");
         setInit(false);
       }
     }
 
-    async function loadMoreData() {
+    async function loadFullData() {
       try {
         const newScatterData = await anySaleInEthForPeriod(address, 3650, false);
         const newAverageData = await txnAndVol(address, 3650).then(b => b.map(a => ({
           ...a,
-          averageValue: a.volume/a.txCount //TODO remove once endpoint is fixed
+          averageValue: a.volume / a.txCount //TODO remove once endpoint is fixed
         })));
         handleData(newScatterData, newAverageData);
       } catch (e) {
@@ -153,7 +153,7 @@ const SaleForPeriodChart = ({address}) => {
       }
     }
 
-    loadData();
+    loadPartialData();
   }, [])
 
   const chartRef = useRef(null);
@@ -212,18 +212,24 @@ const SaleForPeriodChart = ({address}) => {
           onPanComplete: ({chart}) => {
           },
           onPan: ({chart}) => {
+            console.log(scatterData)
             let newScatter = getDataBetween(scatterData, scatterXAxisKey, chart.scales.xAxes.min, chart.scales.xAxes.max);
             setTx(countTx(newScatter));
             chart.config.data.datasets[0].data = newScatter;
             const avgInView = getDataBetween(averageData, averageXAxisKey, chart.scales.xAxes.min, chart.scales.xAxes.max, averageXAxisKey);
-            const avg = getAvg(avgInView, averageYAxisKey);
-            setAvg(avg);
-            chart.scales.yAxes.options.modifiedLinearCenter = avg;
-            const avgInViewMin = getMin(avgInView, averageXAxisKey);
-            const avgInViewMax = getMax(avgInView, averageXAxisKey);
-            const firstAvg = averageData.filter(a => a[averageXAxisKey] === avgInViewMin)[0][averageYAxisKey];
-            const lastAvg = averageData.filter(a => a[averageXAxisKey] === avgInViewMax)[0][averageYAxisKey];
-            setPricePercentage(Math.round((lastAvg - firstAvg) * 100 / firstAvg))
+            if (avgInView.length === 0) {
+              setPricePercentage(undefined);
+              setAvg(NaN);
+            } else {
+              const avg = getAvg(avgInView, averageYAxisKey);
+              setAvg(avg);
+              chart.scales.yAxes.options.modifiedLinearCenter = avg;
+              const avgInViewMin = getMin(avgInView, averageXAxisKey);
+              const avgInViewMax = getMax(avgInView, averageXAxisKey);
+              const firstAvg = averageData.filter(a => a[averageXAxisKey] === avgInViewMin)[0][averageYAxisKey];
+              const lastAvg = averageData.filter(a => a[averageXAxisKey] === avgInViewMax)[0][averageYAxisKey];
+              setPricePercentage(Math.round((lastAvg - firstAvg) * 100 / firstAvg))
+            }
             chart.scales.yAxes.handleZoom();
           }
         },
@@ -319,7 +325,7 @@ const SaleForPeriodChart = ({address}) => {
     ]
   }
 
-
+  const empty = pannedFilteredData.length === 0
   return (
     <div className='saleforperiodchart__container'>
       <BaseLineChart chartData={chartData}
@@ -382,8 +388,8 @@ const SaleForPeriodChart = ({address}) => {
                      ]}
                      chartOptions={chartOptions}
                      isLoading={isLoading}
-                     error={error}
-                     transparentError={transparentError}/>
+                     error={error || (empty && "No sales in view, pan left.")}
+                     transparentError={!error && empty}/>
       <UrlsPopup onClose={() => setUrls([])} urls={urls}/>
     </div>
   );
