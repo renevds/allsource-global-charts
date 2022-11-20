@@ -1,4 +1,5 @@
 import {
+  ActiveListingsChart,
   CompactFloorPriceChart,
   HoldersChart,
   HoldingAmountDistributionChart,
@@ -41,7 +42,7 @@ function App() {
     {'CandyRobbers': '0x33857Ad1031122A00A68E6Bf9Ac4475ba6c6F8be'}]
 
 
-  const [address, setAddress] = useState("0xBC4CA0EdA7647A8aB7C2061c2E118A18a936f13D")
+  const [address, setAddress] = useState("0x60E4d786628Fea6478F785A6d7e704777c86a7c6")
   const [section, setSection] = useState("main")
 
   return (
@@ -60,6 +61,9 @@ function App() {
       <div style={{width: "100%", height: "2px", backgroundColor: "#14F4C9", marginBottom: "50px"}}/>
       {section === 'main' ?
         <>
+          <div className="test__row">
+            <ActiveListingsChart address={address} key={address}/>
+          </div>
           <div style={{backgroundColor: "var(--color-background-dark)", padding: "20px"}}>
             <div className="test__row"
                  style={{borderRadius: "16px", padding: "5px", backgroundColor: "var(--color-background-light)"}}>

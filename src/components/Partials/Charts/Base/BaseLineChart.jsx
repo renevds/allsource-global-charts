@@ -34,6 +34,7 @@ import annotationPlugin from "chartjs-plugin-annotation";
 
 //Utils
 import {mergeDeep} from "../../../../utils/objUtils";
+import {textColor} from "../../../../ChartUtils/Utils/chartColors";
 
 ChartJS.register(
   TimeScale,
@@ -74,7 +75,7 @@ const BaseLineChart = ({chartData, buttons, controls, plugins, stats, chartOptio
       },
       scales: {
         yAxes: {
-          color: "#ffffff",
+          color: textColor,
           maxTicksLimit: 6,
           grid: {
             drawBorder: false,

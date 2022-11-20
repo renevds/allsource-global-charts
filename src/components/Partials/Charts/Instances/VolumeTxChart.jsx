@@ -49,7 +49,7 @@ const VolumeTxChart = ({address}) => {
   useEffect(() => {
     if (init) {
       try {
-        setPannedData(averageData.slice(averageData.length - durationMap[active], averageData.length - 1));
+        setPannedData(averageData.slice(averageData.length - durationMap[active], averageData.length));
         setIsLoading(false);
         setVersion(version + 1);
       } catch (e) {
@@ -62,7 +62,6 @@ const VolumeTxChart = ({address}) => {
     const load = async () => {
       try {
         let newAverageData = await txnAndVol(address, 365);
-
         const newFloorPriceData = await floorAndMarketCap(address, 365);
         const floorPriceByDate = {};
 

@@ -5,3 +5,5 @@ export const goldfingerColor = "#FFAE40";
 export const FUDerColor = "#FF2700";
 export const hoverBackgroundGreen = "rgba(86,245,184,0.5)";
 export const hoverBackgroundPurple = "rgba(114,48,222,0.5)";
+export const textColor = "#ffffff"
+export const chartRed = "rgb(255, 108, 82)"

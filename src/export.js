@@ -14,6 +14,7 @@ import MintingHistoryChart from "./components/Partials/Charts/Instances/MintingH
 import HolderTagsChart from "./components/Partials/Charts/Instances/HolderTagsChart";
 import TransactionList from "./components/Partials/Charts/Listings/TransactionList";
 import FloorStrengthChart from "./components/Partials/Charts/Instances/FloorStrengthChart";
+import ActiveListingsChart from "./components/Partials/Charts/Instances/ActiveListingsChart";
 
 export {
   SaleForPeriodChart,
@@ -28,5 +29,6 @@ export {
   MintingHistoryChart,
   HolderTagsChart,
   TransactionList,
-  FloorStrengthChart
+  FloorStrengthChart,
+  ActiveListingsChart
 };

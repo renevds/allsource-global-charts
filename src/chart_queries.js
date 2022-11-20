@@ -48,3 +48,7 @@ export function getMintCharts(contractAddress){
 export function getListingsData(contractAddress){
   return chartDataFetchNoLZW.get('/v2/getEthListingsData', {params: {contractAddress}}).then(a => a.data)
 }
+
+export function getEthListingEvents(contractAddress, periodInDays){
+  return chartDataFetchNoLZW.get('/v2/getEthListingEvents', {params: {contractAddress, periodInDays}}).then(a => a.data)
+}

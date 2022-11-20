@@ -1,0 +1,12 @@
+.legendwidget__text{
+    color: var(--color-text);
+    display: flex;
+    align-items: center;
+}
+
+.legendwidget__box{
+    width: 15px;
+    height: 15px;
+    margin-right: 5px;
+    margin-left: 24px;
+}

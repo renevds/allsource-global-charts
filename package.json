@@ -1,6 +1,6 @@
 {
   "name": "degen-charts",
-  "version": "1.6.23",
+  "version": "1.6.25",
   "main": "dist/index.js",
   "module": "dist/index.es.js",
   "scripts": {

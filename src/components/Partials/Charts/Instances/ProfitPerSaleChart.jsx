@@ -26,6 +26,7 @@ import {simpleScatterDataset} from "../../../../ChartUtils/datasets/datasetTempl
 import {faChartLine, faCoins, faMagnifyingGlassChart, faMinus, faPlus} from "@fortawesome/free-solid-svg-icons";
 import UrlsPopup from "../Base/UrlsPopup";
 import ChartStat from "../Base/ChartStat";
+import {textColor} from "../../../../ChartUtils/Utils/chartColors";
 
 const xKey = "ts";
 const percentageGainKey = "percentageGain";
@@ -124,7 +125,7 @@ const ProfitPerSaleChart = ({address}) => {
         title: {
           display: true,
           text: "Gain %",
-          color: '#ffffff'
+          color: textColor
         }
       }
     },
@@ -202,7 +203,7 @@ const ProfitPerSaleChart = ({address}) => {
       {
         ...simpleScatterDataset,
         data: filteredData.filter(a => a[percentageGainKey] > 0),
-        pointBackgroundColor: '#ffffff',
+        pointBackgroundColor: textColor,
         pointRadius: pointRadius,
         hoverRadius: pointRadius,
         parsing: {
