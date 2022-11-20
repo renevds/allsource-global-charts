@@ -50,10 +50,10 @@ const FloorStrengthChart = ({address}) => {
         setListingsData(listingsData);
         setSortedPrices(listingsData.map(a => a[VALUE_KEY]));
         let newRange = 0
-        for (let i = 0; i < rangeMap.length; i++) {if(listingsData[0][VALUE_KEY]/rangeMap[i] > 5 || i === rangeMap.length - 1){
+        for (let i = 0; i < rangeMap.length; i++) {
+          if (listingsData[0][VALUE_KEY] / rangeMap[i] > 5 || i === rangeMap.length - 1) {
             newRange = i;
-          }
-          else {
+          } else {
             break;
           }
         }
@@ -71,29 +71,20 @@ const FloorStrengthChart = ({address}) => {
   useEffect(() => {
     const calc = () => {
       let res = [];
-      let min =  Math.floor(listingsData[0][VALUE_KEY] / range);
+      let min = Math.floor(listingsData[0][VALUE_KEY] / range);
       listingsData.forEach(listing => {
         const index = Math.floor(listing[VALUE_KEY] / range);
         res[index] = (res[index] || 0) + 1;
       })
-      let keys = []
-      let ret = []
-      for (let i = min; i < res.length && ret.length <= AMOUNT_OF_BARS; i++) {
-        if(res[i] !== undefined){
-          ret.push(res[i])
-          keys.push(getStr(i))
-        }
-        else if(res[i] === undefined && res[i + 1] !== undefined && res) {
-          ret.push(0)
-          keys.push("...")
-        }
-      }
-      setData(ret);
+      res = res.slice(min, min + AMOUNT_OF_BARS);
+      res = Array.from(res, item => item || 0);
+      let keys = res.map((_, i) => getStr(min + i))
+      setData(res);
       setLabels(keys);
       setIsLoading(false);
       setVersion(v => v + 1);
     }
-    if(listingsData.length > 0){
+    if (listingsData.length > 0) {
       calc()
     }
   }, [rangeIndex, listingsData]);
@@ -179,7 +170,7 @@ const FloorStrengthChart = ({address}) => {
                        )}
                        chartOptions={chartOptions}
                        isLoading={isLoading}
-                       plugins={[toolTipLinePlugin, emptyBarLinePlugin]}
+                       plugins={[toolTipLinePlugin]}
                        controls={[]}
                        error={error}
                        unit={<Ethereum/>}

@@ -113,13 +113,16 @@ const FloorStrengthWidget = ({prices}) => {
     <div className="floorstrengthwidget__container">
       <div className="floorstrengthwidget__title">Floor Strength</div>
       <div className="floorstrengthwidget__input">
-        Target Floor <input value={values.target} onChange={handleTargetChange}/>&nbsp;<Ethereum/>
+        <div>Target Floor&nbsp;</div>
+        <div><input value={values.target} onChange={handleTargetChange}/>&nbsp;<Ethereum/></div>
       </div>
       <div className="floorstrengthwidget__input">
-        Req Sales <input value={values.sales} onChange={handleSalesChange}/>
+        <div>Req Sales&nbsp;</div>
+        <div><input value={values.sales} onChange={handleSalesChange}/></div>
       </div>
       <div className="floorstrengthwidget__input">
-        Req Volume <input value={values.volume} onChange={handleVolumeChange}/>&nbsp;<Ethereum/>
+        <div>Req Volume&nbsp;</div>
+        <div><input value={values.volume} onChange={handleVolumeChange}/>&nbsp;<Ethereum/></div>
       </div>
     </div>
   )

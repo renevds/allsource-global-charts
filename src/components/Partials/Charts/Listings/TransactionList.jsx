@@ -66,9 +66,6 @@ const TransactionList = ({address}) => {
     }
   }, [activeFilters, transactions]);
 
-  console.log(displayedTransactions.length)
-  console.log(activeFilters)
-
   return (
     <div className="transaction__list__container">
       <div className="transaction__list__buttons">

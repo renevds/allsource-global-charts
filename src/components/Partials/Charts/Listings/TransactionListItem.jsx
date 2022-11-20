@@ -96,7 +96,6 @@ const TransactionListItem = ({transaction, collectionInfo}) => {
       <div className="transaction__list__item__row__small">
         <img src="https://files.allsource.io/icons/etherscan-logo.svg" className="transaction__list__item__button"
              onClick={() => {
-               console.log(`https://etherscan.io/tx/${transaction[TRANSACTION_KEY]}}`)
                window.open(`https://etherscan.io/tx/${transaction[TRANSACTION_KEY]}`, '_blank').focus();
              }}/>
       </div>

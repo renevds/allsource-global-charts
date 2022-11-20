@@ -9,22 +9,27 @@
 }
 
 .floorstrengthwidget__title{
-    font-size: 24px;
+    font-size: 20px;
     font-weight: 700;
     color: var(--color-text);
+    min-width: 160px;
+    margin-right: 20px;
 }
 
 .floorstrengthwidget__input{
     color: var(--color-text);
     font-size: 12px;
     font-weight: 700;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    padding: 5px;
+    text-align: center;
+    line-height: 20px;
 }
 
-.floorstrengthwidget__input > input{
-    margin-left: 5px;
+.floorstrengthwidget__input > div{
+    display: inline-block;
+}
+
+.floorstrengthwidget__input input{
     width: 55px;
     background-color: transparent;
     border: 2px solid #989BAA;
