@@ -29,10 +29,11 @@ import ChartStat from "../Base/ChartStat";
 import {textColor} from "../../../../ChartUtils/Utils/chartColors";
 
 const xKey = "ts";
-const percentageGainKey = "percentageGain";
-const ethGainKey = "ethGain";
-const holdingKey = "holdingTime";
+const percentageGainKey = "proxyPercentageGain";
+const ethGainKey = "proxyGain";
+const holdingKey = "proxyHoldingTime";
 const saleValueKey = "sell";
+const buyValueKey = "buy";
 
 const durationMap = {
   "7D": 7,
@@ -61,8 +62,8 @@ const ProfitPerSaleChart = ({address}) => {
   useEffect(() => {
     if (init) {
       try {
-        const newInitialMax = getMax(data, xKey);
-        const newInitialMin = Math.max(Date.now() - dayTimestampDuration * durationMap[active], getMin(data, xKey));
+        const newInitialMax = Date.now();
+        const newInitialMin = Math.max(newInitialMax - dayTimestampDuration * durationMap[active], getMin(data, xKey));
         const newPannedData = getDataBetween(data, xKey, newInitialMin, newInitialMax);
         setPannedData(newPannedData);
         setInitialXMax(newInitialMax);
@@ -183,9 +184,9 @@ const ProfitPerSaleChart = ({address}) => {
   }
 
   const scatterFormatter = toolTipItem => {
-    return `Held for ${Math.floor(toolTipItem.raw[holdingKey])} days` +
+    return `Last bought ${Math.floor(toolTipItem.raw[holdingKey])} days` +
       ` | Gain ${toolTipItem.raw[percentageGainKey].toLocaleString()}%` +
-      ` | bought for ${(toolTipItem.raw[saleValueKey] - toolTipItem.raw[ethGainKey]).toLocaleString()} Ξ` +
+      ` | bought for ${Math.round(toolTipItem.raw[buyValueKey] * 10) / 10} Ξ` +
       ` | sold for ${(toolTipItem.raw[saleValueKey]).toLocaleString()} Ξ`
   }
 
