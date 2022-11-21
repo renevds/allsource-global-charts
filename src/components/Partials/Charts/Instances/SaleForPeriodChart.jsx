@@ -92,13 +92,21 @@ const SaleForPeriodChart = ({address}) => {
         setAvg(NaN);
       } else {
         setError("");
-        const newAvg = getAvg(avgInView, averageYAxisKey);
+        let newAvg = NaN;
+        if(avgInView.length > 0){
+          newAvg = getAvg(avgInView, averageYAxisKey);
+        }
         const newDataMin = getMin(averageData, averageXAxisKey);
         const avgInViewMin = getMin(avgInView, averageXAxisKey);
         const firstAvg = averageData.filter(a => a[averageXAxisKey] === avgInViewMin)[0][averageYAxisKey];
-        const lastAvg = averageData.filter(a => a[averageXAxisKey] === newInitialMax)[0][averageYAxisKey];
-        setPricePercentage(Math.round((lastAvg - firstAvg) * 100 / firstAvg))
-        setPricePercentage(0);
+        let lastAvg = averageData.filter(a => a[averageXAxisKey] === newInitialMax);
+        if(lastAvg.length > 0){
+          lastAvg = lastAvg[0][averageYAxisKey];
+          setPricePercentage(Math.round((lastAvg - firstAvg) * 100 / firstAvg))
+        }
+        else{
+          setPricePercentage(undefined);
+        }
         setAvg(newAvg);
         setLargerDot(newTx <= 500);
         setDataMin(newDataMin);
@@ -113,8 +121,6 @@ const SaleForPeriodChart = ({address}) => {
   }, [active, init])
 
   const handleData = (newScatterData, newAverageData) => {
-    console.log(newScatterData)
-    console.log(newAverageData)
     const nonGarbage = newScatterData.filter(a => a[marketKey] === "Sale");
     setScatterData(compressDataSet(nonGarbage, scatterXAxisKey, scatterYAxisKey));
     setGarbageData(newScatterData.filter(a => a[marketKey] !== "Sale"));
@@ -147,6 +153,7 @@ const SaleForPeriodChart = ({address}) => {
           averageValue: a.volume / a.txCount //TODO remove once endpoint is fixed
         })));
         handleData(newScatterData, newAverageData);
+        setVersion(v => v + 1);
       } catch (e) {
         setError("Chart data not available.");
         setInit(false);
@@ -212,10 +219,10 @@ const SaleForPeriodChart = ({address}) => {
           onPanComplete: ({chart}) => {
           },
           onPan: ({chart}) => {
-            console.log(scatterData)
             let newScatter = getDataBetween(scatterData, scatterXAxisKey, chart.scales.xAxes.min, chart.scales.xAxes.max);
             setTx(countTx(newScatter));
             chart.config.data.datasets[0].data = newScatter;
+            setPannedFilteredData(newScatter);
             const avgInView = getDataBetween(averageData, averageXAxisKey, chart.scales.xAxes.min, chart.scales.xAxes.max, averageXAxisKey);
             if (avgInView.length === 0) {
               setPricePercentage(undefined);
@@ -231,6 +238,7 @@ const SaleForPeriodChart = ({address}) => {
               setPricePercentage(Math.round((lastAvg - firstAvg) * 100 / firstAvg))
             }
             chart.scales.yAxes.handleZoom();
+            chart.update();
           }
         },
         limits: {
@@ -380,7 +388,7 @@ const SaleForPeriodChart = ({address}) => {
                                     }}/>]}
                      plugins={[pluginTrendLineLinear, initialZoom]}
                      stats={[<ChartStat key={2} name="Average"
-                                        value={`${(Math.round(avg * 100) / 100).toLocaleString()} Ξ`}
+                                        value={isNaN(avg) ? "N/A" : `${(Math.round(avg * 100) / 100).toLocaleString()} Ξ`}
                                         icon={<FontAwesomeIcon icon={faChartLine}/>}
                                         percentage={pricePercentage}/>,
                        <ChartStat key={3} name="Sales" value={tx}

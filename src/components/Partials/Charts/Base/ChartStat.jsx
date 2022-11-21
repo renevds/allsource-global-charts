@@ -25,12 +25,12 @@ const ChartStat = ({name, value, icon, percentage, colorValue, valueSign, valueC
           {name}
         </div>
         <div className={"chartstat__value" + (valueClass ? " " + valueClass : "")} style={textStyle}>
-          {isNaN(value) ? "N/A" : (colorValue ?
+          {colorValue ?
             <div className={value > 0 ? "chartstat__positive" : "chartstat__negative"}>
               {value > 0 ? "+" : "-"} {formatDecimal(Math.abs(value)).toLocaleString() + valueSign}
             </div>
             : (valueSign ? value + valueSign : value)
-          )}
+          }
         </div>
         {percentage !== undefined &&
           <div className={"chartstat__percentage" + (percentage > 0 ? "" : " chartstat__percentage_negative")}>

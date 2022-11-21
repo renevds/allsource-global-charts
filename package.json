@@ -1,6 +1,6 @@
 {
   "name": "degen-charts",
-  "version": "1.6.25",
+  "version": "1.6.27",
   "main": "dist/index.js",
   "module": "dist/index.es.js",
   "scripts": {
@@ -28,7 +28,7 @@
     ]
   },
   "devDependencies": {
-    "@allsource/config.axios_instances": "^0.0.24",
+    "@allsource/config.axios_instances": "^0.0.27",
     "@allsource/ui.partials.icons.higher_lower": "^0.0.12",
     "@allsource/ui.partials.loader": "^0.0.13",
     "@allsource/ui.partials.button": "^0.0.17",
@@ -77,6 +77,5 @@
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
   },
-  "dependencies": {
-  }
+  "dependencies": {}
 }

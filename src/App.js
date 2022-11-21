@@ -42,7 +42,7 @@ function App() {
     {'CandyRobbers': '0x33857Ad1031122A00A68E6Bf9Ac4475ba6c6F8be'}]
 
 
-  const [address, setAddress] = useState("0x60E4d786628Fea6478F785A6d7e704777c86a7c6")
+  const [address, setAddress] = useState("0xBC4CA0EdA7647A8aB7C2061c2E118A18a936f13D")
   const [section, setSection] = useState("main")
 
   return (
