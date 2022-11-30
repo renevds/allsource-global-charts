@@ -62,6 +62,9 @@ function App() {
       {section === 'main' ?
         <>
           <div className="test__row">
+            <SaleForPeriodChart address={address} key={address}/>
+          </div>
+          <div className="test__row">
             <ActiveListingsChart address={address} key={address}/>
           </div>
           <div style={{backgroundColor: "var(--color-background-dark)", padding: "20px"}}>
@@ -75,9 +78,6 @@ function App() {
           </div>
           <div style={{width: "99px", height: "65px"}}>
             <CompactFloorPriceChart contractAddress={address} saveToSession={true} key={address}/>
-          </div>
-          <div className="test__row">
-            <SaleForPeriodChart address={address} key={address}/>
           </div>
           <div className="test__row">
             <VolumeTxChart address={address} key={address}/>

@@ -56,7 +56,11 @@ ChartJS.register(
   BarController,
 );
 
-const BaseLineChart = ({chartData, buttons, controls, plugins, stats, chartOptions, chartRef, isLoading, error, transparentError, sharpTop}) => {
+const BaseLineChart = ({chartData, buttons, controls, plugins, stats, chartOptions, chartRef, isLoading, error, transparentError, sharpTop, debug}) => {
+
+    if(debug){
+      console.log(chartData);
+    }
 
     const defaultChartOptions = {
       responsive: true,
@@ -123,7 +127,7 @@ const BaseLineChart = ({chartData, buttons, controls, plugins, stats, chartOptio
           </div>
         </div>
         <div className="chart__chart">
-          <LineMemo options={mergedOptions} data={chartData} plugins={plugins} chartRef={chartRef}/>
+          <LineMemo options={mergedOptions} data={chartData} plugins={plugins} chartRef={chartRef} debug={debug}/>
         </div>
         {error ?
           <div className={"chart__error" + (transparentError ? " chart__error__transparent" : "")}>

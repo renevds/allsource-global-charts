@@ -5,7 +5,7 @@ import {useEffect, useRef, useState} from "react";
 
 //Components
 import BaseLineChart from "../Base/BaseLineChart";
-import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {
   faChartLine, faCircle,
   faMagnifyingGlassChart,
@@ -25,48 +25,44 @@ import {compressDataSet} from "../../../../ChartUtils/Utils/dataSetSizeDecreaser
 //Plugins
 import {initialZoom} from "../../../../ChartUtils/Plugins/initialZoomPlugin";
 import {pluginTrendLineLinear} from "../../../../ChartUtils/Plugins/trendLinePlugin";
-import '../../../../ChartUtils/Plugins/pointOrNearestInteractionMode';
+import "../../../../ChartUtils/Plugins/pointOrNearestInteractionMode";
 
 //Images
-import TrendLine from '../../../../images/trend.svg'
+import TrendLine from "../../../../images/trend.svg";
 import {horizontalBlueGreenGradient} from "../../../../ChartUtils/Utils/chartGradientUtils";
 
 //Style
-import './SaleForPeriodChart.css'
+import "./SaleForPeriodChart.css";
 
 //Queries
 import {anySaleInEthForPeriod, txnAndVol} from "../../../../chart_queries";
-import moment from "moment";
 
 const durationMap = {
   "7D": 7,
   "14D": 14,
   "30D": 30,
-  "3M": 90
-}
+  "3M": 90,
+  "ALL": Infinity
+};
 
-const scatterXAxisKey = "ts"
-const scatterYAxisKey = "ev"
-const averageXAxisKey = "ts"
-const averageYAxisKey = "averageValue"
-const marketKey = "action"
-const idKey = "tid"
-const hashKey = "th"
+const scatterXAxisKey = "ts";
+const scatterYAxisKey = "ev";
+const averageXAxisKey = "ts";
+const averageYAxisKey = "averageValue";
+const idKey = "tid";
+const hashKey = "th";
 
 const SaleForPeriodChart = ({address}) => {
 
-  const [active, setActive] = useState('7D');
+  const [active, setActive] = useState("7D");
   const [version, setVersion] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
   const [scatterData, setScatterData] = useState([]);
   const [averageData, setAverageData] = useState([]);
-  const [logarithmic, setLogarithmic] = useState(false);
-  const [garbage, setGarbage] = useState(false);
   const [avg, setAvg] = useState(0);
   const [initialXMin, setInitialXMin] = useState(0);
   const [initialXMax, setInitialXMax] = useState(0);
   const [pannedFilteredData, setPannedFilteredData] = useState([]);
-  const [garbageData, setGarbageData] = useState([]);
   const [tx, setTx] = useState(0);
   const [init, setInit] = useState(false);
   const [dataMin, setDataMin] = useState(0);
@@ -78,7 +74,7 @@ const SaleForPeriodChart = ({address}) => {
   const [error, setError] = useState("");
   const countTx = (compressed) => {
     return compressed.map(a => a.originals?.length || 1).reduce((partialSum, a) => partialSum + a, 0);
-  }
+  };
 
   useEffect(() => {
     if (init) {
@@ -91,20 +87,17 @@ const SaleForPeriodChart = ({address}) => {
         setPricePercentage(undefined);
         setAvg(NaN);
       } else {
-        setError("");
         let newAvg = NaN;
-        if(avgInView.length > 0){
+        if (avgInView.length > 0) {
           newAvg = getAvg(avgInView, averageYAxisKey);
         }
         const newDataMin = getMin(averageData, averageXAxisKey);
         const avgInViewMin = getMin(avgInView, averageXAxisKey);
         const firstAvg = averageData.filter(a => a[averageXAxisKey] === avgInViewMin)[0][averageYAxisKey];
-        let lastAvg = averageData.filter(a => a[averageXAxisKey] === newInitialMax);
-        if(lastAvg.length > 0){
-          lastAvg = lastAvg[0][averageYAxisKey];
-          setPricePercentage(Math.round((lastAvg - firstAvg) * 100 / firstAvg))
-        }
-        else{
+        let lastAvg = averageData[averageData.length - 1][averageYAxisKey];
+        if (avgInViewMin < averageData[averageData.length - 1][averageXAxisKey]) {
+          setPricePercentage(Math.round((lastAvg - firstAvg) * 100 / firstAvg));
+        } else {
           setPricePercentage(undefined);
         }
         setAvg(newAvg);
@@ -118,19 +111,17 @@ const SaleForPeriodChart = ({address}) => {
       setInitialXMax(newInitialMax);
       setInitialXMin(newInitialMin);
     }
-  }, [active, init])
+  }, [active, init]);
 
   const handleData = (newScatterData, newAverageData) => {
-    const nonGarbage = newScatterData.filter(a => a[marketKey] === "Sale");
-    setScatterData(compressDataSet(nonGarbage, scatterXAxisKey, scatterYAxisKey));
-    setGarbageData(newScatterData.filter(a => a[marketKey] !== "Sale"));
+    setScatterData(compressDataSet(newScatterData, scatterXAxisKey, scatterYAxisKey));
     setAverageData(newAverageData);
-  }
+  };
 
   useEffect(() => {
     async function loadPartialData() {
       try {
-        const newScatterData = await anySaleInEthForPeriod(address, 31, false);
+        const newScatterData = await anySaleInEthForPeriod(address, 31);
         const newAverageData = await txnAndVol(address, 31).then(b => b.map(a => ({
           ...a,
           averageValue: a.volume / a.txCount //TODO remove once endpoint is fixed
@@ -147,13 +138,13 @@ const SaleForPeriodChart = ({address}) => {
 
     async function loadFullData() {
       try {
-        const newScatterData = await anySaleInEthForPeriod(address, 3650, false);
+        const newScatterData = await anySaleInEthForPeriod(address, 3650);
         const newAverageData = await txnAndVol(address, 3650).then(b => b.map(a => ({
           ...a,
           averageValue: a.volume / a.txCount //TODO remove once endpoint is fixed
         })));
         handleData(newScatterData, newAverageData);
-        setVersion(v => v + 1);
+        setActive(active);
       } catch (e) {
         setError("Chart data not available.");
         setInit(false);
@@ -161,30 +152,30 @@ const SaleForPeriodChart = ({address}) => {
     }
 
     loadPartialData();
-  }, [])
+  }, []);
 
   const chartRef = useRef(null);
   const scatterMax = getMax(scatterData, scatterYAxisKey);
 
   let chartOptions = {
     onClick: (e) => {
-      const newDataPoints = []
+      const newDataPoints = [];
       e.chart.tooltip.dataPoints.forEach(dataPoint => {
         if (dataPoint.raw.originals) {
           newDataPoints.push(...dataPoint.raw.originals);
         } else {
           newDataPoints.push(dataPoint.raw);
         }
-      })
+      });
 
       const results = newDataPoints.map(dataPoint => ({
         name: `ID ${dataPoint[idKey]} sold for Ξ ${dataPoint[scatterYAxisKey].toLocaleString()}`,
         url: `https://etherscan.io/tx/${dataPoint[hashKey]}`
-      }))
+      }));
 
       if (results.length === 1) {
         setUrls([]);
-        window.open(results[0].url, '_blank').focus();
+        window.open(results[0].url, "_blank").focus();
       } else {
         setUrls(results);
       }
@@ -192,7 +183,7 @@ const SaleForPeriodChart = ({address}) => {
     interaction: {
       intersect: false,
       mode: "pointOrNearest",
-      axis: 'x'
+      axis: "x"
     },
     plugins: {
       toolTipLine: false,
@@ -201,16 +192,16 @@ const SaleForPeriodChart = ({address}) => {
         intersect: false,
         callbacks: {
           beforeBody: (toolTipItems) => {
-            return `Ξ ${toolTipItems[0].raw[scatterYAxisKey].toLocaleString()}`
+            return `Ξ ${toolTipItems[0].raw[scatterYAxisKey].toLocaleString()}`;
           },
           label: () => {
-            return false
+            return false;
           }
         },
       },
       initialZoom: {
         center: avg,
-        enabled: !logarithmic && zoomed
+        enabled: zoomed
       },
       zoom: {
         pan: {
@@ -235,7 +226,7 @@ const SaleForPeriodChart = ({address}) => {
               const avgInViewMax = getMax(avgInView, averageXAxisKey);
               const firstAvg = averageData.filter(a => a[averageXAxisKey] === avgInViewMin)[0][averageYAxisKey];
               const lastAvg = averageData.filter(a => a[averageXAxisKey] === avgInViewMax)[0][averageYAxisKey];
-              setPricePercentage(Math.round((lastAvg - firstAvg) * 100 / firstAvg))
+              setPricePercentage(Math.round((lastAvg - firstAvg) * 100 / firstAvg));
             }
             chart.scales.yAxes.handleZoom();
             chart.update();
@@ -257,7 +248,7 @@ const SaleForPeriodChart = ({address}) => {
             return "Ξ " + value.toLocaleString();
           }
         },
-        type: logarithmic ? "OffsetLogScale" : "modifiedLinear",
+        type: "modifiedLinear",
         modifiedLinearCenter: avg,
         max: scatterMax,
         min: getMin(scatterData, scatterYAxisKey),
@@ -268,7 +259,7 @@ const SaleForPeriodChart = ({address}) => {
         }
       },
       xAxes: {
-        type: 'time',
+        type: "time",
         min: initialXMin,
         max: initialXMax
       }
@@ -293,7 +284,7 @@ const SaleForPeriodChart = ({address}) => {
         tension: 0 // disables bezier curves
       }
     }
-  }
+  };
 
   const whaleImage = new Image();
   whaleImage.src = "https://files.allsource.io/icons/tag-whale.svg";
@@ -315,27 +306,15 @@ const SaleForPeriodChart = ({address}) => {
           width: 2,
         },
         pointStyle: (data) => {
-          return "point"
+          return "point";
         }
-      },
-      {
-        ...simpleScatterDataset,
-        pointRadius: largerDot ? 3 : 1,
-        hidden: !garbage,
-        data: garbageData,
-        showLine: false,
-        parsing: {
-          xAxisKey: scatterXAxisKey,
-          yAxisKey: scatterYAxisKey
-        },
-        pointBackgroundColor: "rgba(255,0,0,0.5)"
-      },
+      }
     ]
-  }
+  };
 
-  const empty = pannedFilteredData.length === 0
+  const empty = pannedFilteredData.length === 0;
   return (
-    <div className='saleforperiodchart__container'>
+    <div className="saleforperiodchart__container">
       <BaseLineChart chartData={chartData}
                      chartRef={chartRef}
                      buttons={Object.keys(durationMap).map(endpoint => <ChartButton key={endpoint}
@@ -349,21 +328,12 @@ const SaleForPeriodChart = ({address}) => {
                                                                                     }}/>
                      )}
                      controls={[<ChartToggle key={1}
-                                             name={<img src={TrendLine} style={{height: '16px'}}/>}
+                                             name={<img src={TrendLine} style={{height: "16px"}}/>}
                                              onToggle={a => {
                                                chartRef.current.data.datasets[0].trendLineLinear.enabled = a;
                                                chartRef.current.update();
                                                setTrend(a);
                                              }} initChecked={trend} tooltip="Enable Trend line"/>,
-                       <ChartToggle key={2}
-                                    name={<FontAwesomeIcon style={{color: "#ff6c52"}} icon={faTrash}/>}
-                                    onToggle={a => {
-                                      if (chartRef.current) {
-                                        chartRef.current.data.datasets[1].hidden = !a;
-                                        chartRef.current.update();
-                                        setGarbage(a);
-                                      }
-                                    }} initChecked={garbage} tooltip="Show outliers"/>,
                        <ChartToggle key={3}
                                     name={<FontAwesomeIcon style={{color: "#b0b0b0"}} icon={faMagnifyingGlassChart}/>}
                                     initChecked={zoomed}

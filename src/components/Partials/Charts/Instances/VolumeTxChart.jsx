@@ -27,7 +27,7 @@ const durationMap = {
   "14D": 14,
   "30D": 30,
   "3M": 90,
-  "1Y": 365,
+  "ALL": Infinity,
 }
 
 const timestampKey = "ts";
