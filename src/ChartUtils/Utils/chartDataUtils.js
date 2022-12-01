@@ -1,3 +1,4 @@
+// Utils to manipulate chart data
 export function filterOutliers(data, key) {
   data.sort((a, b) => Math.abs(a[key]) - Math.abs(b[key]))
   const top = Math.round(data.length * 0.8)

@@ -8,6 +8,8 @@ import Tippy from '@tippyjs/react';
 import 'tippy.js/dist/tippy.css';
 import './ChartToggle.css'
 
+// Toggle button used above the chart
+
 const ChartToggle = ({name, onToggle, initChecked, tooltip, afterName}) => {
   const [checked, setChecked] = useState(initChecked);
 

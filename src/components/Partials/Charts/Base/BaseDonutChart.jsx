@@ -26,6 +26,7 @@ ChartJS.register(
   ArcElement
 );
 
+// Base for donut charts
 const BaseDonutChart = ({chartData, plugins, chartOptions, chartRef, isLoading, error}) => {
 
     const defaultChartOptions = {

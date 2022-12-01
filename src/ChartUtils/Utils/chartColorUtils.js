@@ -1,3 +1,4 @@
+// Utils for calculating colors from other colors and creating gradients
 function interpolateColor(color1, color2, factor) {
   if (arguments.length < 3) {
     factor = 0.5;

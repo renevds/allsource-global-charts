@@ -1,3 +1,5 @@
+// This compressed a dataset so overlapping points aren't rendered twice, used on the sales chart
+
 export function compressDataSet(dataSet, xKey, yKey) {
   const groups = {}
 

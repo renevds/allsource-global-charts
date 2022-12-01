@@ -7,6 +7,8 @@ import {faXmark} from "@fortawesome/free-solid-svg-icons";
 //Style
 import './UrlsPopup.css';
 
+// This component is used for when a stacked point is clicked and many links are possible
+
 const UrlsPopup = ({urls, onClose}) => {
   if (urls.length > 0) {
     return (

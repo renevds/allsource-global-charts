@@ -1,6 +1,7 @@
 //Style
 import './ChartButton.css'
 
+// Basic button for selecting a period used on above the chart
 const ChartButton = ({text, active, onClick, style}) => {
   const className = "chart__button" + (active ? " chart__button__active" : "")
 

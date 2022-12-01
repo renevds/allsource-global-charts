@@ -4,6 +4,8 @@ import {useRef, useState} from "react";
 //Style
 import './Speedometer.css';
 
+// Speedometer chart, does not use chart.js
+
 const Speedometer = ({dataEndpoint, range, saveToSessionName}) => {
   const [init, setInit] = useState(false);
   const [value, setValue] = useState(0);

@@ -36,7 +36,7 @@ import annotationPlugin from "chartjs-plugin-annotation";
 import {mergeDeep} from "../../../../utils/objUtils";
 import {textColor} from "../../../../ChartUtils/Utils/chartColors";
 
-ChartJS.register(
+ChartJS.register( // Register all Chart.js modules and plugins globally used in this project
   TimeScale,
   LinearScale,
   LogarithmicScale,
@@ -56,13 +56,16 @@ ChartJS.register(
   BarController,
 );
 
+// This is a basic line chart, but also the base for all scatter and bar charts
+// This also includes the container for the chart and buttons, stats etc
+
 const BaseLineChart = ({chartData, buttons, controls, plugins, stats, chartOptions, chartRef, isLoading, error, transparentError, sharpTop, debug}) => {
 
     if(debug){
       console.log(chartData);
     }
 
-    const defaultChartOptions = {
+    const defaultChartOptions = { // Default set of options, these are globally used unless overwritten
       responsive: true,
       maintainAspectRatio: false,
       spanGaps: true,

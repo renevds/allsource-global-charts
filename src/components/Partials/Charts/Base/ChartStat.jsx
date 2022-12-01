@@ -5,6 +5,8 @@ import './ChartStat.css'
 import {HigherLower} from "@allsource/ui.partials.icons.higher_lower";
 import {formatDecimal} from "../../../../ChartUtils/Utils/chartDataUtils";
 
+// Component to display a stat above the chart
+
 const ChartStat = ({name, value, icon, percentage, colorValue, valueSign, valueClass, textColor}) => {
 
   valueSign = valueSign || "";

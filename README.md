@@ -9,7 +9,9 @@ All are written in react.
 
 ### Help
 To get started you can look at the comments in `src\components\Partials\Charts\Instances\HoldersChart.jsx`.
-This is a simple chart.
+This is a simple chart.   
+After this you can find comments in some more advanced charts if you are looking for guides.   
+There is also a small comment in each script in `src/chartUtils.`
 
 ### Usage
 

@@ -49,7 +49,7 @@ const VolumeTxChart = ({address}) => {
   useEffect(() => {
     if (init) {
       try {
-        setPannedData(averageData.slice(averageData.length - durationMap[active], averageData.length));
+        setPannedData(averageData.slice(averageData.length - durationMap[active], averageData.length)); // This shrinks down the rendered dataset to what is actually in view, chart.js performance fix
         setIsLoading(false);
         setVersion(version + 1);
       } catch (e) {
@@ -65,7 +65,7 @@ const VolumeTxChart = ({address}) => {
         const newFloorPriceData = await floorAndMarketCap(address, 365);
         const floorPriceByDate = {};
 
-        newFloorPriceData.forEach(a => {
+        newFloorPriceData.forEach(a => { // Below lines add the floor price to the txnAndVol data
           floorPriceByDate[a[dateKey]] = a[floorPriceKey];
         })
 
@@ -73,8 +73,6 @@ const VolumeTxChart = ({address}) => {
           a[floorPriceKey] = floorPriceByDate[a[dateKey]];
           return a;
         })
-
-        newAverageData = newAverageData
 
         setAverageData(newAverageData);
         setInit(true);
@@ -124,7 +122,7 @@ const VolumeTxChart = ({address}) => {
           mode: "x",
           enabled: true,
           onPan: ({chart}) => {
-            const newPannedData = averageData.slice(chart.scales.xAxes.min, chart.scales.xAxes.max + 1);
+            const newPannedData = averageData.slice(chart.scales.xAxes.min, chart.scales.xAxes.max + 1); // This shrinks down the rendered dataset to what is actually in view, chart.js performance fix
             setPannedData(newPannedData);
           },
         }
@@ -165,7 +163,7 @@ const VolumeTxChart = ({address}) => {
         yAxisID: 'yAxes1'
       }
     ],
-    labels: averageData.map(a => moment(a[dateKey]).format('ll'))
+    labels: averageData.map(a => moment(a[dateKey]).format('ll')) // Don't forget labels when using the bar chart
   }
   const chartRef = useRef(null);
 

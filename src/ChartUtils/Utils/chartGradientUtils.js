@@ -1,5 +1,7 @@
 import {chartGreen} from "./chartColors";
 
+// Set of gradients used in the charts
+
 export function horizontalBlueGreenGradient(context) {
   const ctx = context.chart.ctx;
   const grad = ctx.createLinearGradient(0, 0, ctx.canvas.width, 0);

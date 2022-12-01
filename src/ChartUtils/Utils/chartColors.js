@@ -1,3 +1,4 @@
+// Set of colors used in the charts
 export const chartGreen = "#14F4C9";
 export const chartPurple = "#7230DE";
 export const whaleColor = "#9352FF";

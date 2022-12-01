@@ -7,6 +7,8 @@ import {toolTipLinePlugin} from "../../../../ChartUtils/Plugins/toolTipLinePlugi
 import {getMax, getMin} from "../../../../ChartUtils/Utils/chartDataUtils";
 import {dayTimestampDuration} from "../../../../utils/timeUtils";
 
+// Chart to use if you only need one line and no special features
+
 const BasicLineChart = ({
                           defaultEndpoint,
                           durationMap,

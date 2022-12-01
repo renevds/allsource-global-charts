@@ -38,6 +38,8 @@ ChartJS.register(
   BarElement,
 );
 
+// Compact version of the base line chart, used for the small floorprice charts
+
 const CompactLineChart = ({chartData, plugins, chartOptions, chartRef, isLoading, error}) => {
 
     const defaultChartOptions = {

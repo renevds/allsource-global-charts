@@ -62,15 +62,15 @@ const SaleForPeriodChart = ({address}) => {
   const [avg, setAvg] = useState(0);
   const [initialXMin, setInitialXMin] = useState(0);
   const [initialXMax, setInitialXMax] = useState(0);
-  const [pannedFilteredData, setPannedFilteredData] = useState([]);
-  const [tx, setTx] = useState(0);
+  const [pannedData, setPannedData] = useState([]);
+  const [tx, setTx] = useState(0); // Transactions stat
   const [init, setInit] = useState(false);
-  const [dataMin, setDataMin] = useState(0);
+  const [dataMin, setDataMin] = useState(0); // Lower limit for the pan
   const [pricePercentage, setPricePercentage] = useState(0);
-  const [trend, setTrend] = useState(false);
-  const [urls, setUrls] = useState([]);
-  const [zoomed, setZoomed] = useState(true);
-  const [largerDot, setLargerDot] = useState(false);
+  const [trend, setTrend] = useState(false); // Should trendline be shown
+  const [urls, setUrls] = useState([]); // Displayed urls
+  const [zoomed, setZoomed] = useState(true); // Should chart be zoomed
+  const [largerDot, setLargerDot] = useState(false); // Should larger dots be shown
   const [error, setError] = useState("");
   const countTx = (compressed) => {
     return compressed.map(a => a.originals?.length || 1).reduce((partialSum, a) => partialSum + a, 0);
@@ -78,12 +78,12 @@ const SaleForPeriodChart = ({address}) => {
 
   useEffect(() => {
     if (init) {
-      const newInitialMax = Date.now();
+      const newInitialMax = Date.now(); // Always start the x-axis at current date
       const newInitialMin = newInitialMax - dayTimestampDuration * durationMap[active];
-      const avgInView = getDataBetween(averageData, averageXAxisKey, newInitialMin, newInitialMax, averageXAxisKey);
-      let pannedFilteredData = getDataBetween(scatterData, scatterXAxisKey, newInitialMin, newInitialMax);
-      const newTx = countTx(pannedFilteredData);
-      if (avgInView.length === 0) {
+      const avgInView = getDataBetween(averageData, averageXAxisKey, newInitialMin, newInitialMax, averageXAxisKey); // Get the average date in view
+      let pannedData = getDataBetween(scatterData, scatterXAxisKey, newInitialMin, newInitialMax);
+      const newTx = countTx(pannedData);
+      if (avgInView.length === 0) { // If no avg data in view, set default values for the stats
         setPricePercentage(undefined);
         setAvg(NaN);
       } else {
@@ -93,7 +93,7 @@ const SaleForPeriodChart = ({address}) => {
         }
         const newDataMin = getMin(averageData, averageXAxisKey);
         const avgInViewMin = getMin(avgInView, averageXAxisKey);
-        const firstAvg = averageData.filter(a => a[averageXAxisKey] === avgInViewMin)[0][averageYAxisKey];
+        const firstAvg = averageData.filter(a => a[averageXAxisKey] === avgInViewMin)[0][averageYAxisKey]; // Total avg change is calculated from the difference in first and last average
         let lastAvg = averageData[averageData.length - 1][averageYAxisKey];
         if (avgInViewMin < averageData[averageData.length - 1][averageXAxisKey]) {
           setPricePercentage(Math.round((lastAvg - firstAvg) * 100 / firstAvg));
@@ -101,12 +101,12 @@ const SaleForPeriodChart = ({address}) => {
           setPricePercentage(undefined);
         }
         setAvg(newAvg);
-        setLargerDot(newTx <= 500);
+        setLargerDot(newTx <= 500); // If more than 500 points in view, set small dots as default.
         setDataMin(newDataMin);
       }
       setIsLoading(false);
       setVersion(v => v + 1);
-      setPannedFilteredData(pannedFilteredData);
+      setPannedData(pannedData);
       setTx(newTx);
       setInitialXMax(newInitialMax);
       setInitialXMin(newInitialMin);
@@ -121,15 +121,15 @@ const SaleForPeriodChart = ({address}) => {
   useEffect(() => {
     async function loadPartialData() {
       try {
-        const newScatterData = await anySaleInEthForPeriod(address, 31);
+        const newScatterData = await anySaleInEthForPeriod(address, 31); // Load 31 days first
         const newAverageData = await txnAndVol(address, 31).then(b => b.map(a => ({
           ...a,
-          averageValue: a.volume / a.txCount //TODO remove once endpoint is fixed
+          averageValue: a.volume / a.txCount // Manually calculate average
         })));
         handleData(newScatterData, newAverageData);
         setInit(true);
         setActive(active);
-        loadFullData();
+        loadFullData(); // Then load all data
       } catch (e) {
         setError("Chart data not available.");
         setInit(false);
@@ -141,7 +141,7 @@ const SaleForPeriodChart = ({address}) => {
         const newScatterData = await anySaleInEthForPeriod(address, 3650);
         const newAverageData = await txnAndVol(address, 3650).then(b => b.map(a => ({
           ...a,
-          averageValue: a.volume / a.txCount //TODO remove once endpoint is fixed
+          averageValue: a.volume / a.txCount // Manually calculate average
         })));
         handleData(newScatterData, newAverageData);
         setActive(active);
@@ -158,7 +158,7 @@ const SaleForPeriodChart = ({address}) => {
   const scatterMax = getMax(scatterData, scatterYAxisKey);
 
   let chartOptions = {
-    onClick: (e) => {
+    onClick: (e) => { // If clicked this might need to open a list of urls
       const newDataPoints = [];
       e.chart.tooltip.dataPoints.forEach(dataPoint => {
         if (dataPoint.raw.originals) {
@@ -210,10 +210,12 @@ const SaleForPeriodChart = ({address}) => {
           onPanComplete: ({chart}) => {
           },
           onPan: ({chart}) => {
+            // If panning points should be added and removed from the pannedData
+            // Also new stats should be calculated
             let newScatter = getDataBetween(scatterData, scatterXAxisKey, chart.scales.xAxes.min, chart.scales.xAxes.max);
             setTx(countTx(newScatter));
             chart.config.data.datasets[0].data = newScatter;
-            setPannedFilteredData(newScatter);
+            setPannedData(newScatter);
             const avgInView = getDataBetween(averageData, averageXAxisKey, chart.scales.xAxes.min, chart.scales.xAxes.max, averageXAxisKey);
             if (avgInView.length === 0) {
               setPricePercentage(undefined);
@@ -286,7 +288,7 @@ const SaleForPeriodChart = ({address}) => {
     }
   };
 
-  const whaleImage = new Image();
+  const whaleImage = new Image(); // This can be used for adding tags when they are finished
   whaleImage.src = "https://files.allsource.io/icons/tag-whale.svg";
 
   const chartData = {
@@ -295,7 +297,7 @@ const SaleForPeriodChart = ({address}) => {
       {
         ...simpleScatterDataset,
         pointRadius: largerDot ? 3 : 1,
-        data: pannedFilteredData,
+        data: pannedData,
         parsing: {
           xAxisKey: scatterXAxisKey,
           yAxisKey: scatterYAxisKey
@@ -312,7 +314,7 @@ const SaleForPeriodChart = ({address}) => {
     ]
   };
 
-  const empty = pannedFilteredData.length === 0;
+  const empty = pannedData.length === 0;
   return (
     <div className="saleforperiodchart__container">
       <BaseLineChart chartData={chartData}
