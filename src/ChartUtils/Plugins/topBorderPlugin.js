@@ -1,3 +1,4 @@
+// This adds a border to the of the chart canvas
 export const topBorderPlugin = {
   id: 'topBorderPlugin',
   beforeDraw(chart, args, options) {

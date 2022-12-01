@@ -1,3 +1,6 @@
+// This automatically zooms the y-axis to a nice value if chart.config.options.plugins.initialZoom.enabled is set
+// This is used in the zoom button of several charts
+// This needs one of our custom axes
 import {MODIFIED_LINEAR_ZOOM_STEP} from "../Scales/modifiedLinearScale";
 
 const INIT_ZOOM_SCALE_FACTOR = 1.5;

@@ -1,3 +1,5 @@
+// This charts gives different parts of a donut chart a different thickness and rounds their corners
+// It depends on the radiusChange property in the dataset
 export const differentThicknessDonutPlugin = {
   id: 'differentThicknessDonutPlugin',
   beforeDraw: function (chart) {

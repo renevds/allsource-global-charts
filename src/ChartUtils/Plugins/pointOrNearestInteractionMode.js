@@ -1,3 +1,5 @@
+// This interaction mode either chooses a hover point or otherwise looks upwards to the first point above it with a small x-value offset allowed
+// This is used in the sales chart so you can move your under the sales and see the price
 import {Interaction} from "chart.js";
 
 const distance = (a, b) => {

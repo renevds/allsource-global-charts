@@ -1,3 +1,4 @@
+// This plugin shows the zoom leven on the chart
 export const showZoomPlugin = {
   id: 'showZoomPlugin',
   afterDraw: (chart, args, options) => {

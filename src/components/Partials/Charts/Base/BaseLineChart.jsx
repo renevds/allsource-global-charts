@@ -28,7 +28,7 @@ import OffsetLogScale from "../../../../ChartUtils/Scales/offsetLogScale";
 import ModifiedLinearScale from "../../../../ChartUtils/Scales/modifiedLinearScale";
 
 //Plugins
-import Log2ScalePlugin from "../../../../ChartUtils/Plugins/log2ScalePlugin";
+import Log2ScalePlugin from "../../../../ChartUtils/Scales/log2ScalePlugin";
 import zoomPlugin from 'chartjs-plugin-zoom';
 import annotationPlugin from "chartjs-plugin-annotation";
 

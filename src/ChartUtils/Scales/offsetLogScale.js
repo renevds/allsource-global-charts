@@ -1,3 +1,5 @@
+// This is a custom log scale that can deal with number between 0 and 1
+
 // Scales
 import {LinearScale, Scale} from 'chart.js';
 

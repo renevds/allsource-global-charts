@@ -1,3 +1,4 @@
+// This adds a vertical dotted line through the hover bar or point
 export const toolTipLinePlugin = {
   id: 'toolTipLinePlugin',
   beforeDraw: chart => {

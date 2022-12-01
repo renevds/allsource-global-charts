@@ -1,4 +1,4 @@
-//Utils
+// This plugin adds a trend line if dataset.trendLineLinear is set
 import {getAvg} from "../Utils/chartDataUtils";
 
 export const pluginTrendLineLinear = {

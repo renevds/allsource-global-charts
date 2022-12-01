@@ -1,3 +1,4 @@
+// This plugin can be used to automatically replace successive empty x-axis values in a bar chart with one dotted vertical line
 export const emptyBarLinePlugin = {
   id: 'emptyBarLinePlugin',
   afterDatasetsDraw: chart => {

@@ -7,6 +7,10 @@ All are written in react.
 
 ```npm i degen-charts --save```
 
+### Help
+To get started you can look at the comments in `src\components\Partials\Charts\Instances\HoldersChart.jsx`.
+This is a simple chart.
+
 ### Usage
 
 Following charts are available:

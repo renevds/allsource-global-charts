@@ -1,4 +1,4 @@
-//Scales
+// This is a custom scale that uses log2
 import {LinearScale, Scale} from 'chart.js';
 
 export default class Log2ScalePlugin extends Scale {

@@ -6,6 +6,7 @@ import {LinearScale} from "chart.js";
 
 export const MODIFIED_LINEAR_ZOOM_STEP = 1;
 
+// This is a custom linear scale that allows zoom and always starts at least at 0
 export default class ModifiedLinearScale extends LinearScale {
   constructor(cfg) {
     super(cfg);
